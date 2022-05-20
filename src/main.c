@@ -10,7 +10,12 @@
 
 
 int main(){
+<<<<<<< HEAD
 	int prova, prova1;
+=======
+	int prova;
+	float niente;
+>>>>>>> c806fd5 (Niente)
 	printf("Ok");
 	return 0;
 }
