@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 /*
  * main.c
  *
@@ -5,6 +8,9 @@
  *      Author: valerio
  */
 
-int main{
+
+int main(){
+	int prova;
+	printf("Ok");
 	return 0;
 }
