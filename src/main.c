@@ -5,12 +5,11 @@
  * main.c
  *
  *  Created on: 20 mag 2022
- *      Author: valerio
+ *      Author: valerio, giovanni, salvatore
  */
 
 
 int main(){
-	float prova;
-	printf("Ciao");
+
 	return 0;
 }
