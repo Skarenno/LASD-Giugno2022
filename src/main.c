@@ -12,4 +12,5 @@
 int main(){
 	float prova;
 	printf("Ciao");
+	return 0;
 }
