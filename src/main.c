@@ -11,5 +11,5 @@
 
 int main(){
 	float prova;
-	printf("Ciazo");
+	printf("Ciao");
 }
