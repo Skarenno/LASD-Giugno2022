@@ -10,7 +10,7 @@
 
 
 int main(){
-	int prova;
+	int prova, prova1;
 	printf("Ok");
 	return 0;
 }
