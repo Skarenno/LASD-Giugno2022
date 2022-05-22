@@ -16,9 +16,9 @@ GraphViaggi* AllocaGrafo() {
 	return grafo;
 }
 
-GraphViaggi* PopolaGraphViaggi(){
-
-}
+//GraphViaggi* PopolaGraphViaggi(){
+//
+//}
 
 
 
@@ -45,7 +45,7 @@ EdgeViaggi* creaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAe
 
 void InserisciVertice(GraphViaggi* G, char *citta){
     for(int i = 0; i< G->numVertici; i++){
-        if(strcmp(citta, G->adj[i]) == 0){
+        if(strcmp(citta, G->adj[i]->citta) == 0){
             return;                             // Già esistente
         }
     }
@@ -62,10 +62,11 @@ void InserisciVertice(GraphViaggi* G, char *citta){
         exit(1);
     }
     G->adj[G->numVertici] = creaArco(citta, 0, 0, 0, 0);
+    G->adj[G->numVertici]->next = NULL;
     G->numVertici++;
 }
 
-void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
+void addArco(GraphViaggi* grafo, int posizione, char citta[], int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
 	EdgeViaggi* tmp = grafo->adj[posizione]->next;
 
 	while(tmp !=NULL) { /*Controlla che l'arco non sia già esistente*/
@@ -78,8 +79,10 @@ void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, in
     tmp = creaArco(citta, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
     tmp->prec = grafo->adj[posizione];
     tmp->next = grafo->adj[posizione]->next;
-    tmp->next->prec = tmp;
-    
+    if(tmp->next != NULL)
+    	tmp->next->prec = tmp;
+
+    grafo->adj[posizione]->next = tmp;
 	grafo->numArchi++;
 }
 

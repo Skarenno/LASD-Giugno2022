@@ -12,8 +12,10 @@
 
 
 int main(){
+	printf("Ciao");
 	GraphViaggi* G = AllocaGrafo();
 	InserisciVertice(G, "Napoli");
+	addArco(G, 0, "Bologna", 23 ,57, 7, 2);
 	addArco(G, 0, "Firenze", 23 ,45 ,67 ,54);
 
 	stampaGrafo(G);
