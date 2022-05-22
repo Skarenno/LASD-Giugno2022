@@ -21,31 +21,11 @@ GraphViaggi* PopolaGraphViaggi(){
 }
 
 
-void InserisciVertice(GraphViaggi* G, char *citta){
-    for(int i = 0; i< G->numVertici; i++){
-        if(strcmp(citta, G->adj[i]) == 0){
-            return;                             // Già esistente
-        }
-    }
-
-    if(G->adj == NULL){
-        G->adj = (EdgeViaggi**)malloc(sizeof(EdgeViaggi*));
-    }
-    else{
-        G->adj = (EdgeViaggi**)realloc(G->adj, (G->numVertici + 1)*sizeof(EdgeViaggi*));
-    }   
-        
-    if(G->adj == NULL){
-        printf("\nErrore allocazione vertice.");
-        exit(1);
-    }
-    G->adj[G->numVertici] = CreaArco(citta, 0, 0, 0, 0);
-    G->numVertici++;
-}
 
 
 
-EdgeViaggi* CreaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
+
+EdgeViaggi* creaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
     EdgeViaggi* NuovoArco = (EdgeViaggi*)malloc(sizeof(EdgeViaggi));
     
     if(NuovoArco == NULL){
@@ -63,6 +43,27 @@ EdgeViaggi* CreaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAe
     return NuovoArco;
 }
 
+void InserisciVertice(GraphViaggi* G, char *citta){
+    for(int i = 0; i< G->numVertici; i++){
+        if(strcmp(citta, G->adj[i]) == 0){
+            return;                             // Già esistente
+        }
+    }
+
+    if(G->adj == NULL){
+        G->adj = (EdgeViaggi**)malloc(sizeof(EdgeViaggi*));
+    }
+    else{
+        G->adj = (EdgeViaggi**)realloc(G->adj, (G->numVertici + 1)*sizeof(EdgeViaggi*));
+    }
+
+    if(G->adj == NULL){
+        printf("\nErrore allocazione vertice.");
+        exit(1);
+    }
+    G->adj[G->numVertici] = creaArco(citta, 0, 0, 0, 0);
+    G->numVertici++;
+}
 
 void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
 	EdgeViaggi* tmp = grafo->adj[posizione]->next;
@@ -84,10 +85,10 @@ void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, in
 
 
 void stampaGrafo(GraphViaggi* grafo){
-	if(isEmpty(grafo)) {
+	/*if(isEmpty(grafo)) {
 		printf("Grafo Vuoto\n");
 		return;
-	}
+	}*/
 	for(int i=0; i<grafo->numVertici; i++) {
 		EdgeViaggi* tmp = grafo->adj[i]->next;
 		printf("Vertice %s: |", grafo->adj[i]->citta);
