@@ -1,5 +1,5 @@
 #include "Viaggi.h"
-#define CITTA "./FILES/Citta.txt"
+#define CITTA "./FILES/Viaggi.txt"
 
 
 GraphViaggi* AllocaGrafo() {

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "Viaggi.h"
+#include "UI.h"
 
 /*
  * main.c
@@ -12,7 +13,6 @@
 
 
 int main(){
-	printf("Ciao");
 	GraphViaggi* G = AllocaGrafo();
 	InserisciVertice(G, "Napoli");
 	addArco(G, 0, "Bologna", 23 ,57, 7, 2);
