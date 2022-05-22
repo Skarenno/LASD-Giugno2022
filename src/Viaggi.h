@@ -1,7 +1,5 @@
-#include "standard_haeder.h"
+#include "standard_header.h"
 
-
-#define STRING_MAX 50
 
 // Se non c'è collegamento Treno/Aereo il peso associato al tempo e al prezzo è 0
 
