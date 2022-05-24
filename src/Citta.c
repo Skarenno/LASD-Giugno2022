@@ -83,12 +83,19 @@ void addArcoC(GraphCitta* grafo, int posizione, char albergo[], int tempo){
 	grafo->numArchi++;
 }
 
+int isEmptyC(GraphCitta* grafo) {
+	if(grafo==NULL)
+		return 1;
+	if(grafo->adj==NULL)
+		return 1;
+	return 0;
+}
 
 void stampaGrafoC(GraphCitta* grafo){
-	/*if(isEmpty(grafo)) {
+	if(isEmptyC(grafo)) {
 		printf("Grafo Vuoto\n");
 		return;
-	}*/
+	}
 	for(int i=0; i<grafo->numVertici; i++) {
 		EdgeCitta* tmp = grafo->adj[i]->next;
 		printf("Vertice %s: |", grafo->adj[i]->albergo);

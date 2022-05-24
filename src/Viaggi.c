@@ -136,11 +136,19 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	return grafo;
 }
 
+int isEmpty(GraphViaggi* grafo) {
+	if(grafo==NULL)
+		return 1;
+	if(grafo->adj==NULL)
+		return 1;
+	return 0;
+}
+
 void stampaGrafo(GraphViaggi* grafo){
-	/*if(isEmpty(grafo)) {
+	if(isEmpty(grafo)) {
 		printf("Grafo Vuoto\n");
 		return;
-	}*/
+	}
 	for(int i=0; i<grafo->numVertici; i++) {
 		EdgeViaggi* tmp = grafo->adj[i]->next;
 		printf("Vertice %s: |", grafo->adj[i]->citta);
