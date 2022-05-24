@@ -14,8 +14,15 @@
 
 
 int main(){
-	Utente* ListaUtenti = NULL;
-	SchermataIniziale(ListaUtenti);
+	Utente* UtenteAttuale, ListaUtenti = NULL;
+	// Si vuole entrare come admin o utente?
+
+	// if(admn)
+		//
+	// else
+		//
+
+	UtenteAttuale = SchermataIniziale(ListaUtenti);
 
 	GraphViaggi* grafo = NULL;
 	grafo = leggiFileViaggi(grafo);
