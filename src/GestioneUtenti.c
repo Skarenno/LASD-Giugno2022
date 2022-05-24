@@ -1,33 +1,79 @@
 #include "GestioneUtenti.h"
 
+/********************** FUNZIONI PER LA LISTA UTENTI **********************/
+/**************************************************************************/
+
+
 
 Utente* InizializzaNodoUtente(Utente* Nodo){
     Nodo = (Utente*)malloc(sizeof(Utente));
+    Nodo->nome[0] = '\0';			// Inizializzo le stringhe altrimenti ho errori nella scrittura
+    Nodo->password[0] = '\0';		// Inizializzo le stringhe altrimenti ho errori nella scrittura
     Nodo->next = NULL;
 
     return Nodo;
 }
 
 
-void RiscriviFileUtenti(FILE* FileUtenti, Utente* ListaUtenti){
-    Utente* Cursor = ListaUtenti;
+// Aggiunta in coda nella lista
+Utente* AggiungiListaUtenti (Utente* ListaUtenti, char* nome, char* password){
 
-    while(Cursor != NULL){
-        fprintf(FileUtenti, "%s %s %.2f", Cursor->nome, Cursor->password, Cursor->saldo);
-        Cursor = Cursor->next;
-    }
+	Utente* New = NULL;
+	New = InizializzaNodoUtente(New);
+
+	Utente* Cur = ListaUtenti;
+
+	strcpy(New->nome, nome);
+	strcpy(New->password, password);
+
+	if(ListaUtenti == NULL)
+		ListaUtenti = New;
+	else{
+		while(Cur->next != NULL)
+			Cur = Cur->next;
+
+		Cur->next = New;
+	}
+	return ListaUtenti;
 }
 
+
+// Trova un Utente nella lista, restituisce NULL se l'utente non viene trovato (Ricorsiva)
+Utente* TrovaUtente (char *nomeInserito, Utente* ListaUtenti){
+	if(ListaUtenti == NULL){
+		return NULL;
+	}
+
+	if(strcmp(nomeInserito, ListaUtenti->nome) == 0){
+		return ListaUtenti;
+	}
+
+	return TrovaUtente(nomeInserito, ListaUtenti->next);
+}
+
+
+// Stampa a schermo la lista Utenti
+void StampaListaUtenti(Utente* Lista){
+    printf("%s %s %.2f\n", Lista->nome, Lista->password, Lista->saldo);
+
+    if(Lista->next != NULL)
+        StampaListaUtenti(Lista->next);
+    return;
+}
+
+
+
+/**************************************************************************/
+/**************************************************************************/
+
+
+
+
+/*************** FUNZIONI PER GESTIONE FILE UTENTI ************************/
+/**************************************************************************/
+
+// Scrivo la lista locale dal file Utenti (Ricorsiva)
 Utente* LeggiFileUtenti (FILE* file, Utente* ListaUtenti){
-
-	/***
-	 *
-	 *
-	 * AGGIUSTARE FILE NON APERTO
-	 *
-	 *
-	 */
-
 
     if(ListaUtenti == NULL)
         ListaUtenti = InizializzaNodoUtente(ListaUtenti);
@@ -44,91 +90,222 @@ Utente* LeggiFileUtenti (FILE* file, Utente* ListaUtenti){
     return ListaUtenti;
 }
 
+// Riscrivo il file a partire dall'attuale lista degli Utenti
+void RiscriviFileUtenti(Utente* ListaUtenti){
+	FILE* FileUtenti = fopen (U_FILE, "w+");
+    Utente* Cursor = ListaUtenti;
 
-Utente* SchermataIniziale (Utente* ListaUtenti){
-
-	/***
-	 *
-	 *
-	 * AGGIUSTARE FILE NON APERTO
-	 *
-	 *
-	 */
-
-
-    int n;
-    int check;
-    bool accesso = false;
-
-    Utente* AccessoUtente = NULL;
-    FILE* FileUtenti = fopen(U_FILE, "r+");
-
-    ListaUtenti = LeggiFileUtenti(FileUtenti, ListaUtenti);
-
-    StampaListaUtenti(ListaUtenti);
-
-	printf("***************\n **Benvenuto** \n***************\n\n");
-    sleep(1);
-
-    while(!accesso){
-
-        // ESCO DAL WHILE SOLO QUANDO L'ACCESSO E AVVENUTO CORRETTAMENTE.
-        printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo): ");
-        fflush(stdin);
-        check = scanf("%d", &n);
-
-        if(check == 1){
-            switch(n){
-                case 1:
-                    // ACCESSO
-                    accesso = true;
-                    break;
-
-                case 2:
-                    // REGISTRAZIONE
-                    continue;
-
-                case 3:
-                    // CHIUSURA
-                    printf("\nArrivederci!\n************");
-                    sleep(1);
-                    exit(EXIT_SUCCESS);
-                default:
-                    printf("\n---Non valido!---\n");
-                    break;
-            }
-        }
-        else{
-            printf("\nERROR: NOT A NUMBER\n");
-        }
-
+    while(Cursor != NULL){
+        fprintf(FileUtenti, "%s %s %.2f", Cursor->nome, Cursor->password, Cursor->saldo);
+        Cursor = Cursor->next;
+        if(Cursor)
+        	fprintf(FileUtenti, "\n");
     }
-
-    return AccessoUtente; // PER ORA PER NON FAR APPARIRE WARNING
 }
 
+/**************************************************************************/
+/**************************************************************************/
 
-/****************************************** TO DO ****************************************** */
+
+
+
+/*********** FUNZIONI GENERALI PER MENU, ACCESSO E REGISTRAZIONE ***********/
+/**************************************************************************/
+
+
+// Schermata Iniziale. Ritorna l'utente di cui si è effettuato l'accesso
+Utente* SchermataIniziale (Utente* ListaUtenti){
+
+	// INIZIALIZZO VARIABILI LOCALI
+	Utente* UtenteAttuale = NULL;
+    int scelta;
+    bool accesso = false;
+
+
+    // Apro e leggo il file utenti
+    FILE* FileUtenti = fopen(U_FILE, "r+");
+    if(FileUtenti == NULL){
+    	printf("ERRORE DATABASE UTENTI");
+    	return NULL;
+    }
+    ListaUtenti = LeggiFileUtenti(FileUtenti, ListaUtenti);
+    fclose(FileUtenti);
+    // Chiusura file utenti
+
+
+	printf("***************\n **Benvenuto** \n***************\n\n");
+	sleep(1);
+    do{
+        // ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO È AVVENUTO CORRETTAMENTE.
+        printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
+        fflush(stdout);
+        scanf("%d", &scelta);
+
+		switch(scelta){
+
+			// Accesso
+			case 1:
+				UtenteAttuale = AccessoUtente(ListaUtenti);
+				if(UtenteAttuale != NULL)
+					accesso = true;
+				break;
+
+			// Registrazione
+			case 2:
+				ListaUtenti = RegistraUtente(ListaUtenti);
+				RiscriviFileUtenti(ListaUtenti); // Aggiorno il database quando registro un nuovo utente
+				StampaListaUtenti(ListaUtenti);	// Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in coda
+				continue;
+
+			// Chiusura programma
+			case 3:
+				// CHIUSURA
+				printf("\nArrivederci!\n************");
+				sleep(1);
+				exit(EXIT_SUCCESS);
+
+
+			default:
+				printf("\n---Non valido!---\n");
+				break;
+		}
+    }while(accesso == false);
+
+    // Ritorno il nodo utente di cui ho effettuato l'accesso
+    return UtenteAttuale;
+}
+
 
 // Funzione per l'accesso
 Utente* AccessoUtente (Utente* ListaUtenti){
-    return NULL;
+    char n_utente[STRING_MAX];
+    char password[STRING_MAX];
+    bool quit_login = false;
+    char yes_no;
+
+    printf("\nInserire nome utente: ");
+    fflush(stdout);
+    scanf("%s", n_utente);
+
+    Utente* Utente = TrovaUtente(n_utente, ListaUtenti);
+
+    /** DUE CASI **/
+
+    // 1. L'utente non è presente nel Database e si richiede se si vuole registrarsi
+    if(Utente == NULL){
+    	printf("\nUtente non trovato... desidera registrarsi (y/n)? ");
+    	fflush(stdout);
+    	fflush(stdin);
+    	scanf("%c", &yes_no);
+
+    	// Il while serve per il default nello switch
+    	while(1){
+			switch(yes_no){
+
+				// Se si, procedo alla registrazione
+				case 'y':
+					RegistraUtente(ListaUtenti);
+					RiscriviFileUtenti(ListaUtenti);
+					break;
+
+				// Se no, ritorno al menu iniziale
+				case 'n':
+					Utente = NULL;
+					printf("*****************\nRITORNO AL MENU INIZIALE\n");
+					return Utente;
+
+				// Richiesta non valida
+				default:
+					printf("Carattere non valido. Riprovare. (y/n): ");
+					fflush(stdout);
+					fflush(stdin);
+					scanf("%c", &yes_no);
+					continue;
+				}
+			break;
+    	}
+
+    // 2. L'utente è presente e ne verifico la password. Se non si riesce ad accedere si può tornare alla schermata precedente
+    }
+    else{
+    	// VERIFICO LA PASSWORD
+		do{
+			printf("Inserire password: ");
+			fflush(stdout);
+			scanf("%s", password);
+
+			// Password corretta, posso uscire dal loop impostando il flag di quit a true. Effettuo l'accesso.
+			if(strcmp(password, Utente->password) == 0){
+				quit_login = true;
+				printf("\nEffettuo l'accesso!\n");
+			}
+			// Password Errata. Richiesta di un nuovo tentativo
+			else{
+				printf("************\nPASSWORD ERRATA\nSi desidera riprovare (y/n): ");
+				fflush(stdout);
+				fflush(stdin);
+				scanf("%c", &yes_no);
+
+				switch(yes_no){
+					// Si riprova a inserire la password
+					case 'y':
+						printf("\n");
+						break;
+					case 'n':
+
+					// Si ritorna al menu iniziale ritornando NULL all'utente attuale.
+						Utente = NULL;
+						printf("*****************\nRITORNO AL MENU INIZIALE\n");
+						return Utente;
+
+					// Richiesta non valida
+					default:
+						printf("Carattere non valido. Riprovare (y/n)");
+						fflush(stdout);
+						fflush(stdin);
+						continue;
+					}
+			}
+
+		}while(!quit_login);
+	}
+
+    return Utente;
 }
 
 // Funzione per la registrazione
-void RegistraUtente(Utente* ListaUtenti){
-    return;
+Utente* RegistraUtente (Utente* ListaUtenti){
+
+	char username[STRING_MAX];
+	char password[STRING_MAX];
+
+	while(true){
+		printf("Inserire nome utente: ");
+		fflush(stdin);
+		fflush(stdout);
+
+		scanf("%s", username);
+
+		// Se il nome utente è già presente si richiede un nuovo inserimento.
+		if(TrovaUtente(username, ListaUtenti) != NULL){
+			printf("Nome utente già esistente. Riprovare.\n");
+			continue;
+		}
+		break;
+	}
+	printf("Inserire password: ");
+	fflush(stdin);
+	fflush(stdout);
+	scanf("%s", password);
+
+	// Aggiungo il nuovo utente alla lista.
+	ListaUtenti = AggiungiListaUtenti(ListaUtenti, username, password);
+
+	return ListaUtenti;
 }
 
 
 
-/****************************************** TEMP PER DEBUGGING ****************************************** */
 
-void StampaListaUtenti(Utente* Lista){
-    printf("%s %s %.2f\n", Lista->nome, Lista->password, Lista->saldo);
-
-    if(Lista->next != NULL)
-        StampaListaUtenti(Lista->next);
-
-    return;
-}
+/**************************************************************************/
+/**************************************************************************/
