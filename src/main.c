@@ -15,7 +15,6 @@
 
 int main(){
 	Utente* UtenteAttuale, *ListaUtenti = NULL;
-	pirntf("Ciao");
 	// Si vuole entrare come admin o utente?
 
 	// if(admn)
