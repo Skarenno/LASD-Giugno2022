@@ -112,6 +112,8 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 			InserisciVertice(grafo, token);
 		while(token!=NULL) {
 			token = strtok(NULL, ";");
+			if(token==NULL)
+				continue;
 			if(i==0)
 				strcpy(citta, token);
 			if(i==1)
