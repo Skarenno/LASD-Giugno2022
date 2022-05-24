@@ -14,7 +14,7 @@
 
 
 int main(){
-	Utente* UtenteAttuale, ListaUtenti = NULL;
+	Utente* UtenteAttuale, *ListaUtenti = NULL;
 	// Si vuole entrare come admin o utente?
 
 	// if(admn)
