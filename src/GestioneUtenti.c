@@ -118,7 +118,7 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
 
 	// INIZIALIZZO VARIABILI LOCALI
 	Utente* UtenteAttuale = NULL;
-    int scelta;
+    int scelta, check = 0;
     bool accesso = false;
 
 
@@ -139,36 +139,41 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
         // ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO È AVVENUTO CORRETTAMENTE.
         printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
         fflush(stdout);
-        scanf("%d", &scelta);
+        fflush(stdin);
+        check = scanf("%d", &scelta);
 
-		switch(scelta){
+        if(check == 1){
+			switch(scelta){
 
-			// Accesso
-			case 1:
-				UtenteAttuale = AccessoUtente(ListaUtenti);
-				if(UtenteAttuale != NULL)
-					accesso = true;
-				break;
+				// Accesso
+				case 1:
+					UtenteAttuale = AccessoUtente(ListaUtenti);
+					if(UtenteAttuale != NULL)
+						accesso = true;
+					break;
 
-			// Registrazione
-			case 2:
-				ListaUtenti = RegistraUtente(ListaUtenti);
-				RiscriviFileUtenti(ListaUtenti); // Aggiorno il database quando registro un nuovo utente
-				StampaListaUtenti(ListaUtenti);	// Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in coda
-				continue;
+				// Registrazione
+				case 2:
+					ListaUtenti = RegistraUtente(ListaUtenti);
+					RiscriviFileUtenti(ListaUtenti); // Aggiorno il database quando registro un nuovo utente
+					StampaListaUtenti(ListaUtenti);	// Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in coda
+					continue;
 
-			// Chiusura programma
-			case 3:
-				// CHIUSURA
-				printf("\nArrivederci!\n************");
-				sleep(1);
-				exit(EXIT_SUCCESS);
+				// Chiusura programma
+				case 3:
+					// CHIUSURA
+					printf("\nArrivederci!\n************");
+					sleep(1);
+					exit(EXIT_SUCCESS);
 
 
-			default:
-				printf("\n---Non valido!---\n");
-				break;
-		}
+				default:
+					printf("\n---Non valido!---\n");
+					break;
+			}
+        }else{
+        	printf("Valore non valido\n");
+        }
     }while(accesso == false);
 
     // Ritorno il nodo utente di cui ho effettuato l'accesso

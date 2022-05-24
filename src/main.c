@@ -14,12 +14,12 @@
 
 
 int main(){
-	//Utente* ListaUtenti = NULL;
-	//SchermataIniziale(ListaUtenti);
+	Utente* ListaUtenti = NULL;
+	SchermataIniziale(ListaUtenti);
 
-	GraphViaggi* grafo = NULL;
-	grafo = leggiFileViaggi(grafo);
-	stampaGrafo(grafo);
+//	GraphViaggi* grafo = NULL;
+//	grafo = leggiFileViaggi(grafo);
+//	stampaGrafo(grafo);
 
 	return 0;
 }
