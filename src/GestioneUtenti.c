@@ -16,7 +16,7 @@ Utente* InizializzaNodoUtente(Utente* Nodo){
 
 
 // Aggiunta in coda nella lista
-Utente* AggiungiListaUtenti (Utente* ListaUtenti, char* nome, char* password){
+Utente* AggiungiListaUtenti(Utente* ListaUtenti, char* nome, char* password){
 
 	Utente* New = NULL;
 	New = InizializzaNodoUtente(New);
@@ -39,7 +39,7 @@ Utente* AggiungiListaUtenti (Utente* ListaUtenti, char* nome, char* password){
 
 
 // Trova un Utente nella lista, restituisce NULL se l'utente non viene trovato (Ricorsiva)
-Utente* TrovaUtente (char *nomeInserito, Utente* ListaUtenti){
+Utente* TrovaUtente(char *nomeInserito, Utente* ListaUtenti){
 	if(ListaUtenti == NULL){
 		return NULL;
 	}

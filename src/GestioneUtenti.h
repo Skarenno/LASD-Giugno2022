@@ -1,6 +1,6 @@
 #include "standard_header.h"
 
-#define U_FILE "./FILES/UTENTI.txt"
+#define U_FILE "./src/FILES/UTENTI.txt"
 
 typedef struct u_node{
 	char nome[STRING_MAX];
@@ -11,9 +11,21 @@ typedef struct u_node{
 }Utente;
 
 
-Utente* LeggiFileUtenti(FILE* file, Utente* ListaUtenti);
-void RiscriviFileUtenti(FILE* FileUtenti, Utente* ListaUtenti);
+// TODO Ordina prototipi e aggiungi prototipi mancanti
+
+
+Utente* InizializzaNodoUtente(Utente* Nodo);
+Utente* AggiungiListaUtenti(Utente* ListaUtenti, char* nome, char* password);
+Utente* TrovaUtente(char *nomeInserito, Utente* ListaUtenti);
+void StampaListaUtenti(Utente* Lista);
+
+
+
+Utente* LeggiFileUtenti (FILE* file, Utente* ListaUtenti);
+void RiscriviFileUtenti(Utente* ListaUtenti);
+
+
 Utente* SchermataIniziale(Utente* ListaUtenti);
 Utente* AccessoUtente(Utente* ListaUtenti);
-void RegistraUtente (Utente* ListaUtenti);
-void StampaListaUtenti(Utente* Lista);
+Utente* RegistraUtente (Utente* ListaUtenti);
+
