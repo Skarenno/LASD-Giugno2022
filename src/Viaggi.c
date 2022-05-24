@@ -1,6 +1,4 @@
 #include "Viaggi.h"
-#define CITTA "./FILES/Viaggi.txt"
-
 
 GraphViaggi* AllocaGrafo() {
 	GraphViaggi* grafo = (GraphViaggi*)malloc(sizeof(GraphViaggi));
@@ -15,15 +13,6 @@ GraphViaggi* AllocaGrafo() {
 
 	return grafo;
 }
-
-//GraphViaggi* PopolaGraphViaggi(){
-//
-//}
-
-
-
-
-
 
 EdgeViaggi* creaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
     EdgeViaggi* NuovoArco = (EdgeViaggi*)malloc(sizeof(EdgeViaggi));
@@ -44,21 +33,19 @@ EdgeViaggi* creaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAe
 }
 
 void InserisciVertice(GraphViaggi* G, char *citta){
-    for(int i = 0; i< G->numVertici; i++){
+    for(int i = 0; i<G->numVertici; i++){
         if(strcmp(citta, G->adj[i]->citta) == 0){
             return;                             // GiÃ  esistente
         }
     }
-
     if(G->adj == NULL){
         G->adj = (EdgeViaggi**)malloc(sizeof(EdgeViaggi*));
     }
     else{
         G->adj = (EdgeViaggi**)realloc(G->adj, (G->numVertici + 1)*sizeof(EdgeViaggi*));
     }
-
     if(G->adj == NULL){
-        printf("\nErrore allocazione vertice.");
+        printf("Errore allocazione vertice.\n");
         exit(1);
     }
     G->adj[G->numVertici] = creaArco(citta, 0, 0, 0, 0);
@@ -68,14 +55,12 @@ void InserisciVertice(GraphViaggi* G, char *citta){
 
 void addArco(GraphViaggi* grafo, int posizione, char citta[], int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
 	EdgeViaggi* tmp = grafo->adj[posizione]->next;
-
-	while(tmp !=NULL) { /*Controlla che l'arco non sia giÃ  esistente*/
+	while(tmp!=NULL) { /*Controlla che l'arco non sia giÃ  esistente*/
 		if(strcmp(citta, tmp->citta) == 0)
 			return;
 
 		tmp = tmp->next;
 	}
-    
     tmp = creaArco(citta, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
     tmp->prec = grafo->adj[posizione];
     tmp->next = grafo->adj[posizione]->next;
@@ -86,6 +71,68 @@ void addArco(GraphViaggi* grafo, int posizione, char citta[], int prezzoAereo, i
 	grafo->numArchi++;
 }
 
+GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
+	grafo = AllocaGrafo();
+	FILE *fp;
+	if((fp=fopen(CITTA, "r"))==NULL) {
+		printf("Impossibile aprire il file Viaggi.txt\n");
+		exit(1);
+	}
+	if (fp!=NULL) { /*Controlla che il file non sia vuoto*/
+	   	fseek(fp, 0, SEEK_END);
+	   	int size = ftell(fp);
+		if (size==0) {
+	       	return NULL;
+		}
+	}
+	fseek(fp, 0, SEEK_SET);
+	char *riga = NULL, c;
+	int count = 0, maxRiga = 0;
+	/*Conto quanto è lunga la riga più grande in modo da allocare la memoria per riga*/
+	while((c=fgetc(fp))!=EOF) {
+		if(c!='\n')
+			count++;
+		if(c=='\n') {
+			if(maxRiga<count)
+				maxRiga = count;
+			count = 0;
+		}
+	}
+	fseek(fp, 0, SEEK_SET);
+	riga = (char *)malloc((maxRiga+1)*sizeof(char));
+	char citta[STRING_MAX], *token;
+	float prezzoAereo, prezzoTreno;
+	int tempoAereo, tempoTreno, i = 0, posizione = 0;
+	while(!feof(fp)) {
+		fscanf(fp, "%s", riga);
+		token = strtok(riga, ";");
+		if(token==NULL)
+			InserisciVertice(grafo, riga);
+		else
+			InserisciVertice(grafo, token);
+		while(token!=NULL) {
+			token = strtok(NULL, ";");
+			if(i==0)
+				strcpy(citta, token);
+			if(i==1)
+				prezzoAereo = atof(token);
+			if(i==2)
+				tempoAereo = atoi(token);
+			if(i==3)
+				prezzoTreno = atof(token);
+			if(i==4) {
+				tempoTreno = atoi(token);
+				i = -1;
+				addArco(grafo, posizione, citta, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
+			}
+			i++;
+		}
+		posizione++;
+	}
+	free(riga);
+	fclose(fp);
+	return grafo;
+}
 
 void stampaGrafo(GraphViaggi* grafo){
 	/*if(isEmpty(grafo)) {

@@ -1,10 +1,11 @@
 #include "standard_header.h"
+#define CITTA "./src/FILES/Viaggi.txt"
 
 
-// Se non c'Ã¨ collegamento Treno/Aereo il peso associato al tempo e al prezzo Ã¨ 0
+// Se non c'è collegamento Treno/Aereo il peso associato al tempo e al prezzo è 0
 
 typedef struct edgeViaggi { /*Gestisce sia grafi orientati che non*/
-	int prezzoAereo, prezzoTreno;
+	float prezzoAereo, prezzoTreno;
     int tempoAereo, tempoTreno;
 
     char citta[STRING_MAX];
@@ -23,4 +24,5 @@ GraphViaggi* AllocaGrafo();
 void InserisciVertice(GraphViaggi* G, char *citta);
 EdgeViaggi* CreaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno);
 void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno);
+GraphViaggi* leggiFileViaggi(GraphViaggi* grafo);
 void stampaGrafo(GraphViaggi* grafo);

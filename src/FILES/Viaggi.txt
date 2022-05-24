@@ -1,3 +1,7 @@
-Napoli;Firenze;19;90;28;67;Bologna;12;23;34;74;
-Firenze;Napoli;19;90;28;67;
-Bologna;Napoli;12;23;34;74
+Napoli;Firenze;50;60;20;180;Roma;30;40;0;0;Sicilia;0;0;25;240
+Firenze;Napoli;50;60;20;180;Bologna;60;80;0;0
+Bologna;Firenze;60;80;0;0;Roma;70;120;0;0;Milano;0;0;20;50
+Milano;Bologna;0;0;20;50;Sicilia;0;0;40;300
+Sicilia;Milano;0;0;40;300;Roma;60;100;40;350;Napoli;0;0;25;240
+Roma;Napoli;30;40;0;0;Bologna;70;120;0;0;Sicilia;Roma;60;100;40;350
+Bari
