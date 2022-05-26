@@ -1,3 +1,6 @@
+#ifndef GESTIONEUTENTI_H_
+#define GESTIONEUTENTI_H_
+
 #include "standard_header.h"
 
 #define U_FILE "./src/FILES/UTENTI.txt"
@@ -29,3 +32,4 @@ Utente* SchermataIniziale(Utente* ListaUtenti);
 Utente* AccessoUtente(Utente* ListaUtenti);
 Utente* RegistraUtente (Utente* ListaUtenti);
 
+#endif /* GESTIONEUTENTI_H_ */
