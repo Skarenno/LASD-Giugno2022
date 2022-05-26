@@ -1,0 +1,4 @@
+Fumarola;1;Duse;0;15;Veronesi;0;50
+Veronesi;0;Ticino;2;25;Duse;0;30;Fumarola;1;50
+Ticino;2;Veronesi;0;25;Duse;0;20
+Duse;0;Veronesi;0;30;Fumarola;1;15;Ticino;2;20

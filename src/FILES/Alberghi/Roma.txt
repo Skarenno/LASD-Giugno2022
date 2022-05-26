@@ -1,0 +1,5 @@
+Fiumicino;1;Fiore;0;20;Tulipano;0;10
+Tulipano;0;Pinco;0;30;Aurelia;2;5;Fiumicino;1;10
+Aurelia;2;Pinco;0;40;Tulipano;0;5
+Pinco;0;Aurelia;2;40;Tulipano;0;30;Fiore;0;15
+Fiore;0;Pinco;0;15;Fiumicino;1;20

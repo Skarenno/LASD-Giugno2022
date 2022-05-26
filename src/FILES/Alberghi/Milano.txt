@@ -1,0 +1,6 @@
+Duomo;0;Milazzo;1;15;Soprano;0;10
+Soprano;0;Scala;0;20;Duomo;0;10
+Scala;0;Milazzo;1;5;Soprano;0;20
+Milazzo;1;Giotto;0;15;Margherita;2;30
+Margherita;2;Giotto;0;10;Milazzo;1;30
+Giotto;0;Milazzo;1;15;Margherita;2;10

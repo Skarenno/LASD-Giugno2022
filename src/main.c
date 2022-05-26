@@ -4,6 +4,7 @@
 #include "standard_header.h"
 #include "Viaggi.h"
 #include "GestioneUtenti.h"
+#include "Citta.h"
 
 /*
  * main.c
@@ -14,7 +15,7 @@
 
 
 int main(){
-	Utente* UtenteAttuale, *ListaUtenti = NULL;
+	//Utente* UtenteAttuale, *ListaUtenti = NULL;
 	// Si vuole entrare come admin o utente?
 
 	// if(admn)
@@ -22,11 +23,18 @@ int main(){
 	// else
 		//
 
-	UtenteAttuale = SchermataIniziale(ListaUtenti);
+	//UtenteAttuale = SchermataIniziale(ListaUtenti);
 
-	GraphViaggi* grafo = NULL;
+	/*GraphViaggi* grafo = NULL;
 	grafo = leggiFileViaggi(grafo);
-	stampaGrafo(grafo);
-
+	stampaGrafo(grafo);*/
+	GraphCitta *grafo = NULL;
+	char *path = pathFileC("Bari");
+	printf("%s\n", path);
+	grafo = leggiFileAlberghi(grafo, path);
+	stampaGrafoC(grafo);
+	//scriviFileAlberghi(grafo, path);
+	free(path);
+	grafo = FreeC(grafo);
 	return 0;
 }
