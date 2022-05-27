@@ -16,7 +16,7 @@ typedef struct u_node{
 
 // TODO Ordina prototipi e aggiungi prototipi mancanti
 
-
+unsigned short int SelezioneAccesso();
 Utente* InizializzaNodoUtente(Utente* Nodo);
 Utente* AggiungiListaUtenti(Utente* ListaUtenti, char* nome, char* password);
 Utente* TrovaUtente(char *nomeInserito, Utente* ListaUtenti);

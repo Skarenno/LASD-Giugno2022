@@ -14,16 +14,26 @@
  */
 
 
+/*
+ *  TIPO_UTENTE: 1. User
+ * 				 2. Amministratore
+ *
+ */
+
 int main(){
-	//Utente* UtenteAttuale, *ListaUtenti = NULL;
-	// Si vuole entrare come admin o utente?
 
-	// if(admn)
-		//
-	// else
-		//
+	Utente* UtenteAttuale, *ListaUtenti = NULL;
+	unsigned short int tipo_utente;
+	tipo_utente = SelezioneAccesso();
 
-	//UtenteAttuale = SchermataIniziale(ListaUtenti);
+	if(SelezioneAccesso == 1){	// Utente normale
+		UtenteAttuale = SchermataIniziale(ListaUtenti);
+	}
+	else{
+		// Funzioni amministratore
+	}
+
+
 
 	/*GraphViaggi* grafo = NULL;
 	grafo = leggiFileViaggi(grafo);
