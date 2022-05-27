@@ -7,3 +7,4 @@
 
 
 #define STRING_MAX 50
+#define maxRiga 500

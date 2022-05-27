@@ -86,10 +86,11 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 		}
 	}
 	fseek(fp, 0, SEEK_SET);
-	char *riga = NULL, c;
-	int count = 0, maxRiga = 0;
-	/*Conto quanto è lunga la riga più grande in modo da allocare la memoria per riga*/
-	while((c=fgetc(fp))!=EOF) {
+	char *riga = NULL;
+	/*char c;
+	int count = 0, maxRiga = 0;*/
+	/*Conto quanto ï¿½ lunga la riga piï¿½ grande in modo da allocare la memoria per riga*/
+	/*while((c=fgetc(fp))!=EOF) {
 		if(c!='\n')
 			count++;
 		if(c=='\n') {
@@ -97,7 +98,7 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 				maxRiga = count;
 			count = 0;
 		}
-	}
+	}*/
 	fseek(fp, 0, SEEK_SET);
 	riga = (char *)malloc((maxRiga+1)*sizeof(char));
 	char citta[STRING_MAX], *token;

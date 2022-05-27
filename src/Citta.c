@@ -32,7 +32,7 @@ EdgeCitta* creaArcoC (char* albergo, int tempo, int tipo) {
 
 void InserisciVerticeC(GraphCitta* G, char *albergo, int tipo) {
     for(int i = 0; i< G->numVertici; i++){
-        if(strcmp(albergo, G->adj[i]->albergo) == 0){ //Già  esistente
+        if(strcmp(albergo, G->adj[i]->albergo) == 0){ //Giï¿½ esistente
             return;
         }
     }
@@ -88,18 +88,20 @@ GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
 		}
 	}
 	fseek(fp, 0, SEEK_SET);
-	char *riga = NULL, c;
-	int count = 0, maxRiga = 0;
-	/*Conto quanto è lunga la riga più grande in modo da allocare la memoria per riga*/
-	while((c=fgetc(fp))!=EOF) {
+	char *riga = NULL;
+	//char c;
+	//int count = 0, maxRiga = 0;*/
+	/*Conto quanto ï¿½ lunga la riga piï¿½ grande in modo da allocare la memoria per riga*/
+	/*while((c=fgetc(fp))!=EOF) {
 		if(c!='\n')
 			count++;
 		if(c=='\n') {
 			if(maxRiga<count)
 				maxRiga = count;
 			count = 0;
+			printf("%d ",maxRiga);
 		}
-	}
+	}*/
 	fseek(fp, 0, SEEK_SET);
 	riga = (char *)malloc((maxRiga+1)*sizeof(char));
 	char albergo[STRING_MAX], *token;
@@ -257,8 +259,7 @@ GraphCitta* rimuoviArcoC(GraphCitta* grafo, EdgeCitta* vertice1, EdgeCitta* vert
 }
 
 char *pathFileC(char nomeCitta[]) {
-	char *path = NULL;
-	path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
+	char *path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
 	strcpy(path, "./src/FILES/Alberghi/");
 	strcat(path, nomeCitta);
 	strcat(path, ".txt");
