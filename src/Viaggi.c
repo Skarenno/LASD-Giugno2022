@@ -14,7 +14,7 @@ GraphViaggi* AllocaGrafo() {
 	return grafo;
 }
 
-EdgeViaggi* creaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno){
+EdgeViaggi* creaArco (char* citta, float prezzoAereo, float prezzoTreno, int tempoAereo, int  tempoTreno){
     EdgeViaggi* NuovoArco = (EdgeViaggi*)malloc(sizeof(EdgeViaggi));
     
     if(NuovoArco == NULL){
