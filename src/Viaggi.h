@@ -23,7 +23,7 @@ typedef struct graphViaggi {
 GraphViaggi* AllocaGrafo();
 void InserisciVertice(GraphViaggi* G, char *citta);
 EdgeViaggi* CreaArco (char* citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno);
-void addArco(GraphViaggi* grafo, int posizione, char *citta, int prezzoAereo, int prezzoTreno, int tempoAereo, int  tempoTreno);
+void addArco(GraphViaggi* grafo, int posizione, char *citta, float prezzoAereo, float prezzoTreno, int tempoAereo, int  tempoTreno);
 GraphViaggi* leggiFileViaggi(GraphViaggi* grafo);
 int isEmpty(GraphViaggi* grafo);
 void stampaGrafo(GraphViaggi* grafo);
