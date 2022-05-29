@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "standard_header.h"
-#include "Viaggi.h"
 #include "GestioneUtenti.h"
 #include "Citta.h"
 #include "UserProgram.h"
@@ -39,7 +38,7 @@ int main(){
 	if(tipo_utente == 1){
 		Utente* UtenteAttuale, *ListaUtenti = NULL;
 		UtenteAttuale = SchermataIniziale(ListaUtenti);	// Schermata INIZIALE
-		userDashboard(UtenteAttuale);	//Schermata PRINCIPALE
+		userDashboard(UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
 	}
 
 	// Accesso come amministratore
@@ -55,8 +54,6 @@ int main(){
 
 	// LIBERA MEMORIA
 	freeGraphViaggi(GrafoViaggi);
-
-
 
 
 
