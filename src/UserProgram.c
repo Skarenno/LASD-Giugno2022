@@ -82,24 +82,3 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 	}
 
 }
-
-
-void StampaMete (GraphViaggi* GrafoViaggi){
-	for (int i = 0; i < GrafoViaggi->numVertici; i++){
-		printf("%s ", GrafoViaggi->adj[i]->citta);
-		if(i < GrafoViaggi->numVertici - 1)
-			printf("- ");
-	}
-
-	printf("\n");
-}
-
-int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){
-	for(int i = 0; i < GrafoViaggi->numVertici; i++){
-		if(strcmp(GrafoViaggi->adj[i]->citta, citta) == 0){
-			return 1;
-		}
-	}
-
-	return 0;
-}
