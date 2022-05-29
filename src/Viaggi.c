@@ -71,6 +71,7 @@ void addArco(GraphViaggi* grafo, int posizione, char citta[], float prezzoAereo,
 	grafo->numArchi++;
 }
 
+
 GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	grafo = AllocaGrafo();
 	FILE *fp;
@@ -137,6 +138,33 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	return grafo;
 }
 
+void scriviFileViaggi(GraphViaggi* grafo){
+
+	if(!isEmpty(grafo)){
+		FILE* FileViaggi = fopen(CITTA, "w+");
+		if(FileViaggi == NULL){
+			printf("\n---Errore scrittura database città---");
+		}
+
+		EdgeViaggi* Cursor = NULL;
+
+		for(int i = 0; i < grafo->numVertici; i++){
+			Cursor = grafo->adj[i];
+			fprintf(FileViaggi, "%s;", Cursor->citta);
+			Cursor = Cursor->next;
+			while(Cursor != NULL){
+				fprintf(FileViaggi, "%s;%.2f;%d;%.2f;%d;", Cursor->citta, Cursor->prezzoAereo, Cursor->tempoAereo, Cursor->prezzoTreno, Cursor->tempoTreno);
+				Cursor = Cursor->next;
+			}
+			fprintf(FileViaggi, "\n");
+		}
+
+		fclose(FileViaggi);
+	}
+
+	return;
+}
+
 int isEmpty(GraphViaggi* grafo) {
 	if(grafo==NULL)
 		return 1;
@@ -163,4 +191,21 @@ void stampaGrafo(GraphViaggi* grafo){
 		}
 		printf("%s|\n", tmp->citta);
 	}
+}
+
+
+void freeGraphViaggi(GraphViaggi* grafo){
+
+	EdgeViaggi* Cursor;
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		Cursor = grafo->adj[i];
+		while(grafo->adj[i] != NULL){
+			Cursor = grafo->adj[i];
+			grafo->adj[i] = grafo->adj[i]->next;
+			free(Cursor);
+		}
+	}
+
+	free(grafo);
 }

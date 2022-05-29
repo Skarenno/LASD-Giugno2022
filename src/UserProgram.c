@@ -25,6 +25,7 @@ void userDashboard(Utente* user){
 	printf("Inserisci la città di arrivo \n");
 
 	printf("Inserisci il tipo di trasporto desiderato, 0 per Aereo, 1 per Treno\n");
+	fflush(stdout);
 	scanf("%d",&AT);
 	printf("Inserisci 0 per il viaggio più economico, 1 per la tratta più rapida\n");
 	scanf("%d",&PT);

@@ -120,25 +120,24 @@ unsigned short int SelezioneAccesso(){
 	unsigned short int tipo_utente;
 
 	printf("***************\n **Benvenuto** \n***************\n\n");
-	printf("Si vole accedere come utente o amministratore? (1: utente - 2: amministratore)");
-	fflush(stdout);
-	fflush(stdin);
+	printf("Si vole accedere come utente o amministratore?");
 
 	while(true){
+		printf(" (1: Utente - 2: Amministratore): ");
+		fflush(stdout);
+		fflush(stdin);
 		if(scanf("%hu", &tipo_utente) == 1){
-			if(tipo_utente != 1 || tipo_utente != 2){
-				printf("Scelta non valida\nRiprovare (1: utente - 2: amministratore): ");
+			if(tipo_utente != 1 && tipo_utente != 2){
+				printf("Scelta non valida\nRiprovare");
 				continue;
 			}
 			else
-				break;
+				return tipo_utente;;
 		}
 		else{
-			printf("Tipo non valido\nRiprovare (1: utente - 2: amministratore): ");
+			printf("Tipo non valido\nRiprovare");
 		}
 	}
-
-	return tipo_utente;
 }
 
 // Schermata Iniziale. Ritorna l'utente di cui si ï¿½ effettuato l'accesso
@@ -160,6 +159,9 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
     fclose(FileUtenti);
     // Chiusura file utenti
 
+    printf("\n************************************\n");
+    printf("Si è scelto di entrare come Utente!");
+    printf("\n************************************\n");
 
 	sleep(1);
     do{

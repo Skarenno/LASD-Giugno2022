@@ -5,6 +5,7 @@
 #include "Viaggi.h"
 #include "GestioneUtenti.h"
 #include "Citta.h"
+#include "UserProgram.h"
 
 /*
  * main.c
@@ -22,29 +23,58 @@
 
 int main(){
 
-	Utente* UtenteAttuale, *ListaUtenti = NULL;
+	/**** DICHIARAZIONE VARIABILI ****/
 	unsigned short int tipo_utente;
+	GraphViaggi* GrafoViaggi = NULL;
+	GraphCitta* GrafoAlberghi = NULL;
+
+	/**** INIZIALIZZAZIONE VARIABILI *****/
+	GrafoViaggi = leggiFileViaggi(GrafoViaggi);
+	GrafoAlberghi = NULL;
+
+	/**** INIZIO UI ****/
 	tipo_utente = SelezioneAccesso();
 
-	if(SelezioneAccesso == 1){	// Utente normale
-		UtenteAttuale = SchermataIniziale(ListaUtenti);
+	// Accesso come utente base
+	if(tipo_utente == 1){
+		Utente* UtenteAttuale, *ListaUtenti = NULL;
+		UtenteAttuale = SchermataIniziale(ListaUtenti);	// Schermata INIZIALE
+		userDashboard(UtenteAttuale);	//Schermata PRINCIPALE
 	}
+
+	// Accesso come amministratore
 	else{
-		// Funzioni amministratore
+		/*
+		Admin* AdminAttuale, *ListaAdmin = NULL;
+		AdminAttuale = AccessoAdmin(ListaAdmin);
+		*/
 	}
 
+	/**** FINE UI ****/
 
 
-	/*GraphViaggi* grafo = NULL;
-	grafo = leggiFileViaggi(grafo);
-	stampaGrafo(grafo);*/
-	GraphCitta *grafo = NULL;
-	char *path = pathFileC("Bari");
-	printf("%s\n", path);
-	grafo = leggiFileAlberghi(grafo, path);
-	stampaGrafoC(grafo);
-	//scriviFileAlberghi(grafo, path);
-	free(path);
-	grafo = FreeC(grafo);
-	return 0;
+	// LIBERA MEMORIA
+	freeGraphViaggi(GrafoViaggi);
+
+
+
+
+
+
+/**** TEMP ****/
+//	GraphViaggi* grafo = NULL;
+//	grafo = leggiFileViaggi(grafo);
+//	stampaGrafo(grafo);
+//	addArco(grafo, 2, "Napoli", 45.56, 23.67, 120, 80);
+//	scriviFileViaggi(grafo);
+//
+//	GraphCitta *grafo = NULL;
+//	char *path = pathFileC("Bari");
+//	printf("%s\n", path);
+//	grafo = leggiFileAlberghi(grafo, path);
+//	stampaGrafoC(grafo);
+//	//scriviFileAlberghi(grafo, path);
+//	free(path);
+//	grafo = FreeC(grafo);
+//	return 0;
 }

@@ -27,3 +27,4 @@ void addArco(GraphViaggi* grafo, int posizione, char *citta, float prezzoAereo, 
 GraphViaggi* leggiFileViaggi(GraphViaggi* grafo);
 int isEmpty(GraphViaggi* grafo);
 void stampaGrafo(GraphViaggi* grafo);
+void freeGraphViaggi(GraphViaggi* grafo);
