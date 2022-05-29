@@ -30,3 +30,5 @@ void stampaGrafo(GraphViaggi* grafo);
 void freeGraphViaggi(GraphViaggi* grafo);
 void StampaMete (GraphViaggi* GrafoViaggi);
 int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]);
+GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]);
+void scriviFileViaggi(GraphViaggi* grafo);

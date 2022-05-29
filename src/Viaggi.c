@@ -229,3 +229,28 @@ int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){
 
 	return 0;
 }
+
+GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]) {
+	GraphViaggi *grafo1 = AllocaGrafo();
+	EdgeViaggi *vertice = NULL;
+	for(int i=0; i<grafo->numVertici; i++) {
+		if(strcmp(nomeCitta, grafo->adj[i]->citta)==0)
+			vertice = grafo->adj[i];
+		else
+			InserisciVertice(grafo1, grafo->adj[i]->citta);
+	}
+	int j = 0;
+	for(int i=0; i<grafo->numVertici; i++) {
+		if(grafo->adj[i]!=vertice) {
+			EdgeViaggi *tmp = grafo->adj[i]->next;
+			while(tmp!=NULL) {
+				if(strcmp(tmp->citta, vertice->citta)!=0)
+					addArco(grafo1, j, tmp->citta, tmp->prezzoAereo, tmp->prezzoTreno, tmp->tempoAereo, tmp->tempoTreno);
+				tmp = tmp->next;
+			}
+			j++;
+		}
+	}
+	freeGraphViaggi(grafo);
+	return grafo1;
+}

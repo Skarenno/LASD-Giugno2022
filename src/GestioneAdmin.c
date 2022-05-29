@@ -283,98 +283,11 @@ Admin* RegistraAdmin (Admin* ListaAdmin){
 	return ListaAdmin;
 }
 
-ListaAttesa *aggiungiMetaAttesa(GraphViaggi *grafo, ListaAttesa *lista) {
-	if(lista==NULL)
-		return NULL;
-	ListaAttesa *tmp = lista;
-	while(tmp!=NULL) {
-		InserisciVertice(grafo, tmp->nome);
-		tmp = tmp->next;
-	}
-	ListaAttesa *lista1 = NULL;
-	char *nome = (char*)malloc(sizeof(char)*STRING_MAX);
-	int tempoAereo = 0, tempoTreno = 0;
-	float prezzoAereo = 0, prezzoTreno = 0;
-	bool check = false;
-	for(int i=grafo->numVertici-lista->numElem; i<grafo->numVertici; i++) {
-		printf("Inserisci collegamenti per %s\n", grafo->adj[i]->citta);
-		char choice; //Permette l'uscita dal do while nella riga successiva
-		do {
-			printf("Nome Citta: ");
-			scanf("%s", nome);
-			printf("\n");
-			fflush(stdin);
-			nome[0] = toupper(nome[0]);
-			for(int j=0; j<grafo->numVertici; j++) //Controllo se la citta esiste nel grafo, se non esiste la faccio collegare ma la inserisco in attesa
-				if(strcmp(grafo->adj[i]->citta, nome)==0)
-					check = true;
-			if(check==false) { //Eventuale aggiunta alla ListaAttesa
-				printf("Meta non esistente! Aggiunta alla lista di Attesa!\n");
-				ListaAttesa *nodo = NULL;
-				lista1 = inserisciNodo(lista, inizializzaNodo(nodo, nome));
-			}
-			do { //Controlli per tempo viaggio aereo
-				printf("Tempo Aereo: ");
-				if(!scanf("%d", &tempoAereo) || tempoAereo<0) {
-					printf("\nValore non Valido\n");
-					fflush(stdin);
-				} else {
-					printf("\n");
-					break;
-				}
-			} while(1);
-			fflush(stdin);
-			do { //Controlli per prezzo viaggio aereo
-				printf("Prezzo Aereo: ");
-				if(!scanf("%f", &prezzoAereo) || (prezzoAereo==0 && tempoAereo>0)) { //Controlla che il prezzo inserito sia valido e che non sia 0 se il tempoAereo>0
-					printf("\nValore non Valido\n");
-					fflush(stdin);
-				} else {
-					printf("\n");
-					break;
-				}
-			} while(1);
-			fflush(stdin);
-			do { //Controlli per tempo viaggio treno
-				printf("Tempo Treno: ");
-				if(!scanf("%d", &tempoTreno) || tempoTreno<0) {
-					printf("\nValore non Valido\n");
-					fflush(stdin);
-				} else {
-					printf("\n");
-					break;
-				}
-			} while(1);
-			fflush(stdin);
-			do { //Controlli per prezzo viaggio treno
-				printf("Prezzo Treno: ");
-				if(!scanf("%f", &prezzoTreno) || (prezzoTreno==0 && tempoTreno>0)) { //Controlla che il prezzo inserito sia valido e che non sia 0 se il tempoTreno>0
-					printf("\nValore non Valido\n");
-					fflush(stdin);
-				} else {
-					printf("\n");
-					break;
-				}
-			} while(1);
-			fflush(stdin);
-			addArco(grafo, i, nome, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
-			do {
-				printf("Devi aggiungere altri collegamenti?(y/n)\n");
-				scanf("%c", &choice);
-				fflush(stdin);
-				choice = tolower(choice);
-				if(choice!='y' && choice!='n')
-					printf("Valore non Valido!\n");
-				else
-					break;
-			} while(1);
-		} while(choice!='n');
-	}
-	free(nome);
-	return lista1;
-}
+//ListaAttesa *aggiungiMetaAttesa(GraphViaggi *grafo, ListaAttesa *lista) {
 
-void aggiungiAlberghi(ListaAttesa *lista) {
+//}
+
+/*void aggiungiAlberghi(ListaAttesa *lista) {
 	GraphCitta *grafo = NULL;
 	ListaAttesa *tmp = lista;
 	char *nome = (char*)malloc(sizeof(char)*STRING_MAX);
@@ -469,4 +382,4 @@ void aggiungiAlberghi(ListaAttesa *lista) {
 	//TODO File
 	svuotaLista(lista);
 	return;
-}
+}*/

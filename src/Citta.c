@@ -190,9 +190,7 @@ GraphCitta* FreeC(GraphCitta* grafo) {
 		return NULL;
 	}
 	for(int i=0; i<grafo->numVertici; i++) {
-		if(grafo->adj[i]==NULL) {
-			free(grafo->adj[i]);
-		} else if(grafo->adj[i]->next==NULL) {
+		if(grafo->adj[i]->next==NULL) {
 			free(grafo->adj[i]);
 		} else {
 			EdgeCitta* tmp = grafo->adj[i]->next;
