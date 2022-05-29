@@ -3,6 +3,7 @@
 
 #include "standard_header.h"
 #include "Viaggi.h"
+#include "Citta.h"
 #include "ListaAttesa.h"
 
 #define A_FILE "./src/FILES/ADMIN.txt"
@@ -29,5 +30,6 @@ Admin* AccessoAdmin(Admin* ListaAdmin);
 Admin* RegistraAdmin(Admin* ListaAdmin);
 
 ListaAttesa *aggiungiMetaAttesa(GraphViaggi *grafo, ListaAttesa *lista);
+void aggiungiAlberghi(ListaAttesa *lista);
 
 #endif /* GESTIONEADMIN_H_ */

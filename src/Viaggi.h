@@ -28,3 +28,5 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo);
 int isEmpty(GraphViaggi* grafo);
 void stampaGrafo(GraphViaggi* grafo);
 void freeGraphViaggi(GraphViaggi* grafo);
+void StampaMete (GraphViaggi* GrafoViaggi);
+int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]);

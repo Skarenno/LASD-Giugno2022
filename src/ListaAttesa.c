@@ -1,8 +1,9 @@
 #include "ListaAttesa.h"
 
-ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *nome) {
+ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo) {
 	nodo = (ListaAttesa*)malloc(sizeof(ListaAttesa));
-	strcpy(nodo->nome, nome);
+	strcpy(nodo->partenza, partenza);
+	strcpy(nodo->arrivo, arrivo);
 	nodo->next = NULL;
 
 	return nodo;
@@ -32,13 +33,15 @@ ListaAttesa* leggiAttesa(ListaAttesa *lista) {
 		}
 	}
 	fseek(fp, 0, SEEK_SET);
-	char *nome = (char*)malloc(sizeof(char)*STRING_MAX);
+	char *partenza = (char*)malloc(sizeof(char)*STRING_MAX);
+	char *arrivo = (char*)malloc(sizeof(char)*STRING_MAX);
 	while(!feof(fp)) {
-		fscanf(fp, "%s", nome);
+		fscanf(fp, "%s %s", partenza, arrivo);
 		ListaAttesa *nodo = NULL;
-		lista = inserisciNodo(lista, inizializzaNodo(nodo, nome));
+		lista = inserisciNodo(lista, inizializzaNodo(nodo, partenza, arrivo));
 	}
-	free(nome);
+	free(partenza);
+	free(arrivo);
 	fclose(fp);
 
 	return lista;
@@ -56,9 +59,9 @@ void scriviAttesa(ListaAttesa *lista) {
 	}
 	while(lista!=NULL) {
 		if(lista->next!=NULL)
-			fprintf(fp, "%s ", lista->nome);
+			fprintf(fp, "%s %s\n", lista->partenza, lista->arrivo);
 		else
-			fprintf(fp, "%s", lista->nome);
+			fprintf(fp, "%s %s", lista->partenza, lista->arrivo);
 		lista = lista->next;
 	}
 	fclose(fp);
@@ -84,10 +87,9 @@ void stampaAttesa(ListaAttesa *lista) {
 		return;
 	}
 	printf("ListaAttesa: ");
-	while(lista->next!=NULL) {
-		printf("%s -> ", lista->nome);
+	while(lista!=NULL) {
+		printf("Partenza: %s Arrivo: %s\n", lista->partenza, lista->arrivo);
 		lista = lista->next;
 	}
-	printf("%s\n", lista->nome);
 	return;
 }

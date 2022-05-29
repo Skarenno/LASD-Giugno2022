@@ -7,59 +7,37 @@
 #include "AdminProgram.h"
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo){
-	int confirm = 0, check, confirm1 = 0;
+	int confirm = 0;
+	char nome[STRING_MAX];
 	ListaAttesa *lista = NULL;
 	lista = leggiAttesa(lista);
-	if(lista==NULL)
-		confirm1 = 1;
-	while (!confirm) {
-		while (!confirm1) {
-			printf("Bentornato, %s\n",admin->nome);
-			printf("Al momento le mete inserite sono:\n");
-			stampaGrafo(grafo);
-			printf("\n");
-			printf("Mete da collegare\n");
-			stampaAttesa(lista);
-			lista = aggiungiMetaAttesa(grafo, lista);
-			//TODO funzione per aggiungere alberghi alla meta appena collegata
-			if(lista==NULL) {
-				printf("Complimenti, hai collegato tutte le mete in attesa!\n");
-				confirm1 = 1; //Tutte le mete collegate esco dal while
-				//TODO Aggiornare i file
-				scriviAttesa(lista); //Scrive la nuova lista di attesa
-			} else {
-				char choice;
-				do {
-					printf("Vuoi collegare le restanti Mete?(y/n)\n");
-					scanf("%c", &choice);
-					choice = tolower(choice);
-					switch(choice) {
-						case 'y':
-							printf("Continuiamo...\n");
-							confirm1 = 0;
-							break;
-						case 'n':
-							printf("Ok\n");
-							confirm1 = 1;
-							//TODO Aggiornare i file
-							scriviAttesa(lista); //Scrive la nuova lista di attesa
-							break;
-						default:
-							printf("Valore non Valido\n");
-					}
-				} while(choice!='n');
-			}
-		}
-		printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Modifica Meta - 4. Chiudi Applicativo):");
-		check = scanf("%d",&confirm);
-		if(check==1) {
+	printf("Bentornato, %s\n",admin->nome);
+	printf("Al momento le mete inserite sono:\n");
+	stampaGrafo(grafo);
+	printf("\n");
+	if(lista!=NULL) {
+		printf("Mete da collegare\n");
+		stampaAttesa(lista);
+	}
+	while (confirm!=5) {
+		printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Modifica Meta - 4. Aggiungi Arco - 5. Chiudi Applicativo):");
+		if(scanf("%d",&confirm)) {
 			switch(confirm) {
-				//case 1:
+				case 1:
+					printf("Nome Citta: ");
+					scanf("%s", nome);
+					InserisciVertice(grafo, nome);
+					break;
+				case 2:
 
+				case 5:
+					printf("Ciao\n");
+					exit(1);
+				default: printf("Valore non Valido\nRiprovare\n");
 			}
 		} else{
 			confirm = 0;
-        	printf("Valore non valido\n");
+        	printf("Tipo non Valido\n");
         }
 	}
 	return;

@@ -103,7 +103,7 @@ void RiscriviFileAdmin(Admin* ListaAdmin) {
 /**************************************************************************/
 
 
-// Schermata Iniziale. Ritorna l'admin con cui si è effettuato l'accesso
+// Schermata Iniziale. Ritorna l'admin con cui si ï¿½ effettuato l'accesso
 Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 	//INIZIALIZZO VARIABILI LOCALI
 	Admin* AdminAttuale = NULL;
@@ -122,7 +122,7 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 	printf("***************\n **Benvenuto** \n***************\n\n");
 	sleep(1);
 	do {
-		// ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO È AVVENUTO CORRETTAMENTE.
+		// ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO ï¿½ AVVENUTO CORRETTAMENTE.
 		printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
 		fflush(stdout);
 		fflush(stdin);
@@ -177,7 +177,7 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
 
     /** DUE CASI **/
 
-    // 1. L'utente non è presente nel Database e si richiede se si vuole registrarsi
+    // 1. L'utente non ï¿½ presente nel Database e si richiede se si vuole registrarsi
     if(admin==NULL) {
     	printf("\nAdmin non trovato... desidera registrarsi (y/n)? ");
     	fflush(stdout);
@@ -209,7 +209,7 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
     		}
     		break;
     	}
-    // 2. L'utente è presente e ne verifico la password. Se non si riesce ad accedere si può tornare alla schermata precedente
+    // 2. L'utente ï¿½ presente e ne verifico la password. Se non si riesce ad accedere si puï¿½ tornare alla schermata precedente
     } else {
     	// VERIFICO LA PASSWORD
     	do{
@@ -265,9 +265,9 @@ Admin* RegistraAdmin (Admin* ListaAdmin){
 
 		scanf("%s", username);
 
-		// Se il nome admin è già presente si richiede un nuovo inserimento.
+		// Se il nome admin ï¿½ giï¿½ presente si richiede un nuovo inserimento.
 		if(TrovaAdmin(username, ListaAdmin)!=NULL){
-			printf("Nome admin già esistente. Riprovare.\n");
+			printf("Nome admin giï¿½ esistente. Riprovare.\n");
 			continue;
 		}
 		break;
@@ -370,6 +370,103 @@ ListaAttesa *aggiungiMetaAttesa(GraphViaggi *grafo, ListaAttesa *lista) {
 			} while(1);
 		} while(choice!='n');
 	}
-	lista = svuotaLista(lista);
+	free(nome);
 	return lista1;
+}
+
+void aggiungiAlberghi(ListaAttesa *lista) {
+	GraphCitta *grafo = NULL;
+	ListaAttesa *tmp = lista;
+	char *nome = (char*)malloc(sizeof(char)*STRING_MAX);
+	int tipo = -1;
+	char choice;
+	bool checkAl = false, checkA = false, checkT = false;
+	printf("Inserire almeno un albergo e un aeroporto o stazione\n");
+	while(tmp!=NULL) {
+		printf("Citta: %s\n", lista->nome);
+		do {
+			printf("Nome Struttura: ");
+			scanf("%s", nome);
+			fflush(stdin);
+			while(1) {
+				printf("Tipo(Albergo = 0 - Aeroporto = 1 - Stazione = 2: ");
+				if(scanf("%d", &tipo)) {
+					if(tipo<0 || tipo>2) {
+						printf("\nValore non Valido\n");
+						continue;
+					}
+					break;
+				} else
+					printf("\nValore non Valido\n");
+			}
+			InserisciVerticeC(grafo, nome, tipo);
+			printf("Struttura Inserita!\n");
+			for(int i=0; i<grafo->numVertici; i++) {
+				if(grafo->adj[i]->tipo==0)
+					checkAl = true;
+				if(grafo->adj[i]->tipo==1)
+					checkA = true;
+				if(grafo->adj[i]->tipo==2)
+					checkT = true;
+			}
+			if((checkA==true&&checkAl==true) || (checkT==true&&checkAl==true)) {
+				do {
+					printf("Devi aggiungere altre strutture?(y/n)\n");
+					scanf("%c", &choice);
+					choice = tolower(choice);
+					switch(choice) {
+						case 'y':
+							printf("Continuiamo...\n");
+							break;
+						case 'n':
+							printf("Passiamo ai collegamenti\n");
+							break;
+						default:
+							printf("Valore non Valido!\n");
+					}
+				}while(choice!='y'&&choice!='n');
+			}
+		} while(choice!='n');
+	}
+	//TODO Collegamenti strutture
+	choice = '\0';
+	bool check;
+	int tempo;
+	for(int i=0; i<grafo->numVertici; i++) {
+		printf("Aggiungi i collegamenti per la struttura %s\n", grafo->adj[i]->albergo);
+		check = false;
+		do {
+			do {
+				printf("Nome Struttura: ");
+				scanf("%s", nome);
+				for(int j=0; j<grafo->numVertici; j++)
+					if(strcmp(nome, grafo->adj[j]->albergo)==0)
+						check = true;
+				if(check==false)
+					printf("\nStruttura non Trovata. Inserire solo strutture gia esistenti!\n");
+				if(strcmp(nome, grafo->adj[i]->albergo)==0) {
+					printf("\nLa struttura non puo essere connessa a se stessa!\n");
+					check = false;
+				}
+			}while(check==false);
+			for(int j=0; j<grafo->numVertici; j++) //Seleziona automaticamente il tipo della struttura inserita
+				if(strcmp(nome, grafo->adj[j]->albergo)==0)
+					tipo = grafo->adj[j]->tipo;
+			do {
+				printf("Tempo: ");
+				if(!scanf("%d", &tempo) || tempo<=0) {//Controlla che si inseriscano numeri o che il tempo non <=0
+					printf("\nValore non Valido!\n");
+					tempo = -1;
+				}
+			} while(tempo<=0);
+			addArcoC(grafo, i, nome, tempo, tipo);
+			do {
+
+			} while(choice!='y' && choice!='n');
+		} while(choice!='n');
+	}
+
+	//TODO File
+	svuotaLista(lista);
+	return;
 }

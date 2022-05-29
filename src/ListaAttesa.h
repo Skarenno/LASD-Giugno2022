@@ -2,13 +2,14 @@
 #define ATTESA "./src/FILES/ATTESA.txt"
 
 typedef struct l_node {
-	char nome[STRING_MAX];
+	char partenza[STRING_MAX];
+	char arrivo[STRING_MAX];
 	int numElem;
 
 	struct l_node *next;
 }ListaAttesa;
 
-ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *nome);
+ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char*arrivo);
 ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo);
 ListaAttesa* leggiAttesa(ListaAttesa *lista);
 void scriviAttesa(ListaAttesa *lista);
