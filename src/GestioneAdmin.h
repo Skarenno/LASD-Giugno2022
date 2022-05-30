@@ -1,16 +1,9 @@
 #ifndef GESTIONEADMIN_H_
 #define GESTIONEADMIN_H_
 
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
 
-#ifndef VIAGGI_H
-#define VIAGGI_H "Viaggi.h"
-#include VIAGGI_H
-#endif
-
+#include "standard_header.h"
+#include "Viaggi.h"
 #include "Citta.h"
 #include "ListaAttesa.h"
 

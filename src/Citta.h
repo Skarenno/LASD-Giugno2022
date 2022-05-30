@@ -1,3 +1,6 @@
+#ifndef CITTA_H
+#define CITTA_H
+
 #include "standard_header.h"
 
 typedef struct edgeCitta {
@@ -30,3 +33,5 @@ GraphCitta* rimuoviVerticeC(GraphCitta* grafo, EdgeCitta* vertice);
 GraphCitta* rimuoviArcoC(GraphCitta* grafo, EdgeCitta* vertice1, EdgeCitta* vertice2);
 char *pathFileC(char nomeCitta[]);
 void stampaGrafoC(GraphCitta* grafo);
+
+#endif

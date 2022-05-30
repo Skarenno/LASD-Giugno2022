@@ -7,11 +7,7 @@
 #ifndef ADMINPROGRAM_H_
 #define ADMINPROGRAM_H_
 
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
-
+#include "standard_header.h"
 #include "GestioneAdmin.h"
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo);

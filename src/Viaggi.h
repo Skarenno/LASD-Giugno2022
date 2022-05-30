@@ -1,8 +1,7 @@
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
+#ifndef VIAGGI_H
+#define VIAGGI_H
 
+#include "standard_header.h"
 #define CITTA "./src/FILES/Viaggi.txt"
 
 
@@ -36,3 +35,5 @@ void StampaMete (GraphViaggi* GrafoViaggi);
 int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]);
 GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]);
 void scriviFileViaggi(GraphViaggi* grafo);
+
+#endif

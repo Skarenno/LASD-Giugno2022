@@ -1,3 +1,4 @@
+
 /*
  * UserProgram.c
  *
@@ -5,10 +6,6 @@
  */
 
 #include "AdminProgram.h"
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	int confirm = 0;

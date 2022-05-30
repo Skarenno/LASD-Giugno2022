@@ -1,3 +1,6 @@
+#ifndef STD_HEAD
+#define STD_HEAD
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -9,3 +12,5 @@
 
 #define STRING_MAX 50
 #define maxRiga 500
+
+#endif

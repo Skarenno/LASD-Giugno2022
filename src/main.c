@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
-
+#include "standard_header.h"
 #include "UserProgram.h"
 #include "AdminProgram.h"
 /*

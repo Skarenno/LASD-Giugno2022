@@ -1,3 +1,6 @@
+#ifndef ATTESA_H
+#define ATTESA_H
+
 #include "standard_header.h"
 #define ATTESA "./src/FILES/ATTESA.txt"
 
@@ -15,3 +18,5 @@ ListaAttesa* leggiAttesa(ListaAttesa *lista);
 void scriviAttesa(ListaAttesa *lista);
 ListaAttesa *svuotaLista(ListaAttesa *lista);
 void stampaAttesa(ListaAttesa *lista);
+
+#endif
