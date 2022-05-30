@@ -1,11 +1,8 @@
 #ifndef GESTIONEUTENTI_H_
 #define GESTIONEUTENTI_H_
 
-#ifndef STD_HEAD
-#define STD_HEAD "standard_header.h"
-#include STD_HEAD
-#endif
 
+#include "standard_header.h"
 #define U_FILE "./src/FILES/UTENTI.txt"
 
 typedef struct u_node{
