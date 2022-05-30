@@ -1,3 +1,7 @@
+#ifndef STD_HEAD
+#define STD_HEAD "standard_header.h"
+#include STD_HEAD
+#endif
 #include "GestioneUtenti.h"
 
 /********************** FUNZIONI PER LA LISTA UTENTI **********************/

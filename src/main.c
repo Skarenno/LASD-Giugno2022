@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "standard_header.h"
-#include "GestioneUtenti.h"
-#include "Citta.h"
-#include "UserProgram.h"
+#ifndef STD_HEAD
+#define STD_HEAD "standard_header.h"
+#include STD_HEAD
+#endif
 
+#include "UserProgram.h"
+#include "AdminProgram.h"
 /*
  * main.c
  *
@@ -38,15 +40,16 @@ int main(){
 	if(tipo_utente == 1){
 		Utente* UtenteAttuale, *ListaUtenti = NULL;
 		UtenteAttuale = SchermataIniziale(ListaUtenti);	// Schermata INIZIALE
+		printf("%s", UtenteAttuale->nome);
+
 		userDashboard(UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
 	}
 
 	// Accesso come amministratore
 	else{
-		/*
 		Admin* AdminAttuale, *ListaAdmin = NULL;
-		AdminAttuale = AccessoAdmin(ListaAdmin);
-		*/
+		AdminAttuale = SchermataInizialeAdmin(ListaAdmin);
+		adminDashboard(AdminAttuale, GrafoViaggi);
 	}
 
 	/**** FINE UI ****/

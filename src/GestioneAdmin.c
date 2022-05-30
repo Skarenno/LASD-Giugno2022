@@ -1,3 +1,7 @@
+#ifndef STD_HEAD
+#define STD_HEAD "standard_header.h"
+#include STD_HEAD
+#endif
 #include "GestioneAdmin.h"
 
 /********************** FUNZIONI PER LA LISTA ADMIN **********************/
@@ -88,7 +92,7 @@ void RiscriviFileAdmin(Admin* ListaAdmin) {
 	while(cursor!=NULL) {
 		fprintf(FileAdmin, "%s %s", cursor->nome, cursor->password);
 		cursor = cursor->next;
-		if(cursor)
+		if(cursor->next)
 			fprintf(FileAdmin, "\n");
 	}
 }
@@ -105,20 +109,24 @@ void RiscriviFileAdmin(Admin* ListaAdmin) {
 
 // Schermata Iniziale. Ritorna l'admin con cui si � effettuato l'accesso
 Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
+
 	//INIZIALIZZO VARIABILI LOCALI
 	Admin* AdminAttuale = NULL;
 	int scelta, check = 0;
 	bool accesso = false;
 
 	//Apro e leggo il file admin
-	FILE* FileAdmin = fopen(A_FILE, "r+");
+	FILE* FileAdmin = fopen(A_FILE, "r");
 	if(FileAdmin==NULL) {
 		printf("ERRORE DATABASE UTENTI");
 		return NULL;
 	}
 	ListaAdmin = LeggiFileAdmin(FileAdmin, ListaAdmin);
-	fclose(FileAdmin); // Chiusura file admin
+	fclose(FileAdmin);
+	// Chiusura file admin
 
+
+	StampaListaAdmin(ListaAdmin);
 	printf("***************\n **Benvenuto** \n***************\n\n");
 	sleep(1);
 	do {
@@ -133,14 +141,15 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 				//Accesso
 				case 1:
 					AdminAttuale = AccessoAdmin(ListaAdmin);
+					StampaListaAdmin(ListaAdmin);
 					if(AdminAttuale!=NULL)
 						accesso = true;
 					break;
 				// Registrazione
 				case 2:
 					ListaAdmin = RegistraAdmin(ListaAdmin);
+					StampaListaAdmin(ListaAdmin);
 					RiscriviFileAdmin(ListaAdmin); // Aggiorno il database quando registro un nuovo utente
-					//StampaListaAdmin(ListaAdmin); // Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in testa
 					continue;
 				// Chiusura Programma
 				case 3:
@@ -168,6 +177,9 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
 	char password[STRING_MAX];
 	bool quit_login = false;
 	char yes_no;
+
+	FILE* AdminFile = fopen(A_FILE, "r");
+	ListaAdmin = LeggiFileAdmin(AdminFile, ListaAdmin);
 
 	printf("\nInserire nome admin: ");
 	fflush(stdout);
@@ -215,6 +227,7 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
     	do{
     		printf("Inserire password: ");
     		fflush(stdout);
+    		fflush(stdin);
     		scanf("%s", password);
 
     		// Password corretta, posso uscire dal loop impostando il flag di quit a true. Effettuo l'accesso.

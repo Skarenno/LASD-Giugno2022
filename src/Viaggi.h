@@ -1,4 +1,8 @@
-#include "standard_header.h"
+#ifndef STD_HEAD
+#define STD_HEAD "standard_header.h"
+#include STD_HEAD
+#endif
+
 #define CITTA "./src/FILES/Viaggi.txt"
 
 
