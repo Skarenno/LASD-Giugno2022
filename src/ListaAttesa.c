@@ -4,19 +4,23 @@ ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo) {
 	nodo = (ListaAttesa*)malloc(sizeof(ListaAttesa));
 	strcpy(nodo->partenza, partenza);
 	strcpy(nodo->arrivo, arrivo);
+	printf("\n%s %s", nodo->partenza, nodo->arrivo);
+	fflush(stdout);
 	nodo->next = NULL;
 
 	return nodo;
 }
 
 ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo) {
-	if(lista==NULL)
-		lista->numElem = 0;
-	nodo->next = lista;
-	lista = nodo;
-	lista->numElem++;
 
-	return lista;
+	if(lista == NULL){
+		nodo->numElem = 1;
+		return nodo;
+	}
+
+	nodo->next = lista;
+	nodo->numElem = lista->numElem + 1;
+	return nodo;
 }
 
 ListaAttesa* leggiAttesa(ListaAttesa *lista) {

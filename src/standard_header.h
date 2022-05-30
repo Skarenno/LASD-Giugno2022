@@ -9,6 +9,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "VerificheFile.h"
 
 #define STRING_MAX 50
 #define maxRiga 500

@@ -35,6 +35,7 @@ EdgeViaggi* creaArco (char* citta, float prezzoAereo, float prezzoTreno, int tem
 void InserisciVertice(GraphViaggi* G, char *citta){
     for(int i = 0; i<G->numVertici; i++){
         if(strcmp(citta, G->adj[i]->citta) == 0){
+        	printf("Meta gi‡ esistente!");
             return;                             // Gi√† esistente
         }
     }
@@ -220,7 +221,8 @@ void StampaMete (GraphViaggi* GrafoViaggi){
 	printf("\n");
 }
 
-int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){
+
+int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){ // ritorna 1 se esiste
 	for(int i = 0; i < GrafoViaggi->numVertici; i++){
 		if(strcmp(GrafoViaggi->adj[i]->citta, citta) == 0){
 			return 1;

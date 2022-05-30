@@ -76,16 +76,9 @@ void addArcoC(GraphCitta* grafo, int posizione, char albergo[], int tempo, int t
 GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
 	grafo = AllocaGrafoC();
 	FILE *fp;
-	if((fp=fopen(message, "r"))==NULL) {
-		printf("Impossibile aprire il file Alberghi.txt\n");
-		exit(1);
-	}
-	if (fp!=NULL) { /*Controlla che il file non sia vuoto*/
-	   	fseek(fp, 0, SEEK_END);
-	   	int size = ftell(fp);
-		if (size==0) {
-	       	return NULL;
-		}
+	fp = fopen(message, "r");
+	if(!VerificaFile(fp, message)){
+		return NULL;
 	}
 	fseek(fp, 0, SEEK_SET);
 	char *riga = NULL;
@@ -284,4 +277,34 @@ void stampaGrafoC(GraphCitta* grafo){
 		}
 		printf("%s|\n", tmp->albergo);
 	}
+}
+
+EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]){
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		if(strcmp(nome, grafo->adj[i]->albergo) == 0)
+			return grafo->adj[i];
+	}
+
+	return NULL;
+}
+
+
+void stampaAlberghi(GraphCitta* grafo){
+	for(int i = 0; i < grafo->numVertici; i++){
+		printf("%s", grafo->adj[i]->albergo);
+		if(i < grafo->numVertici - 1){
+				printf(" - ");
+		}
+	}
+}
+
+int VerificaAlbergo(GraphCitta* grafo, char albergo[]){ // ritorna 1 se esiste
+	for(int i = 0; i < grafo->numVertici; i++){
+		if(strcmp(grafo->adj[i]->albergo, albergo) == 0){
+			return 1;
+		}
+	}
+
+	return 0;
 }

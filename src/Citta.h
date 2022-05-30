@@ -33,5 +33,8 @@ GraphCitta* rimuoviVerticeC(GraphCitta* grafo, EdgeCitta* vertice);
 GraphCitta* rimuoviArcoC(GraphCitta* grafo, EdgeCitta* vertice1, EdgeCitta* vertice2);
 char *pathFileC(char nomeCitta[]);
 void stampaGrafoC(GraphCitta* grafo);
+EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]);
+void stampaAlberghi(GraphCitta* grafo);
+int VerificaAlbergo(GraphCitta* grafo, char albergo[]);
 
 #endif

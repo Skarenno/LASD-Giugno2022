@@ -8,10 +8,17 @@
 #include "AdminProgram.h"
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo){
-	int confirm = 0;
+	unsigned short int choice;
+	int confirm;
 	char nome[STRING_MAX];
+	char* nomeFile;
 
+	FILE* FileCitta;
 	ListaAttesa *lista = NULL;
+	GraphCitta* GrafoCitta = AllocaGrafoC();
+	EdgeCitta* Vertice;
+
+
 	lista = leggiAttesa(lista);
 	printf("Bentornato, %s\n",admin->nome);
 	printf("Al momento le mete inserite sono:\n");
@@ -21,60 +28,245 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 		printf("Mete da collegare\n");
 		stampaAttesa(lista);
 	}
-	while (confirm!=4) {
-		printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Arco - 4. Menu precedente):");
-		fflush(stdout);
-		fflush(stdin);
 
-		if(scanf("%d",&confirm)) {
-			switch(confirm) {
+	do{
+	printf("\n Si vuole lavorare su citta (0) o alberghi(1): ");
+	fflush(stdout);
+	fflush(stdin);
 
-				// Aggiungere una nuova meta (vertice 0 del grafo)
-				case 1:
-					printf("Nome Citta: ");
-					fflush(stdout);
-					fflush(stdin);
-					scanf("%s", nome);
-					InserisciVertice(grafo, nome);
-					break;
+	if(scanf("%hu", &choice))
+		break;
 
-				// Eliminare una meta e tutte le tratte che portano ad essa
-				case 2:
-					StampaMete(grafo);
-					printf("Meta da Cancellare: ");
-					fflush(stdout);
-					fflush(stdin);
-					scanf("%s", nome);
-					if(!VerificaCitta(grafo, nome)){
-						printf("Citta non Esistente\nRiprova\n");
+	printf("\n Valore non valido");
+	}while(true);
+
+	// CITTA
+	if(!choice){
+		confirm = 0;
+		while (confirm!=4) {
+			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Arco - 4. Chiudi programma):");
+			fflush(stdout);
+			fflush(stdin);
+
+			if(scanf("%d",&confirm)) {
+				switch(confirm) {
+
+					// Aggiungere una nuova meta (vertice 0 del grafo)
+					case 1:
+						printf("Nome Citta: ");
+						fflush(stdout);
+						fflush(stdin);
+						scanf("%s", nome);
+						if(!VerificaCitta(grafo, nome)){
+							FILE* New = fopen(pathFileC(nome), "w+");
+							fclose(New);
+						}
+						InserisciVertice(grafo, nome);
+
+						scriviFileViaggi(grafo);
 						break;
-					}
-					rimuoviVerticeV(grafo, nome);
-					remove(pathFileC(nome));
-					break;
 
-				// Aggiungere una nuova tratta
-				case 3:
-					stampaGrafo(grafo);
-					grafo = menuAggiungiMeta(grafo);
-					scriviFileViaggi(grafo);
-					break;
+					// Eliminare una meta e tutte le tratte che portano ad essa
+					case 2:
+						StampaMete(grafo);
+						printf("Meta da Cancellare: ");
+						fflush(stdout);
+						fflush(stdin);
+						scanf("%s", nome);
+						if(!VerificaCitta(grafo, nome)){
+							printf("Citta non Esistente\nRiprova\n");
+							break;
+						}
+						if(remove(pathFileC(nome)))
+							printf("File di %s rimosso", nome);
 
-				// Tornare indietro
-				case 4:
-					printf("Ciao\n");
-					exit(1);
-				default: printf("Valore non Valido\nRiprovare\n");
+						grafo = rimuoviVerticeV(grafo, nome);
+
+						scriviFileViaggi(grafo);
+						break;
+
+					// Aggiungere una nuova tratta
+					case 3:
+						stampaGrafo(grafo);
+						grafo = menuAggiungiMeta(grafo);
+						scriviFileViaggi(grafo);
+						break;
+
+					// Tornare indietro
+					case 4:
+						printf("Ciao\n");
+						exit(1);
+
+					default: printf("Valore non Valido\nRiprovare\n");
+				}
+			} else{
+				confirm = 0;
+				printf("Tipo non Valido\n");
 			}
-		} else{
-			confirm = 0;
-        	printf("Tipo non Valido\n");
-        }
+		}
+	}
+
+
+	// ALBERGHI
+	else{
+		confirm = 0;
+		while(confirm != 3){
+			printf("\nImmettere azione da eseguire (1. Aggiungi Alberghi - 2. Elimina Alberghi - 3. Aggiungi Arco - 4. Chiudi programma): ");
+			fflush(stdout);
+			fflush(stdin);
+			if(scanf("%d", &confirm)){
+				switch(confirm){
+
+					/*** AGGIUNGI ALBERGO ***/
+					case 1:
+
+						StampaMete(grafo);
+						while(true){
+							printf("Scegli la città a cui vuoi aggiungere Alberghi: ");
+							fflush(stdin);
+							fflush(stdout);
+							scanf("%s", nome);
+
+							if(!VerificaCitta(grafo, nome)){
+								printf("Citta non Esistente\nRiprova\n");
+								continue;
+							}
+							break;
+						}
+
+						FileCitta = fopen(nomeFile = pathFileC(nome), "r+");
+						GrafoCitta = AggiungiAlbergo(GrafoCitta, grafo, FileCitta, nomeFile);
+						scriviFileAlberghi(GrafoCitta, nomeFile);
+						break;
+					/*** FINE AGGIUNGI ***/
+
+
+
+					/*** ELIMINA ALBERGO ***/
+					case 2:
+						StampaMete(grafo);
+						printf("Di quale citta si vuole eliminare l'albergo? Immettere: ");
+						fflush(stdin);
+						fflush(stdout);
+
+						scanf("%s", nome);
+						if(!VerificaCitta(grafo, nome)){
+							printf("Citta non Esistente\nRiprova\n");
+							break;
+						}
+
+						GrafoCitta = leggiFileAlberghi(GrafoCitta, pathFileC(nome));
+						stampaAlberghi(GrafoCitta);
+						do{
+							printf("\nNome albergo da eliminare: ");
+							fflush(stdin);
+							fflush(stdout);
+							scanf("%s", nome);
+							if(!VerificaAlbergo(GrafoCitta, nome)){
+								printf("Albergo non esistente");
+								continue;
+							}
+
+							Vertice = TrovaVertice(GrafoCitta, nome);
+							if(Vertice->tipo != 0){
+								printf("\n***Si è selezionato un Aeroporto o una Stazione. Impossibile eliminare.***\n");
+								break;
+							}
+							if(Vertice != NULL){
+								GrafoCitta = rimuoviVerticeC(GrafoCitta, Vertice);
+								scriviFileAlberghi(GrafoCitta, nomeFile);
+							}
+							break;
+						}while(true);
+
+						break;
+
+					/*** FINE ELIMINA ***/
+
+					/*** AGGIUNGI ARCO ***/
+					case 3:
+						//TODO
+
+						break;
+
+					case 4:
+						printf("Arrivederci");
+						exit(EXIT_SUCCESS);
+
+					default:
+						printf("\nValore non valido");
+						continue;
+					}
+			}
+			else{
+				confirm = 0;
+				printf("\nValore non valido!");
+				continue;
+			}
+		}
 	}
 	return;
 }
 
 
+GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* FileCitta, char* nomeFile){
+	int tipo;
+	char nome[STRING_MAX];
+	char choice_yn;
+
+	if(!VerificaFile(FileCitta, nomeFile)){
+
+		printf("Non sono presenti Aeroporti o Stazioni. Inserire una delle due.\n Inserire nome Aeroporto/Stazione: ");
+
+		fflush(stdin);
+		fflush(stdout);
+		scanf("%s", nome);
+
+		printf("Tipo [Stazione Aereoporto: 1 - Stazione Treno: 2]: ");
+		if(scanf("%d", &tipo ) || (tipo != 1 && tipo != 2))
+			InserisciVerticeC(GrafoCitta, nome, tipo);
+
+		else
+			printf("Valore non valido");
+
+		do{
+			printf("Si vuole inserire anche l'altra (y/n)? Inserire: ");
+			fflush(stdin);
+			fflush(stdout);
+			scanf("%c", &choice_yn);
+			choice_yn = tolower(choice_yn);
+
+			switch(choice_yn){
+				case 'y':
+					printf("Inserire nome: ");
+					scanf("%s", nome);
+					if(tipo == 1)
+						InserisciVerticeC(GrafoCitta, nome, tipo + 1);
+					else
+						InserisciVerticeC(GrafoCitta, nome, tipo - 1);
+
+					break;
+
+				case 'n':
+					break;
+				default:
+					printf("Valore non valido");
+					continue;
+			}
+			break;
+		}while(true);
+	}
+	else{
+		GrafoCitta = leggiFileAlberghi(GrafoCitta, nomeFile);
+		printf("Scrivere nome Albergo: ");
+		fflush(stdin);
+		fflush(stdout);
+		scanf("%s", nome);
+		InserisciVerticeC(GrafoCitta, nome, 0);
+	}
+
+	return GrafoCitta;
+}
 
 GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 	int tempoAereo, tempoTreno;

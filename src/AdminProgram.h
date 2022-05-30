@@ -12,5 +12,7 @@
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo);
 GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo);
+GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* FileCitta, char* nomeFile);
+
 
 #endif /* ADMINPROGRAM_H_ */
