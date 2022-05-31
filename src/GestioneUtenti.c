@@ -121,7 +121,7 @@ unsigned short int SelezioneAccesso(){
 	unsigned short int tipo_utente;
 
 	printf("***************\n **Benvenuto** \n***************\n\n");
-	printf("Si vole accedere come utente o amministratore?");
+	printf("Si vuole accedere come utente o amministratore?");
 
 	while(true){
 		printf(" (1: Utente - 2: Amministratore): ");

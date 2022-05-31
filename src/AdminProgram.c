@@ -29,15 +29,15 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 		stampaAttesa(lista);
 	}
 
-	do{
-	printf("\n Si vuole lavorare su citta (0) o alberghi(1): ");
-	fflush(stdout);
-	fflush(stdin);
+	do {
+		printf("\n Si vuole lavorare su citta (0) o alberghi(1): ");
+		fflush(stdout);
+		fflush(stdin);
 
-	if(scanf("%hu", &choice))
-		break;
+		if(scanf("%hu", &choice))
+			break;
 
-	printf("\n Valore non valido");
+		printf("\n Valore non valido");
 	}while(true);
 
 	// CITTA
@@ -110,16 +110,18 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	// ALBERGHI
 	else{
 		confirm = 0;
-		while(confirm != 3){
+		char nomePartenza[STRING_MAX];
+		char nomeArrivo[STRING_MAX];
+		int tempo, tipoPartenza, tipoArrivo;
+		EdgeCitta *verticePartenza, *verticeArrivo;
+		while(confirm != 4){
 			printf("\nImmettere azione da eseguire (1. Aggiungi Alberghi - 2. Elimina Alberghi - 3. Aggiungi Arco - 4. Chiudi programma): ");
 			fflush(stdout);
 			fflush(stdin);
 			if(scanf("%d", &confirm)){
 				switch(confirm){
-
 					/*** AGGIUNGI ALBERGO ***/
 					case 1:
-
 						StampaMete(grafo);
 						while(true){
 							printf("Scegli la città a cui vuoi aggiungere Alberghi: ");
@@ -137,10 +139,9 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						FileCitta = fopen(nomeFile = pathFileC(nome), "r+");
 						GrafoCitta = AggiungiAlbergo(GrafoCitta, grafo, FileCitta, nomeFile);
 						scriviFileAlberghi(GrafoCitta, nomeFile);
+						fclose(FileCitta);
 						break;
 					/*** FINE AGGIUNGI ***/
-
-
 
 					/*** ELIMINA ALBERGO ***/
 					case 2:
@@ -180,21 +181,93 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						}while(true);
 
 						break;
-
 					/*** FINE ELIMINA ***/
 
 					/*** AGGIUNGI ARCO ***/
 					case 3:
 						//TODO
-
+						printf("Mete Presenti\n");
+						StampaMete(grafo);
+						printf("Su quale Meta si intende Lavorare? Immettere: ");
+						fflush(stdin);
+						fflush(stdout);
+						scanf("%s", nome);
+						if(!VerificaCitta(grafo, nome)){
+							printf("Citta non Esistente\nRiprova\n");
+							break;
+						}
+						nomeFile = pathFileC(nome);
+						GrafoCitta = leggiFileAlberghi(GrafoCitta, nomeFile);
+						if(GrafoCitta!=NULL)
+							stampaAlberghi(GrafoCitta);
+						/*Se il file degli alberghi è vuoto GrafoCitta sarà NULL, quindi chiedo di inserire prima degli alberghi.
+						GrafoCitta potrebbe avere anche un solo albergo in tal caso chiedo comunque di inserire altri alberghi dato
+						che non ci possono essere nodi cappio*/
+						if(GrafoCitta==NULL || GrafoCitta->numVertici==1) {
+							printf("File %s.txt Vuoto o Incompleto. Inserire prima Alberghi\n", nome);
+							break;
+						}
+						// Prendo Nome Albergo di Partenza
+						while(1) {
+							printf("Nome Albergo Partenza: ");
+							fflush(stdout);
+							fflush(stdin);
+							scanf("%s", nomePartenza);
+							if(!VerificaAlbergo(GrafoCitta, nomePartenza)) {
+								printf("Albergo non Trovato\n");
+								continue;
+							}
+							// Prendo il tipo dell albergo di partenza
+							verticePartenza = TrovaVertice(GrafoCitta, nomePartenza);
+							tipoPartenza = verticePartenza->tipo;
+							break;
+						}
+						// Prendo Nome Albergo di Arrivo
+						while(1) {
+							printf("Nome Albergo Arrivo: ");
+							fflush(stdout);
+							fflush(stdin);
+							scanf("%s", nomeArrivo);
+							if(!VerificaAlbergo(GrafoCitta, nomeArrivo)) {
+								printf("Albergo non Trovato\n");
+								continue;
+							}
+							// Prendo il tipo dell albergo di arrivo
+							verticeArrivo = TrovaVertice(GrafoCitta, nomeArrivo);
+							tipoArrivo = verticeArrivo->tipo;
+							break;
+						}
+						//Prendo il tempo della tratta
+						while(1) {
+							printf("Tempo Tratta: ");
+							fflush(stdout);
+							fflush(stdin);
+							if(!scanf("%d", &tempo) || tempo<=0) {
+								printf("Valore non Valido\n");
+								continue;
+							}
+							break;
+						}
+						//Aggiungo gli archi
+						for(int i=0; i<GrafoCitta->numVertici; i++) {
+							if(strcmp(GrafoCitta->adj[i]->albergo, nomePartenza)==0)
+								addArcoC(GrafoCitta, i, nomeArrivo, tempo, tipoArrivo);
+							if(strcmp(GrafoCitta->adj[i]->albergo, nomeArrivo)==0)
+								addArcoC(GrafoCitta, i, nomePartenza, tempo, tipoPartenza);
+						}
+						scriviFileAlberghi(GrafoCitta, nomeFile);
 						break;
 
+					// Tornare indietro
 					case 4:
 						printf("Arrivederci");
+						freeGraphViaggi(grafo);
+						FreeC(GrafoCitta);
+						free(nomeFile);
 						exit(EXIT_SUCCESS);
 
 					default:
-						printf("\nValore non valido");
+						printf("\nValore non Valido");
 						continue;
 					}
 			}

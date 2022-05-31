@@ -4,8 +4,6 @@ ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo) {
 	nodo = (ListaAttesa*)malloc(sizeof(ListaAttesa));
 	strcpy(nodo->partenza, partenza);
 	strcpy(nodo->arrivo, arrivo);
-	printf("\n%s %s", nodo->partenza, nodo->arrivo);
-	fflush(stdout);
 	nodo->next = NULL;
 
 	return nodo;

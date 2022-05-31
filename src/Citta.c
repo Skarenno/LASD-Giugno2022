@@ -78,6 +78,7 @@ GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
 	FILE *fp;
 	fp = fopen(message, "r");
 	if(!VerificaFile(fp, message)){
+		FreeC(grafo);
 		return NULL;
 	}
 	fseek(fp, 0, SEEK_SET);
@@ -291,11 +292,14 @@ EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]){
 
 
 void stampaAlberghi(GraphCitta* grafo){
+	if(grafo==NULL)
+		printf("Nessun Albergo da Mostrare\n");
 	for(int i = 0; i < grafo->numVertici; i++){
 		printf("%s", grafo->adj[i]->albergo);
 		if(i < grafo->numVertici - 1){
 				printf(" - ");
-		}
+		} else
+			printf("\n");
 	}
 }
 

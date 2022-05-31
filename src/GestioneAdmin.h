@@ -31,7 +31,4 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin);
 Admin* AccessoAdmin(Admin* ListaAdmin);
 Admin* RegistraAdmin(Admin* ListaAdmin);
 
-ListaAttesa *aggiungiMetaAttesa(GraphViaggi *grafo, ListaAttesa *lista);
-void aggiungiAlberghi(ListaAttesa *lista);
-
 #endif /* GESTIONEADMIN_H_ */
