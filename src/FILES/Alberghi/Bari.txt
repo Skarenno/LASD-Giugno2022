@@ -1,0 +1,2 @@
+BariAirport;1;Albergo.png;0;62
+Albergo.png;0;BariAirport;1;62

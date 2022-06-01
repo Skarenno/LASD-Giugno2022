@@ -5,7 +5,7 @@
  */
 
 #include "UserProgram.h"
-
+#include "Dijkstra.h"
 
 void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 	int AT=0;	// Aereo/Treno
@@ -14,16 +14,19 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 	char partenza[STRING_MAX];
 	char arrivo[STRING_MAX];
 
+	int key_partenza, key_arrivo;
+	int tipoDijkstra;
 	int confirm=0;
 	float price=0.0;
+
+
+	printf("\n");
+	printf("Bentornato, %s\n",user->nome);
+	printf("Il tuo saldo: %.2f euro\n",user->saldo);
 
 	while (!confirm) {
 
 		while (!confirm) {
-			printf("\n");
-			printf("Bentornato, %s\n",user->nome);
-			printf("Il tuo saldo: %.2f euro\n",user->saldo);
-
 			printf("Al momento le mete disponibili sono: \n");
 			StampaMete(GrafoViaggi);
 
@@ -34,7 +37,8 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 				fflush(stdout);
 				fflush(stdin);
 				scanf("%s", partenza);
-				if(VerificaCitta(GrafoViaggi, partenza) == 1)
+				key_partenza = VerificaCitta(GrafoViaggi, partenza);
+				if(key_partenza != -1)
 					break;
 				else
 					printf("---Nome città non valido... riprovare.\n");
@@ -46,39 +50,75 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 				fflush(stdout);
 				fflush(stdin);
 				scanf("%s", arrivo);
-				if(VerificaCitta(GrafoViaggi, arrivo) == 1)
+				key_arrivo = VerificaCitta(GrafoViaggi, arrivo);
+				if(key_arrivo != -1)
 					break;
 				else
 					printf("---Nome città non valido... riprovare.\n");
 			}while(true);
 
-			printf("*************\nSi è selezionato il viaggio %s -> %s\n", partenza, arrivo);
-			printf("Inserisci il tipo di trasporto desiderato (1. Aereo - 2. Treno): ");
-			fflush(stdout);
-			fflush(stdin);
-			scanf("%d",&AT);
-			printf("Inserisci 0 per il viaggio piÃ¹ economico, 1 per la tratta piÃ¹ rapida: ");
-			scanf("%d",&PT);
+			do{
+				printf("*************\nSi è selezionato il viaggio %s -> %s\n", partenza, arrivo);
+				printf("Inserisci il tipo di trasporto desiderato (0. Aereo - 1. Treno): ");
+				fflush(stdout);
+				fflush(stdin);
 
-			///TODO: Dijkstra(grafoV,AT,PT)
-			//Lista di attesa se nessun risultato
+				if(!scanf("%d",&AT) || (AT != 1 && AT != 0)){
+					printf("Valore non valido");
+					continue;
+				}
 
-			printf("Il prezzo di questo viaggio Ã¨ di <prezzo da Dijkstra> %.2f, vuoi prenotarlo?\n",price);
-			printf("1: Conferma. 0: Annulla e torna al menu principale.\n");
-			scanf("%d",&confirm);
+				printf("Inserisci 0 per il viaggio piÃ¹ economico, 1 per la tratta piÃ¹ rapida: ");
+
+				fflush(stdout);
+				fflush(stdin);
+
+				if(!scanf("%d",&PT) || (PT != 1 && PT != 0)){
+					printf("Valore non valido");
+					continue;
+				}
+
+				break;
+			}while(true);
+
+			if(!AT){
+				if(!PT){
+					tipoDijkstra = 0;
+				}
+				else
+					tipoDijkstra = 1;
+			}
+			else{
+				if(!PT){
+					tipoDijkstra = 2;
+				}
+				else
+					tipoDijkstra = 3;
+			}
+
+			price = dijkstra(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra);
+
+			if(price == INT_MAX){
+				printf("Tratta non disponibile");
+				continue;
+			}
+			printf("Il prezzo di questo viaggio è di %.2f, vuoi prenotarlo?\n",price);
+//			printf("1: Conferma. 0: Annulla e torna al menu principale.\n");
+//			scanf("%d",&confirm);
 		}
-		user->saldo=user->saldo-price;
-		printf("Complimenti, hai prenotato il tuo viaggio!\n");
-		printf("Nella tua destinazione sono disponibili i seguenti alberghi: \n");
-		///TODO: stampa lista alberghi
-		printf("Pensi di soggiornare presso uno di questi alberghi? 1 per continuare, 0 per tornare al menu\n");
-		scanf("%d",&confirm);
-		if (confirm){
-			///TODO: Dijkstra su grafo alberghi e stampa tempo
-		}
 
-		printf("Uscire dall'applicativo? (1:Si, 0:No)\n");
-		scanf("%d",&confirm);
+//		user->saldo=user->saldo-price;
+//		printf("Complimenti, hai prenotato il tuo viaggio!\n");
+//		printf("Nella tua destinazione sono disponibili i seguenti alberghi: \n");
+//		///TODO: stampa lista alberghi
+//		printf("Pensi di soggiornare presso uno di questi alberghi? 1 per continuare, 0 per tornare al menu\n");
+//		scanf("%d",&confirm);
+//		if (confirm){
+//			///TODO: Dijkstra su grafo alberghi e stampa tempo
+//		}
+//
+//		printf("Uscire dall'applicativo? (1:Si, 0:No)\n");
+//		scanf("%d",&confirm);
 	}
 
 }

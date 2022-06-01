@@ -10,6 +10,7 @@
 typedef struct edgeViaggi { /*Gestisce sia grafi orientati che non*/
 	float prezzoAereo, prezzoTreno;
     int tempoAereo, tempoTreno;
+    int key;
 
     char citta[STRING_MAX];
 
@@ -35,5 +36,6 @@ void StampaMete (GraphViaggi* GrafoViaggi);
 int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]);
 GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]);
 void scriviFileViaggi(GraphViaggi* grafo);
+void ScriviChiavi(GraphViaggi* grafo);
 
 #endif

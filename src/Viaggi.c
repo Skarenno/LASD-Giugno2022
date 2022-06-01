@@ -35,7 +35,7 @@ EdgeViaggi* creaArco (char* citta, float prezzoAereo, float prezzoTreno, int tem
 void InserisciVertice(GraphViaggi* G, char *citta){
     for(int i = 0; i<G->numVertici; i++){
         if(strcmp(citta, G->adj[i]->citta) == 0){
-        	printf("Meta già esistente!");
+        	printf("Meta già esistente!, %s", citta);
             return;                             // GiÃ  esistente
         }
     }
@@ -76,6 +76,7 @@ void addArco(GraphViaggi* grafo, int posizione, char citta[], float prezzoAereo,
 GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	grafo = AllocaGrafo();
 	FILE *fp;
+
 	if((fp=fopen(CITTA, "r"))==NULL) {
 		printf("Impossibile aprire il file Viaggi.txt\n");
 		exit(1);
@@ -113,6 +114,8 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 			InserisciVertice(grafo, riga);
 		else
 			InserisciVertice(grafo, token);
+
+
 		while(token!=NULL) {
 			token = strtok(NULL, ";");
 			if(token==NULL)
@@ -134,6 +137,7 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 		}
 		posizione++;
 	}
+	ScriviChiavi(grafo);
 	free(riga);
 	fclose(fp);
 	return grafo;
@@ -157,7 +161,12 @@ void scriviFileViaggi(GraphViaggi* grafo){
 				fprintf(FileViaggi, "%s;%.2f;%d;%.2f;%d;", Cursor->citta, Cursor->prezzoAereo, Cursor->tempoAereo, Cursor->prezzoTreno, Cursor->tempoTreno);
 				Cursor = Cursor->next;
 			}
+			if(i == grafo->numVertici -1)
+				continue;
+
 			fprintf(FileViaggi, "\n");
+
+
 		}
 
 		fclose(FileViaggi);
@@ -181,7 +190,7 @@ void stampaGrafo(GraphViaggi* grafo){
 	}
 	for(int i=0; i<grafo->numVertici; i++) {
 		EdgeViaggi* tmp = grafo->adj[i]->next;
-		printf("Vertice %s: |", grafo->adj[i]->citta);
+		printf("Vertice (%d) %s: |", grafo->adj[i]->key, grafo->adj[i]->citta);
 		if(tmp==NULL) {
 			printf("EMPTY|\n");
 			continue;
@@ -194,6 +203,22 @@ void stampaGrafo(GraphViaggi* grafo){
 	}
 }
 
+void ScriviChiavi(GraphViaggi* grafo){
+	EdgeViaggi* Cursor = NULL;
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		grafo->adj[i]->key = i;
+	}
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		Cursor = grafo->adj[i]->next;
+		while(Cursor){
+			Cursor->key = VerificaCitta(grafo, Cursor->citta);
+			Cursor = Cursor->next;
+		}
+	}
+	return;
+}
 
 void freeGraphViaggi(GraphViaggi* grafo){
 
@@ -225,16 +250,17 @@ void StampaMete (GraphViaggi* GrafoViaggi){
 int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){ // ritorna 1 se esiste
 	for(int i = 0; i < GrafoViaggi->numVertici; i++){
 		if(strcmp(GrafoViaggi->adj[i]->citta, citta) == 0){
-			return 1;
+			return i;
 		}
 	}
 
-	return 0;
+	return -1;
 }
 
 GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]) {
 	GraphViaggi *grafo1 = AllocaGrafo();
 	EdgeViaggi *vertice = NULL;
+
 	for(int i=0; i<grafo->numVertici; i++) {
 		if(strcmp(nomeCitta, grafo->adj[i]->citta)==0)
 			vertice = grafo->adj[i];

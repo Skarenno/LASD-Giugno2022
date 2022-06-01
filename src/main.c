@@ -4,6 +4,7 @@
 #include "standard_header.h"
 #include "UserProgram.h"
 #include "AdminProgram.h"
+#include "Dijkstra.h"
 /*
  * main.c
  *
@@ -30,6 +31,8 @@ int main(){
 	GrafoAlberghi = NULL;
 
 	/**** INIZIO UI ****/
+	stampaGrafo(GrafoViaggi);
+	fflush(stdout);
 	tipo_utente = SelezioneAccesso();
 
 	// Accesso come utente base

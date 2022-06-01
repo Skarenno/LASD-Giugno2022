@@ -296,6 +296,9 @@ GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* Fi
 		scanf("%s", nome);
 
 		printf("Tipo [Stazione Aereoporto: 1 - Stazione Treno: 2]: ");
+		fflush(stdin);
+		fflush(stdout);
+
 		if(scanf("%d", &tipo ) || (tipo != 1 && tipo != 2))
 			InserisciVerticeC(GrafoCitta, nome, tipo);
 
