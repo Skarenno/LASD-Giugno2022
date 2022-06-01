@@ -93,15 +93,18 @@ Utente* LeggiFileUtenti (FILE* file, Utente* ListaUtenti){
 
 // Riscrivo il file a partire dall'attuale lista degli Utenti
 void RiscriviFileUtenti(Utente* ListaUtenti){
-	FILE* FileUtenti = fopen (U_FILE, "w+");
+	FILE* FileUtenti = fopen (U_FILE, "w");
     Utente* Cursor = ListaUtenti;
 
     while(Cursor != NULL){
+    	printf("%s %s %.2f\n", Cursor->nome, Cursor->password, Cursor->saldo);
+    	fflush(stdout);
         fprintf(FileUtenti, "%s %s %.2f", Cursor->nome, Cursor->password, Cursor->saldo);
         Cursor = Cursor->next;
         if(Cursor)
         	fprintf(FileUtenti, "\n");
     }
+    fclose(FileUtenti);
 }
 
 /**************************************************************************/

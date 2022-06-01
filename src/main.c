@@ -41,7 +41,7 @@ int main(){
 		UtenteAttuale = SchermataIniziale(ListaUtenti);	// Schermata INIZIALE
 		printf("%s", UtenteAttuale->nome);
 
-		userDashboard(UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
+		userDashboard(ListaUtenti, UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
 	}
 
 	// Accesso come amministratore

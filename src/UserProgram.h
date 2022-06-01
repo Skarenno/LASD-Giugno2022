@@ -13,8 +13,9 @@
 #include "GestioneUtenti.h"
 
 
-void userDashboard(Utente* user, GraphViaggi* GrafoViaggi);
+void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi);
 void StampaMete (GraphViaggi* GrafoViaggi);
 int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]);
+int EffettuaPrenotazione(Utente* user, GraphViaggi* GrafoViaggi, char *nomeArrivo, int *tipoViaggio);
 
 #endif /* USERPROGRAM_H_ */
