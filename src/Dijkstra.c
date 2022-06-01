@@ -298,3 +298,86 @@ float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float
     return dist[arrivo];
 
 }
+
+
+
+float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
+
+    // Get the number of vertices in graph
+    int V = graph->numVertici;
+
+    // dist values used to pick
+    // minimum weight edge in cut
+    float dist[V];
+
+    // minHeap represents set E
+    MinHeap* minHeap = createMinHeap(V);
+
+    // Initialize min heap with all
+    // vertices. dist value of all vertices
+    for (int v = 0; v < V; ++v)
+    {
+        dist[v] = INT_MAX;
+        minHeap->array[v] = newMinHeapNode(v, dist[v],0);
+        minHeap->pos[v] = v;
+    }
+
+    // Make dist value of src vertex
+    // as 0 so that it is extracted first
+    minHeap->array[partenza] = newMinHeapNode(partenza, dist[partenza], 0);
+    minHeap->pos[partenza]   = partenza;
+    dist[partenza] = 0;
+    decreaseKey(minHeap, partenza, dist[partenza], 0);
+
+    // Initially size of min heap is equal to V
+    minHeap->size = V;
+
+    // In the followin loop,
+    // min heap contains all nodes
+    // whose shortest distance
+    // is not yet finalized.
+    while (!isEmptyHeap(minHeap))
+    {
+        // Extract the vertex with
+        // minimum distance value
+        MinHeapNode* minHeapNode =
+                     extractMin(minHeap);
+
+        // Store the extracted vertex number
+        int u = minHeapNode->v;
+
+			// Traverse through all adjacent
+			// vertices of u (the extracted
+        // vertex) and update
+        // their distance values
+        EdgeCitta* pCrawl = graph->adj[u];
+        while (pCrawl != NULL){
+            int v = pCrawl->key;
+
+            // If shortest distance to v is
+            // not finalized yet, and distance to v
+            // through u is less than its
+            // previously calculated distance
+
+
+
+			 if(pCrawl->tempo != 0){
+				if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempo + dist[u] < dist[v]){
+					dist[v] = dist[u] + (float)pCrawl->tempo;
+
+
+					// update distance
+					// value in min heap also
+					decreaseKey(minHeap, v, dist[v],0);
+				}
+			}
+			pCrawl = pCrawl->next;
+        }
+
+    }
+    // print the calculated shortest distances
+    printArr(dist,dist, V);
+
+    return dist[arrivo];
+
+}

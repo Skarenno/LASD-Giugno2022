@@ -306,9 +306,26 @@ void stampaAlberghi(GraphCitta* grafo){
 int VerificaAlbergo(GraphCitta* grafo, char albergo[]){ // ritorna 1 se esiste
 	for(int i = 0; i < grafo->numVertici; i++){
 		if(strcmp(grafo->adj[i]->albergo, albergo) == 0){
-			return 1;
+			return i;
 		}
 	}
 
-	return 0;
+	return -1;
+}
+
+void ScriviChiaviAlberghi(GraphCitta* grafo){
+	EdgeCitta* Cursor = NULL;
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		grafo->adj[i]->key = i;
+	}
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		Cursor = grafo->adj[i]->next;
+		while(Cursor){
+			Cursor->key = VerificaAlbergo(grafo, Cursor->albergo);
+			Cursor = Cursor->next;
+		}
+	}
+	return;
 }

@@ -6,6 +6,7 @@
 typedef struct edgeCitta {
 	int tempo;
 	int tipo; //0=Meta, 1=Aereoporto, 2=Stazione Treno
+	int key;
 
     char albergo[STRING_MAX];
 
@@ -36,5 +37,6 @@ void stampaGrafoC(GraphCitta* grafo);
 EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]);
 void stampaAlberghi(GraphCitta* grafo);
 int VerificaAlbergo(GraphCitta* grafo, char albergo[]);
+void ScriviChiaviAlberghi(GraphCitta* grafo);
 
 #endif

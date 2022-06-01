@@ -3,6 +3,7 @@
 
 #include "standard_header.h"
 #include "Viaggi.h"
+#include "Citta.h"
 
 // Structure to represent a min heap node
 typedef struct minheapnode{
@@ -35,6 +36,7 @@ void decreaseKey(MinHeap* minHeap, int v, float dist, float prezzo);
 bool isInMinHeap(MinHeap *minHeap, int v);
 void printArr(float dist[], float prezzo[], int n);
 float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned);
+float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo);
 
 
 #endif
