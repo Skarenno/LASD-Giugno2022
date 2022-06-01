@@ -11,6 +11,8 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 	int prenotato = 0, choice, tipoViaggio;
 	char yn, *nomeArrivo = NULL;
 	float nuovoSaldo = 0.0;
+	Utente* Cursor = ListaUtenti;
+
 	nomeArrivo = (char*)malloc(sizeof(char)*STRING_MAX);
 	printf("\n");
 	printf("Bentornato, %s\n",user->nome);
@@ -29,19 +31,33 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 		}
 		switch(choice) {
 			case 1:
-				prenotato = EffettuaPrenotazione(user, GrafoViaggi, nomeArrivo, &tipoViaggio);
+				prenotato = EffettuaPrenotazione(ListaUtenti, user, GrafoViaggi, nomeArrivo, &tipoViaggio);
 				if(prenotato==0) {
 					printf("Viaggio Annullato\n");
 					break;
 				}
-				printf("Viaggio Prenotato. Si vuole scegliere un albergo?(y/n)\n");
-				scanf("%c", &yn);
-				yn = tolower(yn);
-				switch(yn) {
-					case 'y':
-						//PercorsoAlbergo(tipoViaggio, nomeArrivo);
-						break;
-				}
+
+				Cursor = ListaUtenti;
+
+				printf("Viaggio Prenotato (Nuovo Saldo: %.2f).\nSi vuole scegliere un albergo?(y/n): ", user->saldo);
+				do{
+					fflush(stdout);
+					fflush(stdin);
+					scanf("%c", &yn);
+					yn = tolower(yn);
+					switch(yn) {
+						case 'y':
+							//PercorsoAlbergo(tipoViaggio, nomeArrivo);
+							break;
+						case 'n':
+							break;
+
+						default:
+							printf("\nValore non valido! Riprovare (y/n): ");
+							continue;
+					}
+					break;
+				}while(true);
 
 				break;
 			case 2:
@@ -54,6 +70,17 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 						continue;
 					}
 					user->saldo+=nuovoSaldo;
+
+					Cursor = ListaUtenti;
+					while(Cursor != NULL){
+						if(strcmp(user->nome, Cursor->nome) == 0){
+							Cursor->saldo = user->saldo;
+							break;
+						}
+						Cursor = Cursor->next;
+					}
+
+					printf("\nNuovo Saldo: %.2f", user->saldo);
 					RiscriviFileUtenti(ListaUtenti);
 					break;
 				}
@@ -80,7 +107,7 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 
 }
 
-int EffettuaPrenotazione(Utente* user, GraphViaggi* GrafoViaggi, char *nomeArrivo, int *tipoViaggio) {
+int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi, char *nomeArrivo, int *tipoViaggio) {
 	int AT=0;	// Aereo/Treno
 	int PT=0;	// Prezzo migliore/Tratta migliore
 	float distance=0.0;
@@ -93,6 +120,7 @@ int EffettuaPrenotazione(Utente* user, GraphViaggi* GrafoViaggi, char *nomeArriv
 	int tipoDijkstra;
 	float price=0.0;
 
+	Utente* Cursor = ListaUtenti;
 	printf("Al momento le mete disponibili sono: \n");
 	StampaMete(GrafoViaggi);
 
@@ -181,9 +209,21 @@ int EffettuaPrenotazione(Utente* user, GraphViaggi* GrafoViaggi, char *nomeArriv
 	}
 	if(confirm) {
 		if(user->saldo>=price) {
+
 			user->saldo-=price;
 			strcpy(nomeArrivo, arrivo);
 			*tipoViaggio = AT;
+
+			while(Cursor != NULL){
+				if(strcmp(user->nome, Cursor->nome) == 0){
+					Cursor->saldo = user->saldo;
+					break;
+				}
+				Cursor = Cursor->next;
+			}
+
+			RiscriviFileUtenti(ListaUtenti);
+
 			return 1;
 		} else
 			printf("Saldo non sufficiente. Devi caricare almeno: %.2f\n", price-user->saldo);

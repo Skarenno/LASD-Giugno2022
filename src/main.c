@@ -26,6 +26,7 @@ int main(){
 	GraphViaggi* GrafoViaggi = NULL;
 	GraphCitta* GrafoAlberghi = NULL;
 
+	FILE* FileUtenti = fopen(U_FILE, "r");
 	/**** INIZIALIZZAZIONE VARIABILI *****/
 	GrafoViaggi = leggiFileViaggi(GrafoViaggi);
 	GrafoAlberghi = NULL;
@@ -39,8 +40,11 @@ int main(){
 	if(tipo_utente == 1){
 		Utente* UtenteAttuale, *ListaUtenti = NULL;
 		UtenteAttuale = SchermataIniziale(ListaUtenti);	// Schermata INIZIALE
-		printf("%s", UtenteAttuale->nome);
 
+		ListaUtenti = NULL;
+		ListaUtenti = LeggiFileUtenti(FileUtenti, ListaUtenti);
+
+		StampaListaUtenti(ListaUtenti);
 		userDashboard(ListaUtenti, UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
 	}
 

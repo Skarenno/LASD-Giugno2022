@@ -55,6 +55,9 @@ Utente* TrovaUtente(char *nomeInserito, Utente* ListaUtenti){
 
 // Stampa a schermo la lista Utenti
 void StampaListaUtenti(Utente* Lista){
+	if(Lista == NULL)
+		printf("FINE");
+
     printf("%s %s %.2f\n", Lista->nome, Lista->password, Lista->saldo);
 
     if(Lista->next != NULL)
@@ -97,8 +100,6 @@ void RiscriviFileUtenti(Utente* ListaUtenti){
     Utente* Cursor = ListaUtenti;
 
     while(Cursor != NULL){
-    	printf("%s %s %.2f\n", Cursor->nome, Cursor->password, Cursor->saldo);
-    	fflush(stdout);
         fprintf(FileUtenti, "%s %s %.2f", Cursor->nome, Cursor->password, Cursor->saldo);
         Cursor = Cursor->next;
         if(Cursor)
@@ -154,7 +155,7 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
 
 
     // Apro e leggo il file utenti
-    FILE* FileUtenti = fopen(U_FILE, "r+");
+    FILE* FileUtenti = fopen(U_FILE, "r");
     if(FileUtenti == NULL){
     	printf("ERRORE DATABASE UTENTI");
     	return NULL;
@@ -267,11 +268,17 @@ Utente* AccessoUtente (Utente* ListaUtenti){
     }
     else{
     	// VERIFICO LA PASSWORD
-		do{
-			printf("Inserire password: ");
-			fflush(stdout);
-			scanf("%s", password);
 
+		printf("Inserire password: ");
+
+
+
+
+		do{
+			fflush(stdout);
+			fflush(stdin);
+
+			scanf("%s", password);
 			// Password corretta, posso uscire dal loop impostando il flag di quit a true. Effettuo l'accesso.
 			if(strcmp(password, Utente->password) == 0){
 				quit_login = true;
@@ -280,29 +287,36 @@ Utente* AccessoUtente (Utente* ListaUtenti){
 			// Password Errata. Richiesta di un nuovo tentativo
 			else{
 				printf("************\nPASSWORD ERRATA\nSi desidera riprovare (y/n): ");
-				fflush(stdout);
-				fflush(stdin);
-				scanf("%c", &yes_no);
 
-				switch(yes_no){
-					// Si riprova a inserire la password
-					case 'y':
-						printf("\n");
-						break;
-					case 'n':
 
-					// Si ritorna al menu iniziale ritornando NULL all'utente attuale.
-						Utente = NULL;
-						printf("*****************\nRITORNO AL MENU INIZIALE\n");
-						return Utente;
+				do{
+					fflush(stdin);
+					fflush(stdout);
+					scanf("%c", &yes_no);
 
-					// Richiesta non valida
-					default:
-						printf("Carattere non valido. Riprovare (y/n)");
-						fflush(stdout);
-						fflush(stdin);
-						continue;
-					}
+
+					switch(yes_no){
+						// Si riprova a inserire la password
+						case 'y':
+							printf("\n");
+							printf("Inserire password: ");
+							break;
+
+						case 'n':
+
+						// Si ritorna al menu iniziale ritornando NULL all'utente attuale.
+							Utente = NULL;
+							printf("*****************\nRITORNO AL MENU INIZIALE\n");
+							return Utente;
+
+						// Richiesta non valida
+						default:
+							printf("Carattere non valido. Riprovare (y/n): ");
+							continue;
+
+						}
+					break;
+				}while(true);
 			}
 
 		}while(!quit_login);
