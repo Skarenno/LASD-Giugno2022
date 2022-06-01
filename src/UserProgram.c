@@ -10,6 +10,7 @@
 void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 	int AT=0;	// Aereo/Treno
 	int PT=0;	// Prezzo migliore/Tratta migliore
+	float distance=0.0;
 
 	char partenza[STRING_MAX];
 	char arrivo[STRING_MAX];
@@ -33,7 +34,7 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 
 			// LETTURA PARTENZA
 			do{
-				printf("Inserisci la città di partenza: ");
+				printf("Inserisci la cittï¿½ di partenza: ");
 				fflush(stdout);
 				fflush(stdin);
 				scanf("%s", partenza);
@@ -41,12 +42,12 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 				if(key_partenza != -1)
 					break;
 				else
-					printf("---Nome città non valido... riprovare.\n");
+					printf("---Nome cittï¿½ non valido... riprovare.\n");
 			}while(true);
 
 			// LETTURA ARRIVO
 			do{
-				printf("Inserisci la città di arrivo: ");
+				printf("Inserisci la cittï¿½di arrivo: ");
 				fflush(stdout);
 				fflush(stdin);
 				scanf("%s", arrivo);
@@ -54,11 +55,11 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 				if(key_arrivo != -1)
 					break;
 				else
-					printf("---Nome città non valido... riprovare.\n");
+					printf("---Nome cittï¿½ non valido... riprovare.\n");
 			}while(true);
 
 			do{
-				printf("*************\nSi è selezionato il viaggio %s -> %s\n", partenza, arrivo);
+				printf("*************\nSi ï¿½ selezionato il viaggio %s -> %s\n", partenza, arrivo);
 				printf("Inserisci il tipo di trasporto desiderato (0. Aereo - 1. Treno): ");
 				fflush(stdout);
 				fflush(stdin);
@@ -96,13 +97,14 @@ void userDashboard(Utente* user, GraphViaggi* GrafoViaggi){
 					tipoDijkstra = 3;
 			}
 
-			price = dijkstra(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra);
+			price = dijkstra(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra, &distance);
 
 			if(price == INT_MAX){
 				printf("Tratta non disponibile");
 				continue;
 			}
-			printf("Il prezzo di questo viaggio è di %.2f, vuoi prenotarlo?\n",price);
+			printf("La durata di questo viaggio ï¿½ di %.0f minuti\n",distance);
+			printf("Il prezzo di questo viaggio ï¿½ di %.2f, vuoi prenotarlo?\n",price);
 //			printf("1: Conferma. 0: Annulla e torna al menu principale.\n");
 //			scanf("%d",&confirm);
 		}

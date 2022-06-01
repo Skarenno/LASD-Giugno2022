@@ -5,11 +5,12 @@
 
 // A utility function to create a
 // new Min Heap Node
-MinHeapNode* newMinHeapNode(int v, float dist)
+MinHeapNode* newMinHeapNode(int v, float dist, float prezzo)
 {
     MinHeapNode* minHeapNode = (MinHeapNode*)malloc(sizeof(MinHeapNode));
     minHeapNode->v = v;
     minHeapNode->dist = dist;
+    minHeapNode->prezzo = prezzo;
     return minHeapNode;
 }
 
@@ -113,13 +114,14 @@ MinHeapNode* extractMin(MinHeap* minHeap)
 // of a given vertex v. This function
 // uses pos[] of min heap to get the
 // current index of node in min heap
-void decreaseKey(MinHeap* minHeap, int v, float dist)
+void decreaseKey(MinHeap* minHeap, int v, float dist, float prezzo)
 {
     // Get the index of v in  heap array
     int i = minHeap->pos[v];
 
     // Get the node and update its dist value
     minHeap->array[i]->dist = dist;
+    minHeap->array[i]->prezzo = prezzo;
 
     // Travel up while the complete
     // tree is not hepified.
@@ -150,17 +152,20 @@ bool isInMinHeap(MinHeap *minHeap, int v)
 }
 
 // A utility function used to print the solution
-void printArr(float dist[], int n)
+void printArr(float dist[], float prezzo[], int n)
 {
     printf("Vertex   Distance from Source\n");
     for (int i = 0; i < n; ++i)
-        printf("%d \t\t %.2f\n", i, dist[i]);
+        printf("%d \t\t %.0f : %.2f\n", i, dist[i], prezzo[i]);
 }
 
 // The main function that calculates
 // distances of shortest paths from src to all
 // vertices. It is a O(ELogV) function
-float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso){
+float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned){
+
+	//Flag to get price or distance
+	int typology=0;
 
     // Get the number of vertices in graph
     int V = graph->numVertici;
@@ -168,7 +173,7 @@ float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso){
     // dist values used to pick
     // minimum weight edge in cut
     float dist[V];
-    float prezzo = 0.0;
+    float prezzo[V];
 
     // minHeap represents set E
     MinHeap* minHeap = createMinHeap(V);
@@ -178,16 +183,18 @@ float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso){
     for (int v = 0; v < V; ++v)
     {
         dist[v] = INT_MAX;
-        minHeap->array[v] = newMinHeapNode(v, dist[v]);
+        prezzo[V] = INT_MAX;
+        minHeap->array[v] = newMinHeapNode(v, dist[v],prezzo[v]);
         minHeap->pos[v] = v;
     }
 
     // Make dist value of src vertex
     // as 0 so that it is extracted first
-    minHeap->array[partenza] = newMinHeapNode(partenza, dist[partenza]);
+    minHeap->array[partenza] = newMinHeapNode(partenza, dist[partenza], prezzo[partenza]);
     minHeap->pos[partenza]   = partenza;
     dist[partenza] = 0;
-    decreaseKey(minHeap, partenza, dist[partenza]);
+    prezzo[partenza] = 0;
+    decreaseKey(minHeap, partenza, dist[partenza], prezzo[partenza]);
 
     // Initially size of min heap is equal to V
     minHeap->size = V;
@@ -220,48 +227,57 @@ float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso){
             // previously calculated distance
             switch(tipoPeso){
 				case 0: // prezzoAereo
+					typology=0;
 					if(pCrawl->prezzoAereo != 0){
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->prezzoAereo + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)pCrawl->prezzoAereo;
+							prezzo[v] = prezzo[u] + (float)pCrawl->tempoAereo; //WARNING:Distanze!
 
 							// update distance
 							// value in min heap also
-							decreaseKey(minHeap, v, dist[v]);
+							decreaseKey(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
 					break;
 
 				case 1: //tempoAereo
+					typology=1;
 					if(pCrawl->tempoAereo != 0){
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempoAereo + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)pCrawl->tempoAereo;
+							prezzo[v] = prezzo[u] + (float)pCrawl->prezzoAereo;
 
 							// update distance
 							// value in min heap also
-							decreaseKey(minHeap, v, dist[v]);
+							decreaseKey(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
             	break;
 
             	case 2:	//prezzoTreno
+            		typology=0;
             		if(pCrawl->prezzoTreno != 0){
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->prezzoTreno + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)pCrawl->prezzoTreno;
+							prezzo[v] = prezzo[u] + (float)pCrawl->tempoTreno; //WARNING:Distanze!
 
 							// update distance
 							// value in min heap also
-							decreaseKey(minHeap, v, dist[v]);
+							decreaseKey(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
             	break;
 
             	case 3: //tempoTreno
+            		typology=1;
 					if(pCrawl->tempoTreno != 0){
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempoTreno + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)pCrawl->tempoTreno;
+							prezzo[v] = prezzo[u] + (float)pCrawl->prezzoTreno;
+
 							// update distance
 							// value in min heap also
-							decreaseKey(minHeap, v, dist[v]);
+							decreaseKey(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
             	break;
@@ -272,9 +288,13 @@ float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso){
 
     }
     // print the calculated shortest distances
-    printArr(dist, V);
+    printArr(dist,prezzo, V);
 
-
+    if (typology){
+    	*distanceReturned = dist[arrivo];
+    	return prezzo[arrivo];
+    }
+    *distanceReturned = prezzo[arrivo];
     return dist[arrivo];
 
 }
