@@ -46,6 +46,8 @@ GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
 		}
 		posizione++;
 	}
+	ScriviChiaviAlberghi(grafo);
+
 	free(riga);
 	fclose(fp);
 	return grafo;
@@ -224,6 +226,7 @@ GraphCitta* rimuoviVerticeC(GraphCitta* grafo, EdgeCitta* vertice) {
 			j++;
 		}
 	}
+	ScriviChiaviAlberghi(grafo1);
 	FreeC(grafo);
 	return grafo1;
 }

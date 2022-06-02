@@ -146,6 +146,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 
 						FileCitta = fopen(nomeFile = pathFileC(nome), "r");
 						GrafoCitta = AggiungiAlbergo(GrafoCitta, grafo, FileCitta, nomeFile);
+						ScriviChiaviAlberghi(GrafoCitta);
 						scriviFileAlberghi(GrafoCitta, nomeFile);
 						fclose(FileCitta);
 						break;
@@ -183,6 +184,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							}
 							if(Vertice != NULL){
 								GrafoCitta = rimuoviVerticeC(GrafoCitta, Vertice);
+								ScriviChiaviAlberghi(GrafoCitta);
 								scriviFileAlberghi(GrafoCitta, nomeFile);
 							}
 							break;
@@ -193,7 +195,6 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 
 					/*** AGGIUNGI ARCO ***/
 					case 3:
-						//TODO
 						printf("Mete Presenti\n");
 						StampaMete(grafo);
 						printf("Su quale Meta si intende Lavorare? Immettere: ");
@@ -263,6 +264,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							if(strcmp(GrafoCitta->adj[i]->albergo, nomeArrivo)==0)
 								addArcoC(GrafoCitta, i, nomePartenza, tempo, tipoPartenza);
 						}
+						ScriviChiaviAlberghi(GrafoCitta);
 						scriviFileAlberghi(GrafoCitta, nomeFile);
 						break;
 

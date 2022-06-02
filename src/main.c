@@ -34,6 +34,9 @@ int main(){
 	/**** INIZIO UI ****/
 	stampaGrafo(GrafoViaggi);
 	fflush(stdout);
+	GrafoAlberghi = AllocaGrafoC();
+	GrafoAlberghi = leggiFileAlberghi(GrafoAlberghi, pathFileC("Firenze"));
+
 	tipo_utente = SelezioneAccesso();
 
 	// Accesso come utente base
