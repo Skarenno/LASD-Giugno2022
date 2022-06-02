@@ -281,7 +281,7 @@ void stampaGrafoC(GraphCitta* grafo){
 	}
 	for(int i=0; i<grafo->numVertici; i++) {
 		EdgeCitta* tmp = grafo->adj[i]->next;
-		printf("Vertice %s: |", grafo->adj[i]->albergo);
+		printf("Vertice (%d) %s: |", grafo->adj[i]->key, grafo->adj[i]->albergo);
 		if(tmp==NULL) {
 			printf("EMPTY|\n");
 			continue;

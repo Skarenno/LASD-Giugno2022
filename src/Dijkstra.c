@@ -247,6 +247,8 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 }
 
 
+/*************************************************/
+
 
 float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route){
 
@@ -262,6 +264,8 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route)
 
     // minHeap represents set E
     Heap* minHeap = CreazioneHeap(V);
+    HeapNode* minHeapNode;
+    HeapNode* prev = NULL;
 
     // Initialize min heap with all
     // vertices. dist value of all vertices
@@ -286,12 +290,13 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route)
     // min heap contains all nodes
     // whose shortest distance
     // is not yet finalized.
-    while (!isEmptyHeap(minHeap))
-    {
+    while (!isEmptyHeap(minHeap)){
         // Extract the vertex with
         // minimum distance value
-        HeapNode* minHeapNode =
-                     TrovaMinimo(minHeap);
+    	minHeapNode = TrovaMinimo(minHeap);
+
+    	minHeapNode->parent = prev;
+    	prev = minHeapNode;
 
         // Store the extracted vertex number
         int u = minHeapNode->v;
@@ -301,6 +306,7 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route)
         // vertex) and update
         // their distance values
         EdgeCitta* pCrawl = graph->adj[u];
+
         while (pCrawl != NULL){
             int v = pCrawl->key;
 
@@ -314,24 +320,40 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route)
 			 if(pCrawl->tempo != 0){
 				if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempo + dist[u] < dist[v]){
 					dist[v] = dist[u] + (float)pCrawl->tempo;
-					route=strcat(route,pCrawl->albergo);
-					route=strcat(route," -> ");
-
 
 					// update distance
 					// value in min heap also
 					RiduciDistanza(minHeap, v, dist[v],0);
+
 				}
+
 			}
+
 			pCrawl = pCrawl->next;
+
         }
 
-    }
-    // print the calculated shortest distances
-    StampaDijkstra(dist,dist, V);
 
-    printf("%s\n",route);
+
+    }
+    StampaDijkstraAlberghi(minHeap->array[arrivo]);
+    // print the calculated shortest distances
+
+    StampaDijkstra(dist,dist, V);
 
     return dist[arrivo];
 
+}
+
+
+void StampaDijkstraAlberghi (HeapNode *last)
+{
+    while (last != NULL)
+    {
+        printf ("%d -> ", last->v);
+
+        last = last->parent;
+    }
+
+    printf ("NULL\n");
 }
