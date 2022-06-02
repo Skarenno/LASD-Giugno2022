@@ -10,7 +10,7 @@ typedef struct minheapnode{
     int  v;
     float dist;
     float prezzo;
-}MinHeapNode;
+}HeapNode;
 
 // Structure to represent a min heap
 typedef struct minheap{
@@ -23,20 +23,20 @@ typedef struct minheap{
 
     // This is needed for decreaseKey()
     int *pos;
-    MinHeapNode **array;
-}MinHeap;
+    HeapNode **array;
+}Heap;
 
-MinHeapNode* newMinHeapNode(int v, float dist, float prezzo);
-MinHeap* createMinHeap(int capacity);
-void swapMinHeapNode(MinHeapNode** a, MinHeapNode** b);
-void minHeapify(MinHeap* minHeap, int idx);
-int isEmptyHeap(MinHeap* minHeap);
-MinHeapNode* extractMin(MinHeap* minHeap);
-void decreaseKey(MinHeap* minHeap, int v, float dist, float prezzo);
-bool isInMinHeap(MinHeap *minHeap, int v);
-void printArr(float dist[], float prezzo[], int n);
-float dijkstra(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned);
-float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo);
+HeapNode* NuovoHeapNode(int v, float dist, float prezzo);
+Heap* CreazioneHeap(int capacity);
+void ScambiaNodi(HeapNode** a, HeapNode** b);
+void Heapify(Heap* minHeap, int idx);
+int isEmptyHeap(Heap* minHeap);
+HeapNode* TrovaMinimo(Heap* minHeap);
+void RiduciDistanza(Heap* minHeap, int v, float dist, float prezzo);
+bool isInMinHeap(Heap *minHeap, int v);
+void StampaDijkstra(float dist[], float prezzo[], int n);
+float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned);
+float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo);
 
 
 #endif

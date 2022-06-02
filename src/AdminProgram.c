@@ -7,7 +7,10 @@
 
 #include "AdminProgram.h"
 
+
+// Menu Principale per l'accesso Amministrativo
 void adminDashboard(Admin* admin, GraphViaggi* grafo){
+	// Dichiarazioni e inizializzazioni variabili
 	unsigned short int choice;
 	int confirm;
 	char nome[STRING_MAX];
@@ -18,8 +21,9 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	GraphCitta* GrafoCitta = AllocaGrafoC();
 	EdgeCitta* Vertice;
 
-
 	lista = leggiAttesa(lista);
+
+	// Benvenuto
 	printf("Bentornato, %s\n",admin->nome);
 	printf("Al momento le mete inserite sono:\n");
 	stampaGrafo(grafo);
@@ -29,6 +33,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 		stampaAttesa(lista);
 	}
 
+	// Scelta ambiente di lavoro (VIAGGI / ALBERGHI)
 	do {
 		printf("\n Si vuole lavorare su citta (0) o alberghi(1): ");
 		fflush(stdout);
@@ -40,7 +45,8 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 		printf("\n Valore non valido");
 	}while(true);
 
-	// CITTA
+
+	/**** MENU LAVORO SU CITTA ****/
 	if(!choice){
 		confirm = 0;
 		while (confirm!=4) {
@@ -107,7 +113,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	}
 
 
-	// ALBERGHI
+	/**** MENU LAVORO SU ALBERGHI ****/
 	else{
 		confirm = 0;
 		char nomePartenza[STRING_MAX];
@@ -258,7 +264,10 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						scriviFileAlberghi(GrafoCitta, nomeFile);
 						break;
 
-					// Tornare indietro
+					/*** FINE ELIMINA ***/
+
+
+					/*** USCITA PROGRAMMA ***/
 					case 4:
 						printf("Arrivederci");
 						freeGraphViaggi(grafo);
@@ -287,6 +296,7 @@ GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* Fi
 	char nome[STRING_MAX];
 	char choice_yn;
 
+	// Se non sono presenti aeroporti o stazioni vanno aggiunti!
 	if(!VerificaFile(FileCitta, nomeFile)){
 
 		printf("Non sono presenti Aeroporti o Stazioni. Inserire una delle due.\n Inserire nome Aeroporto/Stazione: ");
@@ -294,16 +304,20 @@ GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* Fi
 		fflush(stdin);
 		fflush(stdout);
 		scanf("%s", nome);
-
 		printf("Tipo [Stazione Aereoporto: 1 - Stazione Treno: 2]: ");
 		fflush(stdin);
 		fflush(stdout);
 
-		if(scanf("%d", &tipo ) || (tipo != 1 && tipo != 2))
+		do{
+		if(scanf("%d", &tipo ) || (tipo != 1 && tipo != 2)){
 			InserisciVerticeC(GrafoCitta, nome, tipo);
+			break;
+		}
 
-		else
-			printf("Valore non valido");
+		printf("Valore non valido. Riprovare [Stazione Aereoporto: 1 - Stazione Treno: 2]: ");
+		continue;
+
+		}while(true);
 
 		do{
 			printf("Si vuole inserire anche l'altra (y/n)? Inserire: ");

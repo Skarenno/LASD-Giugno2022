@@ -1,5 +1,92 @@
 #include "Citta.h"
 
+/*********** FUNZIONI PER FILE ALBERGHI ************/
+/***************************************************/
+
+GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
+	// Dichirazione variabili
+	grafo = AllocaGrafoC();
+	FILE *fp;
+	char *riga = NULL;
+	riga = (char *)malloc((maxRiga+1)*sizeof(char));
+	char albergo[STRING_MAX], *token;
+	int tempo, i = 0, posizione = 0, tipo;
+
+	// Verifiche sul file
+	fp = fopen(message, "r");
+	if(!VerificaFile(fp, message)){
+		FreeC(grafo);
+		return NULL;
+	}
+	fseek(fp, 0, SEEK_SET);
+
+	// Inizio funzione
+	while(!feof(fp)) {
+		fscanf(fp, "%s", riga);
+		token = strtok(riga, ";");
+		strcpy(albergo, token);
+		token = strtok(NULL, ";");
+		tipo = atoi(token);
+
+		InserisciVerticeC(grafo, albergo, tipo);
+		while(token!=NULL) {
+			token = strtok(NULL, ";");
+			if(token==NULL)
+				continue;
+			if(i==0)
+				strcpy(albergo, token);
+			if(i==1)
+				tipo = atoi(token);
+			if(i==2) {
+				tempo = atoi(token);
+				i = -1;
+				addArcoC(grafo, posizione, albergo, tempo, tipo);
+			}
+			i++;
+		}
+		posizione++;
+	}
+	free(riga);
+	fclose(fp);
+	return grafo;
+}
+
+
+void scriviFileAlberghi(GraphCitta* grafo, char message[]) {
+	FILE* fp;
+	if((fp=fopen(message, "w"))==NULL) {
+		printf("Impossibile aprire il file\n");
+		exit(1);
+	}
+	EdgeCitta* tmp = NULL;
+	int j = 0;
+	for(int i=0; i<grafo->numVertici; i++) {
+		tmp = grafo->adj[i];
+		while(tmp!=NULL) {
+			if(j==1)
+				fprintf(fp, ";%s;%d;%d", tmp->albergo, tmp->tipo, tmp->tempo);
+			if(j==0) {
+				fprintf(fp, "%s;%d", tmp->albergo, tmp->tipo);
+				j++;
+			}
+			if(tmp->next==NULL) {
+				if(i==(grafo->numVertici-1)) {
+					tmp = tmp->next;
+					continue;
+				}
+				fprintf(fp, "\n");
+			}
+			tmp = tmp->next;
+		}
+		j = 0;
+	}
+	fclose(fp);
+}
+
+
+
+/*********** FUNZIONI PER IL GRAFO CITTA ***********/
+/***************************************************/
 GraphCitta* AllocaGrafoC() {
 	GraphCitta* grafo = (GraphCitta*)malloc(sizeof(GraphCitta));
 
@@ -73,92 +160,6 @@ void addArcoC(GraphCitta* grafo, int posizione, char albergo[], int tempo, int t
 	grafo->numArchi++;
 }
 
-GraphCitta* leggiFileAlberghi(GraphCitta* grafo, char message[]) {
-	grafo = AllocaGrafoC();
-	FILE *fp;
-	fp = fopen(message, "r");
-	if(!VerificaFile(fp, message)){
-		FreeC(grafo);
-		return NULL;
-	}
-	fseek(fp, 0, SEEK_SET);
-	char *riga = NULL;
-	//char c;
-	//int count = 0, maxRiga = 0;*/
-	/*Conto quanto ï¿½ lunga la riga piï¿½ grande in modo da allocare la memoria per riga*/
-	/*while((c=fgetc(fp))!=EOF) {
-		if(c!='\n')
-			count++;
-		if(c=='\n') {
-			if(maxRiga<count)
-				maxRiga = count;
-			count = 0;
-			printf("%d ",maxRiga);
-		}
-	}*/
-	fseek(fp, 0, SEEK_SET);
-	riga = (char *)malloc((maxRiga+1)*sizeof(char));
-	char albergo[STRING_MAX], *token;
-	int tempo, i = 0, posizione = 0, tipo;
-	while(!feof(fp)) {
-		fscanf(fp, "%s", riga);
-		token = strtok(riga, ";");
-		strcpy(albergo, token);
-		token = strtok(NULL, ";");
-		tipo = atoi(token);
-		InserisciVerticeC(grafo, albergo, tipo);
-		while(token!=NULL) {
-			token = strtok(NULL, ";");
-			if(token==NULL)
-				continue;
-			if(i==0)
-				strcpy(albergo, token);
-			if(i==1)
-				tipo = atoi(token);
-			if(i==2) {
-				tempo = atoi(token);
-				i = -1;
-				addArcoC(grafo, posizione, albergo, tempo, tipo);
-			}
-			i++;
-		}
-		posizione++;
-	}
-	free(riga);
-	fclose(fp);
-	return grafo;
-}
-
-void scriviFileAlberghi(GraphCitta* grafo, char message[]) {
-	FILE* fp;
-	if((fp=fopen(message, "w"))==NULL) {
-		printf("Impossibile aprire il file\n");
-		exit(1);
-	}
-	EdgeCitta* tmp = NULL;
-	int j = 0;
-	for(int i=0; i<grafo->numVertici; i++) {
-		tmp = grafo->adj[i];
-		while(tmp!=NULL) {
-			if(j==1)
-				fprintf(fp, ";%s;%d;%d", tmp->albergo, tmp->tipo, tmp->tempo);
-			if(j==0) {
-				fprintf(fp, "%s;%d", tmp->albergo, tmp->tipo);
-				j++;
-			}
-			if(tmp->next==NULL) {
-				if(i==(grafo->numVertici-1)) {
-					tmp = tmp->next;
-					continue;
-				}
-				fprintf(fp, "\n");
-			}
-			tmp = tmp->next;
-		}
-		j = 0;
-	}
-	fclose(fp);
-}
 
 int isEmptyC(GraphCitta* grafo) {
 	if(grafo==NULL)
@@ -252,13 +253,23 @@ GraphCitta* rimuoviArcoC(GraphCitta* grafo, EdgeCitta* vertice1, EdgeCitta* vert
 	return grafo;
 }
 
-char *pathFileC(char nomeCitta[]) {
-	char *path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
-	strcpy(path, "./src/FILES/Alberghi/");
-	strcat(path, nomeCitta);
-	strcat(path, ".txt");
-	return path;
+void ScriviChiaviAlberghi(GraphCitta* grafo){
+	EdgeCitta* Cursor = NULL;
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		grafo->adj[i]->key = i;
+	}
+
+	for(int i = 0; i < grafo->numVertici; i++){
+		Cursor = grafo->adj[i]->next;
+		while(Cursor){
+			Cursor->key = VerificaAlbergo(grafo, Cursor->albergo);
+			Cursor = Cursor->next;
+		}
+	}
+	return;
 }
+
 
 void stampaGrafoC(GraphCitta* grafo){
 	if(isEmptyC(grafo)) {
@@ -280,13 +291,29 @@ void stampaGrafoC(GraphCitta* grafo){
 	}
 }
 
-EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]){
+/***************************************************/
+/***************************************************/
 
+
+/**************** FUNZIONI GENERICHE ***************/
+/***************************************************/
+
+// Ritorna il nome del Path del file della citta corrispondente a partire dal nome della città
+char *pathFileC(char nomeCitta[]) {
+	char *path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
+	strcpy(path, "./src/FILES/Alberghi/");
+	strcat(path, nomeCitta);
+	strcat(path, ".txt");
+	return path;
+}
+
+
+
+EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]){
 	for(int i = 0; i < grafo->numVertici; i++){
 		if(strcmp(nome, grafo->adj[i]->albergo) == 0)
 			return grafo->adj[i];
 	}
-
 	return NULL;
 }
 
@@ -313,19 +340,4 @@ int VerificaAlbergo(GraphCitta* grafo, char albergo[]){ // ritorna 1 se esiste
 	return -1;
 }
 
-void ScriviChiaviAlberghi(GraphCitta* grafo){
-	EdgeCitta* Cursor = NULL;
 
-	for(int i = 0; i < grafo->numVertici; i++){
-		grafo->adj[i]->key = i;
-	}
-
-	for(int i = 0; i < grafo->numVertici; i++){
-		Cursor = grafo->adj[i]->next;
-		while(Cursor){
-			Cursor->key = VerificaAlbergo(grafo, Cursor->albergo);
-			Cursor = Cursor->next;
-		}
-	}
-	return;
-}

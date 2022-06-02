@@ -91,18 +91,6 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 				break;
 			default: printf("Valore non Valido\n");
 		}
-//		user->saldo=user->saldo-price;
-//		printf("Complimenti, hai prenotato il tuo viaggio!\n");
-//		printf("Nella tua destinazione sono disponibili i seguenti alberghi: \n");
-//		///TODO: stampa lista alberghi
-//		printf("Pensi di soggiornare presso uno di questi alberghi? 1 per continuare, 0 per tornare al menu\n");
-//		scanf("%d",&confirm);
-//		if (confirm){
-//			///TODO: Dijkstra su grafo alberghi e stampa tempo
-//		}
-//
-//		printf("Uscire dall'applicativo? (1:Si, 0:No)\n");
-//		scanf("%d",&confirm);
 	}
 
 }
@@ -189,10 +177,11 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 			tipoDijkstra = 3;
 	}
 
-	price = dijkstra(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra, &distance);
+	price = DijkstraViaggi(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra, &distance);
 
 	if(price == INT_MAX){
-		printf("Tratta non disponibile");
+		printf("****Tratta non disponibile****\n");
+		sleep(1);
 		return 0;
 	}
 	printf("La durata di questo viaggio è di %.0f minuti\n", distance);
