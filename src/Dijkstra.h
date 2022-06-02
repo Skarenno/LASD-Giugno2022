@@ -10,8 +10,6 @@ typedef struct minheapnode{
     int  v;
     float dist;
     float prezzo;
-
-    struct minheapnode *parent;
 }HeapNode;
 
 // Structure to represent a min heap
@@ -38,7 +36,8 @@ void RiduciDistanza(Heap* minHeap, int v, float dist, float prezzo);
 bool isInMinHeap(Heap *minHeap, int v);
 void StampaDijkstra(float dist[], float prezzo[], int n);
 float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned);
-float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route);
-void StampaDijkstraAlberghi (HeapNode *last);
+float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo);
+void printPath(int parent[], int j);
+int minDistance(int dist[], bool sptSet[], int V);
 
 #endif

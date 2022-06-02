@@ -246,114 +246,113 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 
 }
 
-
-/*************************************************/
-
-
-float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route){
+/*****************************************************************/
 
 
-    // Get the number of vertices in graph
+float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
+
     int V = graph->numVertici;
 
-    // dist values used to pick
-    // minimum weight edge in cut
+    // Valori per lo storing delle distanze
     float dist[V];
-    route = (char*)malloc(sizeof(char)*400);
-    route[0]='\0';
 
-    // minHeap represents set E
+    // sptSet[i] will true if vertex i is included / in shortest
+       // path tree or shortest distance from src to i is finalized
+       bool sptSet[V];
+
+       // Parent array to store shortest path tree
+       int parent[V];
+
     Heap* minHeap = CreazioneHeap(V);
-    HeapNode* minHeapNode;
-    HeapNode* prev = NULL;
 
-    // Initialize min heap with all
-    // vertices. dist value of all vertices
-    for (int v = 0; v < V; ++v)
-    {
+    // Inizializziamo l'Heap con le distanze a "Infinito"
+    for (int v = 0; v < V; ++v){
         dist[v] = INT_MAX;
+        parent[v] = -1;
+        sptSet[v] = false;
         minHeap->array[v] = NuovoHeapNode(v, dist[v],0);
         minHeap->pos[v] = v;
     }
 
-    // Make dist value of src vertex
-    // as 0 so that it is extracted first
+    // Distanza da se stesso = 0
     minHeap->array[partenza] = NuovoHeapNode(partenza, dist[partenza], 0);
     minHeap->pos[partenza]   = partenza;
     dist[partenza] = 0;
     RiduciDistanza(minHeap, partenza, dist[partenza], 0);
 
-    // Initially size of min heap is equal to V
+    // Inizialmente la  grandezza dell'Heap � V (VERTICI)
     minHeap->size = V;
 
-    // In the followin loop,
-    // min heap contains all nodes
-    // whose shortest distance
-    // is not yet finalized.
-    while (!isEmptyHeap(minHeap)){
-        // Extract the vertex with
-        // minimum distance value
-    	minHeapNode = TrovaMinimo(minHeap);
 
-    	minHeapNode->parent = prev;
-    	prev = minHeapNode;
+    // Inizio loop principale
+    while (!isEmptyHeap(minHeap))
+    {
+        // Troviamo il vertice della distanza minima e estraiamone l'indice
+        HeapNode* minHeapNode = TrovaMinimo(minHeap);
 
-        // Store the extracted vertex number
         int u = minHeapNode->v;
 
-			// Traverse through all adjacent
-			// vertices of u (the extracted
-        // vertex) and update
-        // their distance values
-        EdgeCitta* pCrawl = graph->adj[u];
-
-        while (pCrawl != NULL){
-            int v = pCrawl->key;
-
-            // If shortest distance to v is
-            // not finalized yet, and distance to v
-            // through u is less than its
-            // previously calculated distance
+        int uu = minDistance((int*)dist, sptSet, V);
+        sptSet[uu] = true;
 
 
+        // Temp per attraversare i Vertici adiacenti
+        EdgeCitta* TempNode = graph->adj[u];
 
-			 if(pCrawl->tempo != 0){
-				if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempo + dist[u] < dist[v]){
-					dist[v] = dist[u] + (float)pCrawl->tempo;
 
-					// update distance
-					// value in min heap also
-					RiduciDistanza(minHeap, v, dist[v],0);
+        // Attraversiamo i vertici adiacenti
+        while (TempNode != NULL){
+            int v = TempNode->key;
 
-				}
+            // Effettuiamo il calcolo rispetto al tipo di peso da considerare
+            // Dopo effettuiamo i controlli sull'update del valore delle distanze
+					if(TempNode->tempo != 0){
+						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->tempo + dist[u] < dist[v]){
+							dist[v] = dist[u] + (float)TempNode->tempo;
+							parent[v]  = u;
 
-			}
+							// update distance
+							// value in min heap also
+							RiduciDistanza(minHeap, v, dist[v], 0);
+						}
+					}
 
-			pCrawl = pCrawl->next;
-
+            TempNode = TempNode->next;
         }
 
-
-
     }
-    StampaDijkstraAlberghi(minHeap->array[arrivo]);
-    // print the calculated shortest distances
 
     StampaDijkstra(dist,dist, V);
-
+    printf("\nPercorso: \n%d ",partenza);
+    printPath(parent,arrivo);
     return dist[arrivo];
 
 }
 
-
-void StampaDijkstraAlberghi (HeapNode *last)
+// Function to print shortest path from source to j
+// using parent array
+void printPath(int parent[], int j)
 {
-    while (last != NULL)
-    {
-        printf ("%d -> ", last->v);
+    // Base Case : If j is source
+    if (parent[j]==-1)
+        return;
 
-        last = last->parent;
-    }
+    printPath(parent, parent[j]);
 
-    printf ("NULL\n");
+    printf("%d ", j);
+}
+
+// A utility function to find the vertex with minimum distance
+// value, from the set of vertices not yet included in shortest
+// path tree
+int minDistance(int dist[], bool sptSet[], int V)
+{
+    // Initialize min value
+    int min = INT_MAX, min_index;
+
+    for (int v = 0; v < V; v++)
+        if (sptSet[v] == false && dist[v] <= min)
+            min = dist[v], min_index = v;
+
+    return min_index;
 }

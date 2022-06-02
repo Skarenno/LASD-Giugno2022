@@ -9,7 +9,7 @@
 
 void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 	int prenotato = 0, choice, tipoViaggio, indiceAlbPartenza, indiceAlbArrivo;
-	char yn, *nomeArrivo = NULL, albergoArrivo[STRING_MAX], *route = NULL;
+	char yn, *nomeArrivo = NULL, albergoArrivo[STRING_MAX];
 	float nuovoSaldo = 0.0;
 	Utente* Cursor = ListaUtenti;
 	GraphCitta* grafoCitta=AllocaGrafoC();
@@ -63,7 +63,7 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 								break;
 							} while (true);
 							indiceAlbPartenza=VerificaTipo(grafoCitta,tipoViaggio+1);
-							DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo,route);
+							DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo);
 							break;
 						case 'n':
 							break;
