@@ -260,12 +260,16 @@ int VerificaCitta(GraphViaggi* GrafoViaggi, char citta[]){ // ritorna 1 se esist
 GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]) {
 	GraphViaggi *grafo1 = AllocaGrafo();
 	EdgeViaggi *vertice = NULL;
+	int k = 0;
 
 	for(int i=0; i<grafo->numVertici; i++) {
 		if(strcmp(nomeCitta, grafo->adj[i]->citta)==0)
 			vertice = grafo->adj[i];
-		else
+		else {
 			InserisciVertice(grafo1, grafo->adj[i]->citta);
+			grafo1->adj[k]->key = k;
+			k++;
+		}
 	}
 	int j = 0;
 	for(int i=0; i<grafo->numVertici; i++) {

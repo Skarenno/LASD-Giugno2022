@@ -64,11 +64,11 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						fflush(stdin);
 						scanf("%s", nome);
 						if(!VerificaCitta(grafo, nome)){
-							FILE* New = fopen(pathFileC(nome), "w+");
+							FILE* New = fopen(pathFileC(nome), "w");
 							fclose(New);
 						}
 						InserisciVertice(grafo, nome);
-
+						grafo->adj[grafo->numVertici-1]->key = grafo->numVertici-1;
 						scriviFileViaggi(grafo);
 						break;
 
@@ -101,7 +101,9 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 					// Tornare indietro
 					case 4:
 						printf("Ciao\n");
-						exit(1);
+						freeGraphViaggi(grafo);
+						grafo = NULL;
+						exit(EXIT_SUCCESS);
 
 					default: printf("Valore non Valido\nRiprovare\n");
 				}
@@ -142,7 +144,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							break;
 						}
 
-						FileCitta = fopen(nomeFile = pathFileC(nome), "r+");
+						FileCitta = fopen(nomeFile = pathFileC(nome), "r");
 						GrafoCitta = AggiungiAlbergo(GrafoCitta, grafo, FileCitta, nomeFile);
 						scriviFileAlberghi(GrafoCitta, nomeFile);
 						fclose(FileCitta);
@@ -369,7 +371,7 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", nomePartenza);
-		if(!VerificaCitta(grafo, nomePartenza))
+		if(VerificaCitta(grafo, nomePartenza)==-1)
 			printf("Citta non Esistente\nRiprova\n");
 		else
 			break;
@@ -380,7 +382,7 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", nomeArrivo);
-		if(!VerificaCitta(grafo, nomeArrivo))
+		if(VerificaCitta(grafo, nomeArrivo)==-1)
 			printf("Citta non Esistente\nRiprova\n");
 		else
 			break;
@@ -434,6 +436,10 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		}
 		break;
 	}while(true);
+	if(tempoAereo==0 && tempoTreno==0) {
+		printf("Collegamento Ignorato\n");
+		return grafo;
+	}
 	for(int i=0; i<grafo->numVertici; i++)
 		if(strcmp(nomePartenza, grafo->adj[i]->citta)==0) {
 			addArco(grafo, i, nomeArrivo, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
