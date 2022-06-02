@@ -149,7 +149,7 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
     prezzo[partenza] = 0;
     RiduciDistanza(minHeap, partenza, dist[partenza], prezzo[partenza]);
 
-    // Inizialmente la  grandezza dell'Heap è V (VERTICI)
+    // Inizialmente la  grandezza dell'Heap ï¿½ V (VERTICI)
     minHeap->size = V;
 
 
@@ -248,7 +248,8 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 
 
 
-float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
+float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo, char* route){
+
 
     // Get the number of vertices in graph
     int V = graph->numVertici;
@@ -256,6 +257,8 @@ float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     // dist values used to pick
     // minimum weight edge in cut
     float dist[V];
+    route = (char*)malloc(sizeof(char)*400);
+    route[0]='\0';
 
     // minHeap represents set E
     Heap* minHeap = CreazioneHeap(V);
@@ -311,6 +314,8 @@ float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 			 if(pCrawl->tempo != 0){
 				if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->tempo + dist[u] < dist[v]){
 					dist[v] = dist[u] + (float)pCrawl->tempo;
+					route=strcat(route,pCrawl->albergo);
+					route=strcat(route," -> ");
 
 
 					// update distance
@@ -324,6 +329,8 @@ float dijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     }
     // print the calculated shortest distances
     StampaDijkstra(dist,dist, V);
+
+    printf("%s\n",route);
 
     return dist[arrivo];
 

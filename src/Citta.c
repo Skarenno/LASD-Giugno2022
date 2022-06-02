@@ -298,7 +298,7 @@ void stampaGrafoC(GraphCitta* grafo){
 /**************** FUNZIONI GENERICHE ***************/
 /***************************************************/
 
-// Ritorna il nome del Path del file della citta corrispondente a partire dal nome della città
+// Ritorna il nome del Path del file della citta corrispondente a partire dal nome della cittï¿½
 char *pathFileC(char nomeCitta[]) {
 	char *path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
 	strcpy(path, "./src/FILES/Alberghi/");
@@ -330,9 +330,19 @@ void stampaAlberghi(GraphCitta* grafo){
 	}
 }
 
-int VerificaAlbergo(GraphCitta* grafo, char albergo[]){ // ritorna 1 se esiste
+int VerificaAlbergo(GraphCitta* grafo, char albergo[]){ // ritorna indice se esiste
 	for(int i = 0; i < grafo->numVertici; i++){
 		if(strcmp(grafo->adj[i]->albergo, albergo) == 0){
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+int VerificaTipo(GraphCitta* grafo, int tipo){ // ritorna indice se esiste
+	for(int i = 0; i < grafo->numVertici; i++){
+		if(grafo->adj[i]->tipo==tipo){
 			return i;
 		}
 	}

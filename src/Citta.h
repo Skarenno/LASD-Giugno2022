@@ -37,6 +37,7 @@ void stampaGrafoC(GraphCitta* grafo);
 EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]);
 void stampaAlberghi(GraphCitta* grafo);
 int VerificaAlbergo(GraphCitta* grafo, char albergo[]);
+int VerificaTipo(GraphCitta* grafo, int tipo);
 void ScriviChiaviAlberghi(GraphCitta* grafo);
 
 #endif
