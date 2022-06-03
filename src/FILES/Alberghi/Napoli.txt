@@ -3,4 +3,4 @@ Termini;2;Excelsior;0;20;Capodichino;1;15;Asiatico;0;30
 Asiatico;0;Termini;2;30;Capodichino;1;60;Venere;0;35
 Venere;0;Asiatico;0;35;Hilton;0;25
 Hilton;0;Capodichino;1;15;Venere;0;25
-Capodichino;1;Excelsior;0;10;Hilton;0;15;Asiatico;0;60;Termini;2;15
+Capodichino;1;Excelsior;0;10;Termini;2;15;Asiatico;0;60;Hilton;0;15

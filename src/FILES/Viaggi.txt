@@ -1,8 +1,7 @@
-Napoli;Palermo;0.00;0;65.76;35;Sicilia;0.00;0;25.00;240;Roma;30.00;40;0.00;0;
-Firenze;Bologna;60.00;80;0.00;0;Palermo;60.00;15;0.00;0;
-Bologna;Milano;0.00;0;20.00;50;Roma;70.00;120;0.00;0;Firenze;60.00;80;0.00;0;
-Milano;Matera;0.00;0;0.00;0;Sicilia;0.00;0;40.00;300;Bologna;0.00;0;20.00;50;
-Sicilia;Napoli;0.00;0;25.00;240;Roma;60.00;100;40.00;350;Milano;0.00;0;40.00;300;
-Roma;Roma;60.00;100;40.00;350;Sicilia;60.00;100;40.00;350;Bologna;70.00;120;0.00;0;Napoli;30.00;40;0.00;0;
-Palermo;Matera;34.00;15;20.00;20;Napoli;0.00;0;65.76;35;Firenze;60.00;15;0.00;0;
-Matera;Milano;0.00;0;0.00;0;Palermo;34.00;15;20.00;20;
+Napoli;Firenze;50;60;20;180;Roma;30;40;0;0;Sicilia;0;0;25;240;Bari;50;35;25;100
+Firenze;Napoli;50;60;20;180;Bologna;60;80;0;0
+Bologna;Firenze;60;80;0;0;Roma;70;120;0;0;Milano;0;0;20;50
+Milano;Bologna;0;0;20;50;Sicilia;0;0;40;300
+Sicilia;Milano;0;0;40;300;Roma;60;100;40;350;Napoli;0;0;25;240;Bari;0;0;30;120
+Roma;Napoli;30;40;0;0;Bologna;70;120;0;0;Sicilia;60;100;40;350
+Bari;Napoli;50;35;25;100;Sicilia;0;0;30;120

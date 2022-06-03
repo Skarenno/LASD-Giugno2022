@@ -1,5 +1,5 @@
-Vespucci;1;Florence;0;20;Castello;2;5;Ferrara;0;15
-Florence;0;Vespucci;1;20;Castello;2;20;Paris;0;40
-Paris;0;Florence;0;40;Castello;2;30
+Vespucci;1;Castello;2;5;Ferrara;0;15
+Florence;0;Castello;2;20;Paris;0;40
+Paris;0;Castello;2;30;Florence;0;40
 Ferrara;0;Vespucci;1;15;Castello;2;10
 Castello;2;Vespucci;1;5;Florence;0;20;Paris;0;30;Ferrara;0;10

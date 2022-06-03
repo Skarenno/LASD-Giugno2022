@@ -1,4 +1,4 @@
-Sciacca;1;Pinto;0;20;Soleil;0;10
-Cimarosa;2;Pinto;0;30;Soleil;0;5
+Sciacca;1;Soleil;0;10;Pinto;0;20
+Cimarosa;2;Soleil;0;5;Pinto;0;30
 Pinto;0;Sciacca;1;20;Cimarosa;2;30;Soleil;0;15
-Soleil;0;Pinto;0;15;Cimarosa;2;5;Sciacca;1;10
+Soleil;0;Sciacca;1;10;Cimarosa;2;5;Pinto;0;15

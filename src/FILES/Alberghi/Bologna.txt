@@ -1,5 +1,4 @@
-Fumarola;1;Duse;0;15;Veronesi;0;50
-Veronesi;0;Ticino;2;25;Duse;0;30;Fumarola;1;50
-Ticino;2;AlbergoNonLoSo;0;20;Veronesi;0;25;Duse;0;20
-Duse;0;Veronesi;0;30;Fumarola;1;15;Ticino;2;20
-AlbergoNonLoSo;0;Ticino;2;20
+Fumarola;1;Veronesi;0;50;Ticino;2;15
+Veronesi;0;Fumarola;1;50;Duse;0;25;Ticino;2;30
+Duse;0;Veronesi;0;25;Ticino;2;20
+Ticino;2;Fumarola;1;15;Veronesi;0;30;Duse;0;20
