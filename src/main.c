@@ -32,7 +32,7 @@ int main(){
 	GrafoAlberghi = NULL;
 
 	/**** INIZIO UI ****/
-	stampaGrafo(GrafoViaggi);
+	//stampaGrafo(GrafoViaggi); //Per Debug
 	fflush(stdout);
 	GrafoAlberghi = AllocaGrafoC();
 	GrafoAlberghi = leggiFileAlberghi(GrafoAlberghi, pathFileC("Firenze"));
@@ -47,7 +47,7 @@ int main(){
 		ListaUtenti = NULL;
 		ListaUtenti = LeggiFileUtenti(FileUtenti, ListaUtenti);
 
-		StampaListaUtenti(ListaUtenti);
+		//StampaListaUtenti(ListaUtenti);
 		userDashboard(ListaUtenti, UtenteAttuale, GrafoViaggi);	//Schermata PRINCIPALE
 	}
 

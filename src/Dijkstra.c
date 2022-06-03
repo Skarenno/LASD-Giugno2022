@@ -250,7 +250,7 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 
     }
 
-    StampaDijkstra(dist,prezzo, V);
+    //StampaDijkstra(dist,prezzo, V); //Per debug
     printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->citta);
     printPathV(graph, parent,arrivo);
     printf("|\n");
@@ -341,7 +341,7 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 
     }
 
-    StampaDijkstra(dist,dist, V);
+    //StampaDijkstra(dist,dist, V); //Per Debug
     printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->albergo);
     printPath(graph, parent,arrivo);
     printf("|\n");

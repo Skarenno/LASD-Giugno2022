@@ -325,6 +325,20 @@ void stampaAlberghi(GraphCitta* grafo){
 	if(grafo==NULL)
 		printf("Nessun Albergo da Mostrare\n");
 	for(int i = 0; i < grafo->numVertici; i++){
+		if(grafo->adj[i]->tipo==0) {
+			printf("%s", grafo->adj[i]->albergo);
+			if(i < grafo->numVertici - 1){
+					printf(" - ");
+			} else
+				printf("\n");
+		}
+	}
+}
+
+void stampaAlberghiAlt(GraphCitta* grafo){
+	if(grafo==NULL)
+		printf("Nessun Albergo da Mostrare\n");
+	for(int i = 0; i < grafo->numVertici; i++){
 		printf("%s", grafo->adj[i]->albergo);
 		if(i < grafo->numVertici - 1){
 				printf(" - ");
@@ -352,5 +366,3 @@ int VerificaTipo(GraphCitta* grafo, int tipo){ // ritorna indice se esiste
 
 	return -1;
 }
-
-

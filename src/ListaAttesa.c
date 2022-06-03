@@ -12,10 +12,8 @@ ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo, in
 
 ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo) {
 
-	if(lista == NULL){
-		nodo->numElem = 1;
+	if(lista == NULL)
 		return nodo;
-	}
 	ListaAttesa *tmp = lista;
 	bool check = false;
 	while(tmp!=NULL) { // Controlla che il nodo non eista già nella lista di attesa
@@ -24,7 +22,6 @@ ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo) {
 	}
 	if(!check) {
 		nodo->next = lista;
-		nodo->numElem = lista->numElem + 1;
 		return nodo;
 	}
 	return lista;
@@ -91,6 +88,28 @@ ListaAttesa *svuotaLista(ListaAttesa *lista) {
 		tmp = lista;
 	}
 	return NULL;
+}
+
+ListaAttesa *rimuoviNodoAttesa(ListaAttesa *Attesa, ListaAttesa *nodo){
+
+    ListaAttesa *tmp;
+
+    if(Attesa==NULL || nodo==NULL) return NULL;
+
+    if(Attesa==nodo){
+
+        tmp=Attesa->next;
+
+        free(Attesa);
+
+        return tmp;
+
+    }
+
+    Attesa->next=rimuoviNodoAttesa(Attesa->next, nodo);
+
+    return Attesa;
+
 }
 
 void stampaAttesa(ListaAttesa *lista) {

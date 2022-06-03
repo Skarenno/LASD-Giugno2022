@@ -9,6 +9,7 @@
 
 #include "standard_header.h"
 #include "GestioneAdmin.h"
+#include "Dijkstra.h"
 
 void adminDashboard(Admin* admin, GraphViaggi* grafo);
 GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo);

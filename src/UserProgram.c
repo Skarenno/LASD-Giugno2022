@@ -49,8 +49,9 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 					yn = tolower(yn);
 					switch(yn) {
 						case 'y':
-							grafoCitta=leggiFileAlberghi(grafoCitta,pathFileC(nomeArrivo));
-							stampaGrafoC(grafoCitta);
+							grafoCitta = leggiFileAlberghi(grafoCitta,pathFileC(nomeArrivo));
+							//stampaGrafoC(grafoCitta);//Per Debug
+							stampaAlberghi(grafoCitta);
 							do{
 								printf("Scegli uno tra gli alberghi disponibili: ");
 								fflush(stdout);
@@ -61,11 +62,15 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 									printf("Albergo non presente\n");
 									continue;
 								}
+								if(grafoCitta->adj[indiceAlbArrivo]->tipo==1 || grafoCitta->adj[indiceAlbArrivo]->tipo==2) {
+									printf("Non si è Selezionato un Albergo!\n");
+									continue;
+								}
 								break;
 							} while (true);
 							indiceAlbPartenza = VerificaTipo(grafoCitta,tipoViaggio+1);
 							dijkstraTempoMin = DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo);
-							printf("Il tempo Totale della tratta è: %.0f", dijkstraTempoMin);
+							printf("Il tempo Totale della tratta è: %.0f\n", dijkstraTempoMin);
 							break;
 						case 'n':
 							printf("Ok Buon Viaggio!\n");

@@ -190,7 +190,7 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
 				case 2:
 					ListaUtenti = RegistraUtente(ListaUtenti);
 					RiscriviFileUtenti(ListaUtenti); // Aggiorno il database quando registro un nuovo utente
-					StampaListaUtenti(ListaUtenti);	// Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in coda
+					//StampaListaUtenti(ListaUtenti);	// Per Debug stampo a schermo la lista dopo aver aggiunto il nodo del nuovo utente in coda
 					continue;
 
 				// Chiusura programma

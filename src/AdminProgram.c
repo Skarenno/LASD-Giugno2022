@@ -214,7 +214,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						nomeFile = pathFileC(nome);
 						GrafoCitta = leggiFileAlberghi(GrafoCitta, nomeFile);
 						if(GrafoCitta!=NULL)
-							stampaAlberghi(GrafoCitta);
+							stampaAlberghiAlt(GrafoCitta);
 						/*Se il file degli alberghi è vuoto GrafoCitta sarà NULL, quindi chiedo di inserire prima degli alberghi.
 						GrafoCitta potrebbe avere anche un solo albergo in tal caso chiedo comunque di inserire altri alberghi dato
 						che non ci possono essere nodi cappio*/
@@ -228,7 +228,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							fflush(stdout);
 							fflush(stdin);
 							scanf("%s", nomePartenza);
-							if(!VerificaAlbergo(GrafoCitta, nomePartenza)) {
+							if(VerificaAlbergo(GrafoCitta, nomePartenza)==-1) {
 								printf("Albergo non Trovato\n");
 								continue;
 							}
@@ -243,7 +243,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							fflush(stdout);
 							fflush(stdin);
 							scanf("%s", nomeArrivo);
-							if(!VerificaAlbergo(GrafoCitta, nomeArrivo)) {
+							if(VerificaAlbergo(GrafoCitta, nomeArrivo)==-1) {
 								printf("Albergo non Trovato\n");
 								continue;
 							}
@@ -373,6 +373,8 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 	float prezzoAereo = 0, prezzoTreno = 0;
 	char nomePartenza[STRING_MAX];
 	char nomeArrivo[STRING_MAX];
+	ListaAttesa *Attesa = NULL;
+	Attesa = leggiAttesa(Attesa);
 
 	do {
 		printf("Citta di Partenza: ");
@@ -458,7 +460,36 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 			addArco(grafo, i, nomePartenza, prezzoAereo, prezzoTreno, tempoAereo, tempoTreno);
 			break;
 		}
-
+	ListaAttesa *tmp = Attesa;
+	ListaAttesa *prec = NULL;
+	int indicePartenza, indiceArrivo;
+	float distanceReturned, dijkstraReturn;
+	while(tmp!=NULL) {
+		indicePartenza = VerificaCitta(grafo, tmp->partenza);
+		if(indicePartenza==-1) {
+			prec = tmp;
+			Attesa = rimuoviNodoAttesa(Attesa, tmp);
+			tmp = prec->next;
+		}
+		indiceArrivo = VerificaCitta(grafo, tmp->arrivo);
+		if(indiceArrivo==-1) {
+			prec = tmp;
+			Attesa = rimuoviNodoAttesa(Attesa, tmp);
+			tmp = prec->next;
+		}
+		dijkstraReturn = DijkstraViaggi(grafo, indicePartenza, indiceArrivo, tmp->tipo+1, &distanceReturned);
+		/*if(dijkstraReturn<INT_MAX) {
+			prec = tmp;
+			if(tmp->tipo==0)
+				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Aereo");
+			else
+				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Treno");
+			Attesa = rimuoviNodoAttesa(Attesa, tmp);
+			tmp = prec->next;
+		} else*/
+			tmp = tmp->next;
+	}
+	scriviAttesa(Attesa);
 	return grafo;
 }
 

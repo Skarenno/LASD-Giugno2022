@@ -123,7 +123,7 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 	// Chiusura file admin
 
 
-	StampaListaAdmin(ListaAdmin);
+	//StampaListaAdmin(ListaAdmin); //Per Debug
 	printf("***************\n **Benvenuto** \n***************\n\n");
 	sleep(1);
 	do {
@@ -138,7 +138,7 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 				//Accesso
 				case 1:
 					AdminAttuale = AccessoAdmin(ListaAdmin);
-					StampaListaAdmin(ListaAdmin);
+					//StampaListaAdmin(ListaAdmin); //Per Debug
 					if(AdminAttuale!=NULL)
 						accesso = true;
 					break;
