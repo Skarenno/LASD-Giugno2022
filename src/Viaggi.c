@@ -85,14 +85,14 @@ GraphViaggi* rimuoviArcoV(GraphViaggi* grafo, char* vertice1, char* vertice2) {
 	}
 	EdgeViaggi* tmp = verticePartenza->next;
 	while(tmp!=NULL) {
-		if(tmp==verticeArrivo && tmp->prec==verticePartenza) {
+		if((strcmp(tmp->citta, verticeArrivo->citta)== 0) && (strcmp(tmp->prec->citta, verticePartenza->citta)== 0)) {
 			verticePartenza->next = tmp->next;
 			if(tmp->next!=NULL)
 				tmp->next->prec = verticePartenza;
 			free(tmp);
 			grafo->numArchi-=2;
 			return grafo;
-		} else if(tmp==verticeArrivo && tmp->prec!=verticePartenza) {
+		} else if((strcmp(tmp->citta, verticeArrivo->citta)== 0) && (strcmp(tmp->prec->citta, verticePartenza->citta)!= 0)) {
 			tmp->prec->next = tmp->next;
 			if(tmp->next!=NULL)
 				tmp->next->prec = tmp->prec;
@@ -330,18 +330,28 @@ GraphViaggi *updateArchi(GraphViaggi *grafo, char *vertice1, char *vertice2, int
 	while(tmp!=NULL) {
 		if(indice1==tmp->key) {
 			if(tipo==1) {
+				if(tmp->tempoAereo == 0){
+					printf("Collegamento già assente\n");
+					return grafo;
+				}
 				tmp->prezzoAereo = 0;
 				tmp->tempoAereo = 0;
 				if(tmp->tempoTreno==0) {
 					grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+					grafo = rimuoviArcoV(grafo, vertice2, vertice1);
 					printf("Collegamento tra le città rimosso, perchè non esistono più ne treni ne aerei\n");
 				}
 				break;
 			} else {
+				if(tmp->tempoTreno == 0){
+					printf("Collegamento già assente\n");
+					return grafo;
+				}
 				tmp->prezzoTreno = 0;
 				tmp->tempoTreno = 0;
 				if(tmp->tempoAereo==0) {
 					grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+					grafo = rimuoviArcoV(grafo, vertice2, vertice1);
 					printf("Collegamento tra le città rimosso, perchè non esistono più ne treni ne aerei\n");
 				}
 				break;

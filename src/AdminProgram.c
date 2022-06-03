@@ -512,6 +512,7 @@ GraphViaggi *menuEliminaArco(GraphViaggi *grafo) {
 			case 3:
 				printf("Rimuovo Tratta\n");
 				grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+				grafo = rimuoviArcoV(grafo, vertice2, vertice1);
 				break;
 		}
 		break;

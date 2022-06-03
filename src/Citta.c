@@ -236,14 +236,14 @@ GraphCitta* rimuoviArcoC(GraphCitta* grafo, EdgeCitta* vertice1, EdgeCitta* vert
 		return grafo;
 	EdgeCitta* tmp = vertice1->next;
 	while(tmp!=NULL) {
-		if(tmp==vertice2 && tmp->prec==vertice1) {
+		if((strcmp(tmp->albergo, vertice2->albergo)) == 0 && (strcmp(tmp->prec->albergo, vertice1->albergo) == 0)) {
 			vertice1->next = tmp->next;
 			if(tmp->next!=NULL)
 				tmp->next->prec = vertice1;
 			free(tmp);
 			grafo->numArchi-=2;
 			return grafo;
-		} else if(tmp==vertice2 && tmp->prec!=vertice1) {
+		} else if((strcmp(tmp->albergo, vertice2->albergo)) == 0 && (strcmp(tmp->prec->albergo, vertice1->albergo) != 0)) {
 			tmp->prec->next = tmp->next;
 			if(tmp->next!=NULL)
 				tmp->next->prec = tmp->prec;
