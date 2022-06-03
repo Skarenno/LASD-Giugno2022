@@ -1,5 +1,5 @@
-Napoli;Firenze;50.00;60;20.00;180;Roma;30.00;40;0.00;0;Sicilia;0.00;0;25.00;240;Palermo;0.00;0;65.76;35;
-Firenze;Palermo;60.00;15;0.00;0;Napoli;50.00;60;20.00;180;Bologna;60.00;80;0.00;0;
+Napoli;Firenze;0.00;0;0.00;0;Roma;30.00;40;0.00;0;Sicilia;0.00;0;25.00;240;Palermo;0.00;0;65.76;35;
+Firenze;Palermo;60.00;15;0.00;0;Napoli;0.00;0;0.00;0;Bologna;60.00;80;0.00;0;
 Bologna;Firenze;60.00;80;0.00;0;Roma;70.00;120;0.00;0;Milano;0.00;0;20.00;50;
 Milano;Bologna;0.00;0;20.00;50;Sicilia;0.00;0;40.00;300;Matera;0.00;0;0.00;0;
 Sicilia;Milano;0.00;0;40.00;300;Roma;60.00;100;40.00;350;Napoli;0.00;0;25.00;240;

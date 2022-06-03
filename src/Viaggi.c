@@ -72,6 +72,38 @@ void addArco(GraphViaggi* grafo, int posizione, char citta[], float prezzoAereo,
 	grafo->numArchi++;
 }
 
+GraphViaggi* rimuoviArcoV(GraphViaggi* grafo, char* vertice1, char* vertice2) {
+	if(isEmpty(grafo))
+		return grafo;
+	EdgeViaggi* verticePartenza = NULL;
+	EdgeViaggi* verticeArrivo = NULL;
+	for(int i=0; i<grafo->numVertici; i++) {
+		if(strcmp(vertice1, grafo->adj[i]->citta)==0)
+			verticePartenza = grafo->adj[i];
+		if(strcmp(vertice2, grafo->adj[i]->citta)==0)
+			verticeArrivo = grafo->adj[i];
+	}
+	EdgeViaggi* tmp = verticePartenza->next;
+	while(tmp!=NULL) {
+		if(tmp==verticeArrivo && tmp->prec==verticePartenza) {
+			verticePartenza->next = tmp->next;
+			if(tmp->next!=NULL)
+				tmp->next->prec = verticePartenza;
+			free(tmp);
+			grafo->numArchi-=2;
+			return grafo;
+		} else if(tmp==verticeArrivo && tmp->prec!=verticePartenza) {
+			tmp->prec->next = tmp->next;
+			if(tmp->next!=NULL)
+				tmp->next->prec = tmp->prec;
+			free(tmp);
+			grafo->numArchi-=2;
+			return grafo;
+		}
+		tmp = tmp->next;
+	}
+	return grafo;
+}
 
 GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	grafo = AllocaGrafo();
@@ -90,18 +122,6 @@ GraphViaggi* leggiFileViaggi(GraphViaggi* grafo) {
 	}
 	fseek(fp, 0, SEEK_SET);
 	char *riga = NULL;
-	/*char c;
-	int count = 0, maxRiga = 0;*/
-	/*Conto quanto ï¿½ lunga la riga piï¿½ grande in modo da allocare la memoria per riga*/
-	/*while((c=fgetc(fp))!=EOF) {
-		if(c!='\n')
-			count++;
-		if(c=='\n') {
-			if(maxRiga<count)
-				maxRiga = count;
-			count = 0;
-		}
-	}*/
 	fseek(fp, 0, SEEK_SET);
 	riga = (char *)malloc((maxRiga+1)*sizeof(char));
 	char citta[STRING_MAX], *token;
@@ -285,4 +305,49 @@ GraphViaggi *rimuoviVerticeV(GraphViaggi *grafo, char nomeCitta[]) {
 	}
 	freeGraphViaggi(grafo);
 	return grafo1;
+}
+
+GraphViaggi *updateArchi(GraphViaggi *grafo, char *vertice1, char *vertice2, int tipo) {
+	int indice1, indice2;
+	indice1 = VerificaCitta(grafo, vertice1);
+	indice2 = VerificaCitta(grafo, vertice2);
+	EdgeViaggi *tmp = grafo->adj[indice1]->next;
+	while(tmp!=NULL) {
+		if(indice2==tmp->key) {
+			if(tipo==1) {
+				tmp->prezzoAereo = 0;
+				tmp->tempoAereo = 0;
+				break;
+			} else {
+				tmp->prezzoTreno = 0;
+				tmp->tempoTreno = 0;
+				break;
+			}
+		}
+		tmp = tmp->next;
+	}
+	tmp = grafo->adj[indice2]->next;
+	while(tmp!=NULL) {
+		if(indice1==tmp->key) {
+			if(tipo==1) {
+				tmp->prezzoAereo = 0;
+				tmp->tempoAereo = 0;
+				if(tmp->tempoTreno==0) {
+					grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+					printf("Collegamento tra le città rimosso, perchè non esistono più ne treni ne aerei\n");
+				}
+				break;
+			} else {
+				tmp->prezzoTreno = 0;
+				tmp->tempoTreno = 0;
+				if(tmp->tempoAereo==0) {
+					grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+					printf("Collegamento tra le città rimosso, perchè non esistono più ne treni ne aerei\n");
+				}
+				break;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return grafo;
 }

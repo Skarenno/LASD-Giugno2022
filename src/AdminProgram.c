@@ -49,8 +49,8 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	/**** MENU LAVORO SU CITTA ****/
 	if(!choice){
 		confirm = 0;
-		while (confirm!=4) {
-			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Arco - 4. Chiudi programma):");
+		while (confirm!=5) {
+			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Arco - 4. Rimuovi Arco - 5. Chiudi programma):");
 			fflush(stdout);
 			fflush(stdin);
 
@@ -97,9 +97,15 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						grafo = menuAggiungiMeta(grafo);
 						scriviFileViaggi(grafo);
 						break;
+					// Rimuovi Arco
+					case 4:
+						stampaGrafo(grafo);
+						grafo = menuEliminaArco(grafo);
+						scriviFileViaggi(grafo);
+						break;
 
 					// Tornare indietro
-					case 4:
+					case 5:
 						printf("Ciao\n");
 						freeGraphViaggi(grafo);
 						grafo = NULL;
@@ -453,5 +459,62 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 			break;
 		}
 
+	return grafo;
+}
+
+GraphViaggi *menuEliminaArco(GraphViaggi *grafo) {
+	char vertice1[STRING_MAX];
+	char vertice2[STRING_MAX];
+	int choice;
+	while(true) {
+		printf("Inserire Vertice di Partenza('annulla' per uscire): ");
+		fflush(stdout);
+		fflush(stdin);
+		scanf("%s", vertice1);
+		if(strcmp("annulla", vertice1)==0)
+			return grafo;
+		if(VerificaCitta(grafo, vertice1)==-1) {
+			printf("Citta non Trovata!\n");
+			continue;
+		}
+		break;
+	}
+	while(true) {
+		printf("Inserire Vertice di Arrivo('annulla' per uscire): ");
+		fflush(stdout);
+		fflush(stdin);
+		scanf("%s", vertice2);
+		if(strcmp("annulla", vertice2)==0)
+			return grafo;
+		if(VerificaCitta(grafo, vertice2)==-1) {
+			printf("Citta non Trovata!\n");
+			continue;
+		}
+		break;
+	}
+	while(true) {
+		printf("Elimina 1. Aereo - 2. Treno - 3. Entrambi. Scegli: ");
+		fflush(stdout);
+		fflush(stdin);
+		if(!scanf("%d", &choice) || (choice<1 && choice>3)) {
+			printf("Valore non Valido\n");
+			continue;
+		}
+		switch(choice) {
+			case 1:
+				printf("Rimuovo collegamento\n");
+				grafo = updateArchi(grafo, vertice1, vertice2, choice);
+				break;
+			case 2:
+				printf("Rimuovo collegamento\n");
+				grafo = updateArchi(grafo, vertice1, vertice2, choice);
+				break;
+			case 3:
+				printf("Rimuovo Tratta\n");
+				grafo = rimuoviArcoV(grafo, vertice1, vertice2);
+				break;
+		}
+		break;
+	}
 	return grafo;
 }

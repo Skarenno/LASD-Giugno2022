@@ -37,7 +37,7 @@ bool isInMinHeap(Heap *minHeap, int v);
 void StampaDijkstra(float dist[], float prezzo[], int n);
 float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned);
 float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo);
-void printPath(int parent[], int j);
+void printPath(GraphCitta* grafo, int parent[], int j);
 int minDistance(int dist[], bool sptSet[], int V);
 
 #endif

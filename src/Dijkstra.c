@@ -323,30 +323,29 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     }
 
     StampaDijkstra(dist,dist, V);
-    printf("\nPercorso: \n%d ",partenza);
-    printPath(parent,arrivo);
+    printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->albergo);
+    printPath(graph, parent,arrivo);
+    printf("|\n");
     return dist[arrivo];
 
 }
 
 // Function to print shortest path from source to j
 // using parent array
-void printPath(int parent[], int j)
-{
+void printPath(GraphCitta* grafo, int parent[], int j) {
     // Base Case : If j is source
     if (parent[j]==-1)
         return;
 
-    printPath(parent, parent[j]);
+    printPath(grafo, parent, parent[j]);
 
-    printf("%d ", j);
+    printf("%s -> ", grafo->adj[j]->albergo);
 }
 
 // A utility function to find the vertex with minimum distance
 // value, from the set of vertices not yet included in shortest
 // path tree
-int minDistance(int dist[], bool sptSet[], int V)
-{
+int minDistance(int dist[], bool sptSet[], int V) {
     // Initialize min value
     int min = INT_MAX, min_index;
 

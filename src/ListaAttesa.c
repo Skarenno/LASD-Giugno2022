@@ -1,9 +1,10 @@
 #include "ListaAttesa.h"
 
-ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo) {
+ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo, int tipo) {
 	nodo = (ListaAttesa*)malloc(sizeof(ListaAttesa));
 	strcpy(nodo->partenza, partenza);
 	strcpy(nodo->arrivo, arrivo);
+	nodo->tipo = tipo;
 	nodo->next = NULL;
 
 	return nodo;
@@ -15,10 +16,18 @@ ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo) {
 		nodo->numElem = 1;
 		return nodo;
 	}
-
-	nodo->next = lista;
-	nodo->numElem = lista->numElem + 1;
-	return nodo;
+	ListaAttesa *tmp = lista;
+	bool check = false;
+	while(tmp!=NULL) { // Controlla che il nodo non eista già nella lista di attesa
+		if(strcmp(tmp->partenza, nodo->partenza)==0 && strcmp(tmp->arrivo, nodo->arrivo)==0 && tmp->tipo==nodo->tipo)
+			check = true;
+	}
+	if(!check) {
+		nodo->next = lista;
+		nodo->numElem = lista->numElem + 1;
+		return nodo;
+	}
+	return lista;
 }
 
 ListaAttesa* leggiAttesa(ListaAttesa *lista) {
@@ -37,10 +46,11 @@ ListaAttesa* leggiAttesa(ListaAttesa *lista) {
 	fseek(fp, 0, SEEK_SET);
 	char *partenza = (char*)malloc(sizeof(char)*STRING_MAX);
 	char *arrivo = (char*)malloc(sizeof(char)*STRING_MAX);
+	int tipo;
 	while(!feof(fp)) {
-		fscanf(fp, "%s %s", partenza, arrivo);
+		fscanf(fp, "%s %s %d", partenza, arrivo, &tipo);
 		ListaAttesa *nodo = NULL;
-		lista = inserisciNodo(lista, inizializzaNodo(nodo, partenza, arrivo));
+		lista = inserisciNodo(lista, inizializzaNodo(nodo, partenza, arrivo, tipo));
 	}
 	free(partenza);
 	free(arrivo);
@@ -61,9 +71,9 @@ void scriviAttesa(ListaAttesa *lista) {
 	}
 	while(lista!=NULL) {
 		if(lista->next!=NULL)
-			fprintf(fp, "%s %s\n", lista->partenza, lista->arrivo);
+			fprintf(fp, "%s %s %d\n", lista->partenza, lista->arrivo, lista->tipo);
 		else
-			fprintf(fp, "%s %s", lista->partenza, lista->arrivo);
+			fprintf(fp, "%s %s %d", lista->partenza, lista->arrivo, lista->tipo);
 		lista = lista->next;
 	}
 	fclose(fp);
@@ -85,12 +95,15 @@ ListaAttesa *svuotaLista(ListaAttesa *lista) {
 
 void stampaAttesa(ListaAttesa *lista) {
 	if(lista==NULL) {
-		printf("ListaAttesa: EMPTY\n");
+		printf("EMPTY\n");
 		return;
 	}
-	printf("ListaAttesa: ");
 	while(lista!=NULL) {
-		printf("Partenza: %s Arrivo: %s\n", lista->partenza, lista->arrivo);
+		printf("Partenza: %s Arrivo: %s ", lista->partenza, lista->arrivo);
+		if(lista->tipo==0)
+			printf("Trasporto: Aereo\n");
+		else
+			printf("Trasporto: Treno\n");
 		lista = lista->next;
 	}
 	return;

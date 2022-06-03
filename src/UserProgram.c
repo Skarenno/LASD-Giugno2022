@@ -6,11 +6,12 @@
 
 #include "UserProgram.h"
 #include "Dijkstra.h"
+#include "ListaAttesa.h"
 
 void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 	int prenotato = 0, choice, tipoViaggio, indiceAlbPartenza, indiceAlbArrivo;
 	char yn, *nomeArrivo = NULL, albergoArrivo[STRING_MAX];
-	float nuovoSaldo = 0.0;
+	float nuovoSaldo = 0.0, dijkstraTempoMin = 0.0;
 	Utente* Cursor = ListaUtenti;
 	GraphCitta* grafoCitta=AllocaGrafoC();
 
@@ -62,12 +63,13 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 								}
 								break;
 							} while (true);
-							indiceAlbPartenza=VerificaTipo(grafoCitta,tipoViaggio+1);
-							DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo);
+							indiceAlbPartenza = VerificaTipo(grafoCitta,tipoViaggio+1);
+							dijkstraTempoMin = DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo);
+							printf("Il tempo Totale della tratta è: %.0f", dijkstraTempoMin);
 							break;
 						case 'n':
+							printf("Ok Buon Viaggio!\n");
 							break;
-
 						default:
 							printf("\nValore non valido! Riprovare (y/n): ");
 							continue;
@@ -123,6 +125,8 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 	int key_partenza, key_arrivo;
 	int tipoDijkstra;
 	float price=0.0;
+	ListaAttesa *Attesa = NULL;
+	Attesa = leggiAttesa(Attesa);
 
 	Utente* Cursor = ListaUtenti;
 	printf("Al momento le mete disponibili sono: \n");
@@ -195,8 +199,13 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 
 	price = DijkstraViaggi(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra, &distance);
 
-	if(price == INT_MAX){
+	if(price >= INT_MAX){
 		printf("****Tratta non disponibile****\n");
+		ListaAttesa *nodo = NULL;
+		nodo = inizializzaNodo(nodo, GrafoViaggi->adj[key_partenza]->citta, GrafoViaggi->adj[key_arrivo]->citta, AT);
+		Attesa = inserisciNodo(Attesa, nodo);
+		scriviAttesa(Attesa);
+		printf("Tratta Aggiunta alla Lista Attesa\n");
 		sleep(1);
 		return 0;
 	}
@@ -236,7 +245,3 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		printf("Torno al Menu Precedente\n");
 	return 0;
 }
-
-/*PercorsoAlbergo(tipoViaggio, nomeArrivo) {
-
-}*/
