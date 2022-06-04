@@ -231,7 +231,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		printf("\n****TRATTA NON DISPONIBILE****\n");
 		Attesa = aggiungiNodoTesta(Attesa, GrafoViaggi->adj[key_partenza]->citta, GrafoViaggi->adj[key_arrivo]->citta, AT);
 		scriviAttesa(Attesa);
-		printf("Tratta Aggiunta alla Lista Attesa\n");
+		printf("Tratta Aggiunta alla Lista Attesa\n\n");
 		sleep(1);
 		return 0;
 	}

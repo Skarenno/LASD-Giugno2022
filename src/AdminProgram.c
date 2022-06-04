@@ -35,7 +35,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 
 	// Scelta ambiente di lavoro (VIAGGI / ALBERGHI)
 	do {
-		printf("\n Si vuole lavorare su citta (0) o alberghi(1): ");
+		printf("\nSi vuole lavorare su citta (0) o alberghi(1): ");
 		fflush(stdout);
 		fflush(stdin);
 
@@ -50,7 +50,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	if(!choice){
 		confirm = 0;
 		while (confirm!=5) {
-			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Tratta - 4. Rimuovi Tratta - 5. Chiudi programma):");
+			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi/Aggiorna Tratta - 4. Rimuovi Tratta - 5. Chiudi programma):");
 			fflush(stdout);
 			fflush(stdin);
 
@@ -377,10 +377,12 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 	Attesa = leggiAttesa(Attesa);
 
 	do {
-		printf("Citta di Partenza: ");
+		printf("Citta di Partenza ('Annulla' per uscire): ");
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", nomePartenza);
+		if(strcmp(nomePartenza, "Annulla") == 0)
+			return grafo;
 		if(VerificaCitta(grafo, nomePartenza)==-1)
 			printf("Citta non Esistente\nRiprova\n");
 		else
@@ -483,9 +485,9 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		if(dijkstraReturn<INT_MAX) {
 			succ = tmp->next;
 			if(tmp->tipo==0)
-				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s  Collegato e Rimosso da Lista di Attesa\n", tmp->partenza, tmp->arrivo, "Aereo");
+				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s   COLLEGATO [RIMOSSO DA LISTA D'ATTESA]\n", tmp->partenza, tmp->arrivo, "Aereo");
 			else
-				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s  Collegato e Rimosso da Lista di Attesa\n", tmp->partenza, tmp->arrivo, "Treno");
+				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s   COLLEGATO [RIMOSSO DA LISTA D'ATTESA]\n", tmp->partenza, tmp->arrivo, "Treno");
 			Attesa = rimuoviNodoAttesa(Attesa, tmp);
 			tmp = succ;
 			continue;
@@ -502,11 +504,11 @@ GraphViaggi *menuEliminaArco(GraphViaggi *grafo) {
 	char vertice2[STRING_MAX];
 	int choice;
 	while(true) {
-		printf("Inserire Vertice di Partenza('annulla' per uscire): ");
+		printf("Inserire Vertice di Partenza('Annulla' per uscire): ");
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", vertice1);
-		if(strcmp("annulla", vertice1)==0)
+		if(strcmp("Annulla", vertice1)==0)
 			return grafo;
 		if(VerificaCitta(grafo, vertice1)==-1) {
 			printf("Citta non Trovata!\n");
