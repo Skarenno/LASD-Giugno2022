@@ -14,11 +14,12 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 	float nuovoSaldo = 0.0, dijkstraTempoMin = 0.0;
 	Utente* Cursor = ListaUtenti;
 	GraphCitta* grafoCitta=AllocaGrafoC();
+	bool annulla = false;
 
 	nomeArrivo = (char*)malloc(sizeof(char)*STRING_MAX);
 	printf("\n");
-	printf("Bentornato, %s\n",user->nome);
-	printf("Il tuo saldo: %.2f euro\n",user->saldo);
+	printf("\n***********************\nBentornato, %s\n",user->nome);
+	printf("Il tuo saldo attuale: %.2f euro\n",user->saldo);
 
 	while (true) {
 		while(true) {
@@ -35,13 +36,13 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 			case 1:
 				prenotato = EffettuaPrenotazione(ListaUtenti, user, GrafoViaggi, nomeArrivo, &tipoViaggio);
 				if(prenotato==0) {
-					printf("Viaggio Annullato\n");
+					printf("TORNO AL MENU PRINCIPALE\n***********************\n");
 					break;
 				}
 
 				Cursor = ListaUtenti;
 
-				printf("Viaggio Prenotato (Nuovo Saldo: %.2f).\nSi vuole scegliere un albergo?(y/n): ", user->saldo);
+				printf("\n*****************\nVIAGGIO PRENOTATO\n(Il tuo nuovo Saldo: %.2f).\n\nSi vuole scegliere un albergo dove alloggiare? (y/n): ", user->saldo);
 				do{
 					fflush(stdout);
 					fflush(stdin);
@@ -51,12 +52,17 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 						case 'y':
 							grafoCitta = leggiFileAlberghi(grafoCitta,pathFileC(nomeArrivo));
 							//stampaGrafoC(grafoCitta);//Per Debug
+							printf("Gli alberghi disponibili nella città di %s sono:\n", nomeArrivo);
 							stampaAlberghi(grafoCitta);
 							do{
-								printf("Scegli uno tra gli alberghi disponibili: ");
+								printf("\nScegli uno tra gli alberghi disponibili ('Annulla' per annullare): ");
 								fflush(stdout);
 								fflush(stdin);
 								scanf("%s",albergoArrivo);
+								if(strcmp(albergoArrivo, "Annulla") == 0){
+									annulla = true;
+									break;
+								}
 								indiceAlbArrivo = VerificaAlbergo(grafoCitta,albergoArrivo);
 								if (indiceAlbArrivo == -1) {
 									printf("Albergo non presente\n");
@@ -68,17 +74,34 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 								}
 								break;
 							} while (true);
+
+							if(annulla == true){
+								printf("Hai annullato la selezione dell'albergo ma il tuo viaggio è comunque stato prenotato!");
+								break;
+							}
 							indiceAlbPartenza = VerificaTipo(grafoCitta,tipoViaggio+1);
+							printf("\n**Calcolo della tatta migliore da %s ", grafoCitta->adj[indiceAlbPartenza]->albergo);
+
+							if(tipoViaggio+1 == 1)
+								printf("(Aeroporto)**");
+
+							else
+								printf("(Stazione)**");
+
+							fflush(stdout);
+							sleep(1);
+
 							dijkstraTempoMin = DijkstraAlberghi(grafoCitta,indiceAlbPartenza,indiceAlbArrivo);
-							printf("Il tempo Totale della tratta è: %.0f\n", dijkstraTempoMin);
+							printf("Il tempo Totale della tratta è: %.0f minuti\n", dijkstraTempoMin);
 							break;
 						case 'n':
-							printf("Ok Buon Viaggio!\n");
+							printf("Ok, non mostrerò la tratta per l'albergo!");
 							break;
 						default:
 							printf("\nValore non valido! Riprovare (y/n): ");
 							continue;
 					}
+					printf("\nGRAZIE PER AVER PRENOTATO CON NOI!\n");
 					break;
 				}while(true);
 
@@ -103,7 +126,7 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 						Cursor = Cursor->next;
 					}
 
-					printf("\nNuovo Saldo: %.2f", user->saldo);
+					printf("Nuovo Saldo: %.2f\n", user->saldo);
 					RiscriviFileUtenti(ListaUtenti);
 					break;
 				}
@@ -134,7 +157,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 	Attesa = leggiAttesa(Attesa);
 
 	Utente* Cursor = ListaUtenti;
-	printf("Al momento le mete disponibili sono: \n");
+	printf("\nAl momento le mete disponibili sono: \n");
 	StampaMete(GrafoViaggi);
 
 	// LETTURA PARTENZA
@@ -174,7 +197,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 			continue;
 		}
 
-		printf("Inserisci 0 per il viaggio piï¿½ economico, 1 per la tratta piï¿½ rapida: ");
+		printf("Inserire il tipo di viaggio (0. Più economico - 1. Più rapido) : ");
 
 		fflush(stdout);
 		fflush(stdin);
@@ -205,7 +228,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 	price = DijkstraViaggi(GrafoViaggi, key_partenza, key_arrivo, tipoDijkstra, &distance);
 
 	if(price >= INT_MAX){
-		printf("****Tratta non disponibile****\n");
+		printf("\n****TRATTA NON DISPONIBILE****\n");
 		Attesa = aggiungiNodoTesta(Attesa, GrafoViaggi->adj[key_partenza]->citta, GrafoViaggi->adj[key_arrivo]->citta, AT);
 		scriviAttesa(Attesa);
 		printf("Tratta Aggiunta alla Lista Attesa\n");
@@ -213,9 +236,9 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		return 0;
 	}
 	printf("La durata di questo viaggio ï¿½ di %.0f minuti\n", distance);
-	printf("Il prezzo di questo viaggio ï¿½ di %.2f, vuoi prenotarlo?\n", price);
+	printf("Il prezzo di questo viaggio ï¿½ di %.2f€, vuoi prenotarlo? (1: Conferma. 0: Annulla e torna al menu principale.)\n", price);
 	while(true) {
-		printf("1: Conferma. 0: Annulla e torna al menu principale.\n");
+		printf("Immetti selezione: ");
 		fflush(stdout);
 		fflush(stdin);
 		if(!scanf("%d",&confirm) || (confirm!=1 && confirm!=0)) {
@@ -245,6 +268,6 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		} else
 			printf("Saldo non sufficiente. Devi caricare almeno: %.2f\n", price-user->saldo);
 	} else
-		printf("Torno al Menu Precedente\n");
+		printf("**VIAGGIO ANNULLATO**\n");
 	return 0;
 }

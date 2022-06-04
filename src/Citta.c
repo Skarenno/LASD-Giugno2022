@@ -324,6 +324,7 @@ EdgeCitta* TrovaVertice (GraphCitta* grafo, char nome[]){
 void stampaAlberghi(GraphCitta* grafo){
 	if(grafo==NULL)
 		printf("Nessun Albergo da Mostrare\n");
+	printf("- ");
 	for(int i = 0; i < grafo->numVertici; i++){
 		if(grafo->adj[i]->tipo==0) {
 			printf("%s", grafo->adj[i]->albergo);

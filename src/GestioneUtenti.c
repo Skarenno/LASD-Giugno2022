@@ -282,7 +282,9 @@ Utente* AccessoUtente (Utente* ListaUtenti){
 			// Password corretta, posso uscire dal loop impostando il flag di quit a true. Effettuo l'accesso.
 			if(strcmp(password, Utente->password) == 0){
 				quit_login = true;
-				printf("\nEffettuo l'accesso!\n");
+				printf("--Effettuo l'accesso--\n");
+				fflush(stdout);
+				sleep(1);
 			}
 			// Password Errata. Richiesta di un nuovo tentativo
 			else{

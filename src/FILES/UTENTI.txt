@@ -1,2 +1,2 @@
-giovanni vinciguerra 200
-valerio volpe 222.56
+giovanni vinciguerra 200.00
+valerio volpe 1298.00

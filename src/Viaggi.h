@@ -2,7 +2,7 @@
 #define VIAGGI_H
 
 #include "standard_header.h"
-#define CITTA "./src/FILES/Viaggi.txt"
+#define CITTA "./src/FILES/VIAGGI.txt"
 
 
 // Se non c'è collegamento Treno/Aereo il peso associato al tempo e al prezzo è 0

@@ -251,16 +251,29 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
     }
 
     //StampaDijkstra(dist,prezzo, V); //Per debug
-    printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->citta);
-    printPathV(graph, parent,arrivo);
-    printf("|\n");
+
+
+
 
     // Ritorno
     if (typology){
+    	if(prezzo[arrivo] < INT_MAX){
+			printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->citta);
+			printPathV(graph, parent,arrivo);
+			printf("|\n");
+		}
     	*distanceReturned = dist[arrivo];
     	return prezzo[arrivo];
+
     }
+
+
     *distanceReturned = prezzo[arrivo];
+    if(dist[arrivo] < INT_MAX){
+		printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->citta);
+		printPathV(graph, parent,arrivo);
+		printf("|\n");
+    }
     return dist[arrivo];
 
 }
@@ -465,7 +478,7 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 
     //StampaDijkstra(dist,dist, V); //Per Debug
     printf("\nPercorso: \n|%s -> ",graph->adj[partenza]->albergo);
-    printPath(graph, parent,arrivo);
+    printPathA(graph, parent,arrivo);
     printf("|\n");
     return dist[arrivo];
 
@@ -473,14 +486,23 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 
 // Function to print shortest path from source to j
 // using parent array
-void printPath(GraphCitta* grafo, int parent[], int j) {
+void printPathA(GraphCitta* grafo, int parent[], int j) {
     // Base Case : If j is source
     if (parent[j]==-1)
         return;
 
-    printPath(grafo, parent, parent[j]);
 
-    printf("%s -> ", grafo->adj[j]->albergo);
+    printPathA(grafo, parent, parent[j]);
+
+    if(parent[parent[j]] != -1){
+    		printf(" -> ");
+    	}
+
+
+    printf("%s", grafo->adj[j]->albergo);
+
+
+
 }
 
 // Function to print shortest path from source to j
@@ -490,9 +512,18 @@ void printPathV(GraphViaggi* grafo, int parent[], int j) {
     if (parent[j]==-1)
         return;
 
+
     printPathV(grafo, parent, parent[j]);
 
-    printf("%s -> ", grafo->adj[j]->citta);
+    if(parent[parent[j]] != -1){
+        	printf(" -> ");
+        }
+
+    printf("%s", grafo->adj[j]->citta);
+
+
+
+
 }
 
 // A utility function to find the vertex with minimum distance
