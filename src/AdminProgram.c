@@ -50,7 +50,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	if(!choice){
 		confirm = 0;
 		while (confirm!=5) {
-			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Arco - 4. Rimuovi Arco - 5. Chiudi programma):");
+			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi Tratta - 4. Rimuovi Tratta - 5. Chiudi programma):");
 			fflush(stdout);
 			fflush(stdin);
 
@@ -129,7 +129,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 		int tempo, tipoPartenza, tipoArrivo;
 		EdgeCitta *verticePartenza, *verticeArrivo;
 		while(confirm != 4){
-			printf("\nImmettere azione da eseguire (1. Aggiungi Alberghi - 2. Elimina Alberghi - 3. Aggiungi Arco - 4. Chiudi programma): ");
+			printf("\nImmettere azione da eseguire (1. Aggiungi Alberghi - 2. Elimina Alberghi - 3. Aggiungi Percorso - 4. Chiudi programma): ");
 			fflush(stdout);
 			fflush(stdin);
 			if(scanf("%d", &confirm)){
@@ -483,9 +483,9 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		if(dijkstraReturn<INT_MAX) {
 			succ = tmp->next;
 			if(tmp->tipo==0)
-				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Aereo");
+				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s  Collegato e Rimosso da Lista di Attesa\n", tmp->partenza, tmp->arrivo, "Aereo");
 			else
-				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Treno");
+				printf("Partenza: %s  Arrivo: %s  Tipo Viaggio: %s  Collegato e Rimosso da Lista di Attesa\n", tmp->partenza, tmp->arrivo, "Treno");
 			Attesa = rimuoviNodoAttesa(Attesa, tmp);
 			tmp = succ;
 			continue;

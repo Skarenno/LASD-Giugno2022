@@ -57,8 +57,17 @@ void InserisciVertice(GraphViaggi* G, char *citta){
 void addArco(GraphViaggi* grafo, int posizione, char citta[], float prezzoAereo, float prezzoTreno, int tempoAereo, int  tempoTreno){
 	EdgeViaggi* tmp = grafo->adj[posizione]->next;
 	while(tmp!=NULL) { /*Controlla che l'arco non sia già esistente*/
-		if(strcmp(citta, tmp->citta) == 0)
+		if(strcmp(citta, tmp->citta) == 0) {
+			if(tempoAereo!=0) {
+				tmp->prezzoAereo = prezzoAereo;
+				tmp->tempoAereo = tempoAereo;
+			}
+			if(tempoTreno!=0) {
+				tmp->prezzoTreno = prezzoTreno;
+				tmp->tempoTreno = tempoTreno;
+			}
 			return;
+		}
 
 		tmp = tmp->next;
 	}

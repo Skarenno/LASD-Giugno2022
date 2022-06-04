@@ -275,21 +275,12 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
     float dist[V];
     float prezzo[V];
 
-    // sptSet[i] will true if vertex i is included / in shortest
-    // path tree or shortest distance from src to i is finalized
-    bool sptSet[V];
-
-    // Parent array to store shortest path tree
-    int parent[V];
-
     Heap* minHeap = CreazioneHeap(V);
 
     // Inizializziamo l'Heap con le distanze a "Infinito"
     for (int v = 0; v < V; ++v){
         dist[v] = INT_MAX;
         prezzo[V] = INT_MAX;
-        parent[v] = -1;
-        sptSet[v] = false;
         minHeap->array[v] = NuovoHeapNode(v, dist[v],prezzo[v]);
         minHeap->pos[v] = v;
     }
@@ -312,9 +303,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
         HeapNode* minHeapNode = TrovaMinimo(minHeap);
         int u = minHeapNode->v;
 
-        int uu = minDistance((int*)dist, sptSet, V);
-        sptSet[uu] = true;
-
 
         // Temp per attraversare i Vertici adiacenti
         EdgeViaggi* TempNode = graph->adj[u];
@@ -333,7 +321,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->prezzoAereo + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)TempNode->prezzoAereo;
 							prezzo[v] = prezzo[u] + (float)TempNode->tempoAereo; //WARNING:Distanze!
-							parent[v]  = u;
 
 							// update distance
 							// value in min heap also
@@ -348,7 +335,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->tempoAereo + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)TempNode->tempoAereo;
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoAereo;
-							parent[v]  = u;
 
 							// update distance
 							// value in min heap also
@@ -363,7 +349,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->prezzoTreno + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)TempNode->prezzoTreno;
 							prezzo[v] = prezzo[u] + (float)TempNode->tempoTreno; //WARNING:Distanze!
-							parent[v]  = u;
 
 							// update distance
 							// value in min heap also
@@ -378,7 +363,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->tempoTreno + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)TempNode->tempoTreno;
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoTreno;
-							parent[v]  = u;
 
 							// update distance
 							// value in min heap also
