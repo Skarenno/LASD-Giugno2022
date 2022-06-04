@@ -138,7 +138,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 					case 1:
 						StampaMete(grafo);
 						while(true){
-							printf("Scegli la città a cui vuoi aggiungere Alberghi: ");
+							printf("Scegli la cittï¿½ a cui vuoi aggiungere Alberghi: ");
 							fflush(stdin);
 							fflush(stdout);
 							scanf("%s", nome);
@@ -185,7 +185,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 
 							Vertice = TrovaVertice(GrafoCitta, nome);
 							if(Vertice->tipo != 0){
-								printf("\n***Si è selezionato un Aeroporto o una Stazione. Impossibile eliminare.***\n");
+								printf("\n***Si ï¿½ selezionato un Aeroporto o una Stazione. Impossibile eliminare.***\n");
 								break;
 							}
 							if(Vertice != NULL){
@@ -215,7 +215,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						GrafoCitta = leggiFileAlberghi(GrafoCitta, nomeFile);
 						if(GrafoCitta!=NULL)
 							stampaAlberghiAlt(GrafoCitta);
-						/*Se il file degli alberghi è vuoto GrafoCitta sarà NULL, quindi chiedo di inserire prima degli alberghi.
+						/*Se il file degli alberghi ï¿½ vuoto GrafoCitta sarï¿½ NULL, quindi chiedo di inserire prima degli alberghi.
 						GrafoCitta potrebbe avere anche un solo albergo in tal caso chiedo comunque di inserire altri alberghi dato
 						che non ci possono essere nodi cappio*/
 						if(GrafoCitta==NULL || GrafoCitta->numVertici==1) {
@@ -464,7 +464,7 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 	ListaAttesa *succ = NULL;
 	int indicePartenza, indiceArrivo;
 	float distanceReturned, dijkstraReturn;
-	while(tmp!=NULL) {
+	while(tmp!=NULL) { //Controllo su lista di attesa
 		indicePartenza = VerificaCitta(grafo, tmp->partenza);
 		indiceArrivo = VerificaCitta(grafo, tmp->arrivo);
 		if(indicePartenza==-1) {
@@ -479,7 +479,7 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 			tmp = succ;
 			continue;
 		}
-		dijkstraReturn = DijkstraViaggi(grafo, indicePartenza, indiceArrivo, tmp->tipo+1, &distanceReturned);
+		dijkstraReturn = DijkstraViaggiNoPrint(grafo, indicePartenza, indiceArrivo, tmp->tipo+1, &distanceReturned);
 		if(dijkstraReturn<INT_MAX) {
 			succ = tmp->next;
 			if(tmp->tipo==0)

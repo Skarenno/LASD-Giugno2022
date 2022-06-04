@@ -265,6 +265,144 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 
 }
 
+float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso, float *distanceReturned){
+
+	//Flag per la tipologia di peso
+	int typology=0;
+    int V = graph->numVertici;
+
+    // Valori per lo storing delle distanze
+    float dist[V];
+    float prezzo[V];
+
+    // sptSet[i] will true if vertex i is included / in shortest
+    // path tree or shortest distance from src to i is finalized
+    bool sptSet[V];
+
+    // Parent array to store shortest path tree
+    int parent[V];
+
+    Heap* minHeap = CreazioneHeap(V);
+
+    // Inizializziamo l'Heap con le distanze a "Infinito"
+    for (int v = 0; v < V; ++v){
+        dist[v] = INT_MAX;
+        prezzo[V] = INT_MAX;
+        parent[v] = -1;
+        sptSet[v] = false;
+        minHeap->array[v] = NuovoHeapNode(v, dist[v],prezzo[v]);
+        minHeap->pos[v] = v;
+    }
+
+    // Distanza da se stesso = 0
+    minHeap->array[partenza] = NuovoHeapNode(partenza, dist[partenza], prezzo[partenza]);
+    minHeap->pos[partenza]   = partenza;
+    dist[partenza] = 0;
+    prezzo[partenza] = 0;
+    RiduciDistanza(minHeap, partenza, dist[partenza], prezzo[partenza]);
+
+    // Inizialmente la  grandezza dell'Heap � V (VERTICI)
+    minHeap->size = V;
+
+
+    // Inizio loop principale
+    while (!isEmptyHeap(minHeap))
+    {
+        // Troviamo il vertice della distanza minima e estraiamone l'indice
+        HeapNode* minHeapNode = TrovaMinimo(minHeap);
+        int u = minHeapNode->v;
+
+        int uu = minDistance((int*)dist, sptSet, V);
+        sptSet[uu] = true;
+
+
+        // Temp per attraversare i Vertici adiacenti
+        EdgeViaggi* TempNode = graph->adj[u];
+
+
+        // Attraversiamo i vertici adiacenti
+        while (TempNode != NULL){
+            int v = TempNode->key;
+
+            // Effettuiamo il calcolo rispetto al tipo di peso da considerare
+            // Dopo effettuiamo i controlli sull'update del valore delle distanze
+            switch(tipoPeso){
+				case 0: // prezzoAereo
+					typology=0;
+					if(TempNode->prezzoAereo != 0){
+						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->prezzoAereo + dist[u] < dist[v]){
+							dist[v] = dist[u] + (float)TempNode->prezzoAereo;
+							prezzo[v] = prezzo[u] + (float)TempNode->tempoAereo; //WARNING:Distanze!
+							parent[v]  = u;
+
+							// update distance
+							// value in min heap also
+							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
+						}
+					}
+					break;
+
+				case 1: //tempoAereo
+					typology=1;
+					if(TempNode->tempoAereo != 0){
+						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->tempoAereo + dist[u] < dist[v]){
+							dist[v] = dist[u] + (float)TempNode->tempoAereo;
+							prezzo[v] = prezzo[u] + (float)TempNode->prezzoAereo;
+							parent[v]  = u;
+
+							// update distance
+							// value in min heap also
+							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
+						}
+					}
+            	break;
+
+            	case 2:	//prezzoTreno
+            		typology=0;
+            		if(TempNode->prezzoTreno != 0){
+						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->prezzoTreno + dist[u] < dist[v]){
+							dist[v] = dist[u] + (float)TempNode->prezzoTreno;
+							prezzo[v] = prezzo[u] + (float)TempNode->tempoTreno; //WARNING:Distanze!
+							parent[v]  = u;
+
+							// update distance
+							// value in min heap also
+							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
+						}
+					}
+            	break;
+
+            	case 3: //tempoTreno
+            		typology=1;
+					if(TempNode->tempoTreno != 0){
+						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->tempoTreno + dist[u] < dist[v]){
+							dist[v] = dist[u] + (float)TempNode->tempoTreno;
+							prezzo[v] = prezzo[u] + (float)TempNode->prezzoTreno;
+							parent[v]  = u;
+
+							// update distance
+							// value in min heap also
+							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
+						}
+					}
+            	break;
+            }
+
+            TempNode = TempNode->next;
+        }
+
+    }
+
+    // Ritorno
+    if (typology){
+    	*distanceReturned = dist[arrivo];
+    	return prezzo[arrivo];
+    }
+    *distanceReturned = prezzo[arrivo];
+    return dist[arrivo];
+
+}
+
 /*****************************************************************/
 
 
