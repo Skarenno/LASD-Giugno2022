@@ -1,30 +1,34 @@
 #include "ListaAttesa.h"
 
-ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char *arrivo, int tipo) {
+ListaAttesa* creaNodo(char *partenza, char *arrivo, int tipo) {
+	ListaAttesa* nodo = NULL;
 	nodo = (ListaAttesa*)malloc(sizeof(ListaAttesa));
+	if(nodo == NULL) {
+		printf("Errore Memoria per il Nodo Non Allocata\n");
+		exit(-1);
+	}
+	nodo->next = NULL;
 	strcpy(nodo->partenza, partenza);
 	strcpy(nodo->arrivo, arrivo);
 	nodo->tipo = tipo;
-	nodo->next = NULL;
-
 	return nodo;
 }
 
-ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo) {
-
-	if(lista == NULL)
+ListaAttesa* aggiungiNodoTesta(ListaAttesa* Attesa, char *partenza, char *arrivo, int tipo) {
+	ListaAttesa *nodo = NULL;
+	if(Attesa==NULL) {
+		nodo = creaNodo(partenza, arrivo, tipo);
 		return nodo;
-	ListaAttesa *tmp = lista;
-	bool check = false;
+	}
+	ListaAttesa *tmp = Attesa;
 	while(tmp!=NULL) { // Controlla che il nodo non eista già nella lista di attesa
-		if(strcmp(tmp->partenza, nodo->partenza)==0 && strcmp(tmp->arrivo, nodo->arrivo)==0 && tmp->tipo==nodo->tipo)
-			check = true;
+		if(strcmp(tmp->partenza, partenza)==0 && strcmp(tmp->arrivo, arrivo)==0 && tmp->tipo==tipo)
+			return Attesa;
+		tmp = tmp->next;
 	}
-	if(!check) {
-		nodo->next = lista;
-		return nodo;
-	}
-	return lista;
+	nodo = creaNodo(partenza, arrivo, tipo);
+	nodo->next = Attesa;
+	return nodo;
 }
 
 ListaAttesa* leggiAttesa(ListaAttesa *lista) {
@@ -46,8 +50,7 @@ ListaAttesa* leggiAttesa(ListaAttesa *lista) {
 	int tipo;
 	while(!feof(fp)) {
 		fscanf(fp, "%s %s %d", partenza, arrivo, &tipo);
-		ListaAttesa *nodo = NULL;
-		lista = inserisciNodo(lista, inizializzaNodo(nodo, partenza, arrivo, tipo));
+		lista = aggiungiNodoTesta(lista, partenza, arrivo, tipo);
 	}
 	free(partenza);
 	free(arrivo);

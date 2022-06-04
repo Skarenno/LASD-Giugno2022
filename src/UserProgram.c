@@ -206,9 +206,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 
 	if(price >= INT_MAX){
 		printf("****Tratta non disponibile****\n");
-		ListaAttesa *nodo = NULL;
-		nodo = inizializzaNodo(nodo, GrafoViaggi->adj[key_partenza]->citta, GrafoViaggi->adj[key_arrivo]->citta, AT);
-		Attesa = inserisciNodo(Attesa, nodo);
+		Attesa = aggiungiNodoTesta(Attesa, GrafoViaggi->adj[key_partenza]->citta, GrafoViaggi->adj[key_arrivo]->citta, AT);
 		scriviAttesa(Attesa);
 		printf("Tratta Aggiunta alla Lista Attesa\n");
 		sleep(1);

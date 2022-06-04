@@ -461,34 +461,38 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 			break;
 		}
 	ListaAttesa *tmp = Attesa;
-	ListaAttesa *prec = NULL;
+	ListaAttesa *succ = NULL;
 	int indicePartenza, indiceArrivo;
 	float distanceReturned, dijkstraReturn;
 	while(tmp!=NULL) {
 		indicePartenza = VerificaCitta(grafo, tmp->partenza);
-		if(indicePartenza==-1) {
-			prec = tmp;
-			Attesa = rimuoviNodoAttesa(Attesa, tmp);
-			tmp = prec->next;
-		}
 		indiceArrivo = VerificaCitta(grafo, tmp->arrivo);
-		if(indiceArrivo==-1) {
-			prec = tmp;
+		if(indicePartenza==-1) {
+			succ = tmp->next;
 			Attesa = rimuoviNodoAttesa(Attesa, tmp);
-			tmp = prec->next;
+			tmp = succ;
+			continue;
+		} else if(indiceArrivo==-1) {
+			succ = tmp->next;
+			Attesa = rimuoviNodoAttesa(Attesa, tmp);
+			fflush(stdout);
+			tmp = succ;
+			continue;
 		}
 		dijkstraReturn = DijkstraViaggi(grafo, indicePartenza, indiceArrivo, tmp->tipo+1, &distanceReturned);
-		/*if(dijkstraReturn<INT_MAX) {
-			prec = tmp;
+		if(dijkstraReturn<INT_MAX) {
+			succ = tmp->next;
 			if(tmp->tipo==0)
 				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Aereo");
 			else
 				printf("Partenza: %s Arrivo: %s Tipo Viaggio: %s\nCollegato e Rimosso da Lista di Attesa", tmp->partenza, tmp->arrivo, "Treno");
 			Attesa = rimuoviNodoAttesa(Attesa, tmp);
-			tmp = prec->next;
-		} else*/
+			tmp = succ;
+			continue;
+		} else
 			tmp = tmp->next;
 	}
+	tmp = Attesa;
 	scriviAttesa(Attesa);
 	return grafo;
 }

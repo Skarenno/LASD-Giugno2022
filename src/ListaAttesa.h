@@ -12,8 +12,8 @@ typedef struct l_node {
 	struct l_node *next;
 }ListaAttesa;
 
-ListaAttesa* inizializzaNodo(ListaAttesa *nodo, char *partenza, char*arrivo, int tipo);
-ListaAttesa* inserisciNodo(ListaAttesa *lista, ListaAttesa *nodo);
+ListaAttesa* creaNodo(char *partenza, char *arrivo, int tipo);
+ListaAttesa* aggiungiNodoTesta(ListaAttesa* Attesa, char *partenza, char *arrivo, int tipo);
 ListaAttesa *rimuoviNodoAttesa(ListaAttesa *Attesa, ListaAttesa *nodo);
 ListaAttesa* leggiAttesa(ListaAttesa *lista);
 void scriviAttesa(ListaAttesa *lista);
