@@ -80,7 +80,7 @@ void userDashboard(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoViaggi){
 								break;
 							}
 							indiceAlbPartenza = VerificaTipo(grafoCitta,tipoViaggio+1);
-							printf("\n**Calcolo della tatta migliore da %s ", grafoCitta->adj[indiceAlbPartenza]->albergo);
+							printf("\n**Calcolo della tratta migliore da %s ", grafoCitta->adj[indiceAlbPartenza]->albergo);
 
 							if(tipoViaggio+1 == 1)
 								printf("(Aeroporto)**");
