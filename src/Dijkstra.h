@@ -5,24 +5,20 @@
 #include "Viaggi.h"
 #include "Citta.h"
 
-// Structure to represent a min heap node
+
 typedef struct minheapnode{
     int  v;
     float dist;
     float prezzo;
 }HeapNode;
 
-// Structure to represent a min heap
+
 typedef struct minheap{
 
-    // Number of heap nodes present currently
     int size;
-
-    // Capacity of min heap
     int capacity;
-
-    // This is needed for decreaseKey()
     int *pos;
+
     HeapNode **array;
 }Heap;
 
