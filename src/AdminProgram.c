@@ -50,7 +50,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 	if(!choice){
 		confirm = 0;
 		while (confirm!=5) {
-			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi/Aggiorna Tratta - 4. Rimuovi Tratta - 5. Chiudi programma):");
+			printf("\nImmettere azione da eseguire (1. Aggiungi Meta - 2. Elimina Meta - 3. Aggiungi/Aggiorna Tratta - 4. Rimuovi Tratta - 5. Chiudi programma): ");
 			fflush(stdout);
 			fflush(stdin);
 
@@ -63,7 +63,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						fflush(stdout);
 						fflush(stdin);
 						scanf("%s", nome);
-						if(!VerificaCitta(grafo, nome)){
+						if(VerificaCitta(grafo, nome)==-1){
 							FILE* New = fopen(pathFileC(nome), "w");
 							fclose(New);
 						}
@@ -79,7 +79,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						fflush(stdout);
 						fflush(stdin);
 						scanf("%s", nome);
-						if(!VerificaCitta(grafo, nome)){
+						if(VerificaCitta(grafo, nome)==-1){
 							printf("Citta non Esistente\nRiprova\n");
 							break;
 						}
@@ -143,7 +143,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							fflush(stdout);
 							scanf("%s", nome);
 
-							if(!VerificaCitta(grafo, nome)){
+							if(VerificaCitta(grafo, nome)==-1){
 								printf("Citta non Esistente\nRiprova\n");
 								continue;
 							}
@@ -166,7 +166,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						fflush(stdout);
 
 						scanf("%s", nome);
-						if(!VerificaCitta(grafo, nome)){
+						if(VerificaCitta(grafo, nome)==-1){
 							printf("Citta non Esistente\nRiprova\n");
 							break;
 						}
@@ -207,7 +207,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 						fflush(stdin);
 						fflush(stdout);
 						scanf("%s", nome);
-						if(!VerificaCitta(grafo, nome)){
+						if(VerificaCitta(grafo, nome)==-1){
 							printf("Citta non Esistente\nRiprova\n");
 							break;
 						}
@@ -369,7 +369,7 @@ GraphCitta* AggiungiAlbergo(GraphCitta* GrafoCitta, GraphViaggi* grafo, FILE* Fi
 }
 
 GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
-	int tempoAereo, tempoTreno;
+	int tempoAereo = 0, tempoTreno = 0;
 	float prezzoAereo = 0, prezzoTreno = 0;
 	char nomePartenza[STRING_MAX];
 	char nomeArrivo[STRING_MAX];
@@ -399,55 +399,79 @@ GraphViaggi* menuAggiungiMeta(GraphViaggi* grafo){
 		else
 			break;
 	} while(true);
+	FILE *controlloArrivo = fopen(pathFileC(nomeArrivo), "r");
+	if(controlloArrivo==NULL) {
+		printf("Impossibile Aprire il File: %s.txt\n", nomeArrivo);
+		return grafo;
+	}
+	fclose(controlloArrivo);
+	GraphCitta *GrafoCitta = AllocaGrafoC();
+	GrafoCitta = leggiFileAlberghi(GrafoCitta, pathFileC(nomeArrivo));
 
-	do {
-		printf("Tempo Aereo(0 se non presente collegamento aereo): ");
-		fflush(stdout);
-		fflush(stdin);
+	FILE *controlloPartenza = fopen(pathFileC(nomePartenza), "r");
+	if(controlloArrivo==NULL) {
+		printf("Impossibile Aprire il File: %s.txt\n", nomePartenza);
+		return grafo;
+	}
+	fclose(controlloPartenza);
+	GraphCitta *GrafoCittaPartenza = AllocaGrafoC();
+	GrafoCittaPartenza = leggiFileAlberghi(GrafoCittaPartenza, pathFileC(nomePartenza));
+	if(VerificaTipo(GrafoCitta, 1)!=-1 && VerificaTipo(GrafoCittaPartenza, 1)!=-1) { //Svolto solo se presente aeroporto nella città di arrivo e partenza
+		do {
+			printf("Tempo Aereo(0 se non presente collegamento aereo): ");
+			fflush(stdout);
+			fflush(stdin);
 
-		if(!scanf("%d", &tempoAereo) || tempoAereo<0) {
-			printf("Valore non Valido\n");
-			continue;
-		}
-		if(tempoAereo!=0) {
-			do {
-				printf("Prezzo Aereo(>0): ");
-				fflush(stdout);
-				fflush(stdin);
+			if(!scanf("%d", &tempoAereo) || tempoAereo<0) {
+				printf("Valore non Valido\n");
+				continue;
+			}
+			if(tempoAereo!=0) {
+				do {
+					printf("Prezzo Aereo(>0): ");
+					fflush(stdout);
+					fflush(stdin);
 
-				if(!scanf("%f", &prezzoAereo) || prezzoAereo<=0) {
-					printf("Valore non Valido\n");
-					continue;
-				}
-				break;
-			} while(true);
-		}
-		break;
-	}while(true);
-	do {
-		printf("Tempo Treno(0 se non presente collegamento stazione): ");
-		fflush(stdout);
-		fflush(stdin);
+					if(!scanf("%f", &prezzoAereo) || prezzoAereo<=0) {
+						printf("Valore non Valido\n");
+						continue;
+					}
+					break;
+				} while(true);
+			}
+			break;
+		}while(true);
+	} else {
+		printf("Aereoporto non disponibile nella città di arrivo o di partenza\n");
+	}
+	if(VerificaTipo(GrafoCitta, 2)!=-1 && VerificaTipo(GrafoCittaPartenza, 2)!=-1) { //Svolto solo se presente stazione treno nella città di arrivo e partenza
+		do {
+			printf("Tempo Treno(0 se non presente collegamento stazione): ");
+			fflush(stdout);
+			fflush(stdin);
 
-		if(!scanf("%d", &tempoTreno) || tempoTreno<0) {
-			printf("Valore non Valido\n");
-			continue;
-		}
-		if(tempoTreno!=0) {
-			do {
-				printf("Prezzo Treno(>0): ");
-				fflush(stdout);
-				fflush(stdin);
+			if(!scanf("%d", &tempoTreno) || tempoTreno<0) {
+				printf("Valore non Valido\n");
+				continue;
+			}
+			if(tempoTreno!=0) {
+				do {
+					printf("Prezzo Treno(>0): ");
+					fflush(stdout);
+					fflush(stdin);
 
-				if(!scanf("%f", &prezzoTreno) || prezzoTreno<=0) {
-					printf("Valore non Valido\n");
-					continue;
-				}
-				break;
-			} while(true);
-		}
-		break;
-	}while(true);
+					if(!scanf("%f", &prezzoTreno) || prezzoTreno<=0) {
+						printf("Valore non Valido\n");
+						continue;
+					}
+					break;
+				} while(true);
+			}
+			break;
+		}while(true);
+	} else {
+		printf("Stazione del Treno non disponibile nella città di arrivo o di partenza\n");
+	}
 	if(tempoAereo==0 && tempoTreno==0) {
 		printf("Collegamento Ignorato\n");
 		return grafo;

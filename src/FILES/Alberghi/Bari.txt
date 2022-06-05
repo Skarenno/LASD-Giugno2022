@@ -1,5 +1,4 @@
-Certosa;1;CinqueStelle;0;15;Barolo;0;10;Bivacco;0;15
+Certosa;1;Barolo;0;10;Bivacco;0;15
 Bivacco;0;Certosa;1;15;Barolo;0;30;Medina;2;25
 Medina;2;Barolo;0;20;Bivacco;0;25
 Barolo;0;Certosa;1;10;Medina;2;20;Bivacco;0;30
-CinqueStelle;0;Certosa;1;15

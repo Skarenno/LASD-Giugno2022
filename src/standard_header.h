@@ -13,6 +13,6 @@
 #include "VerificheFile.h"
 
 #define STRING_MAX 50
-#define maxRiga 500
+#define maxRiga 1000
 
 #endif

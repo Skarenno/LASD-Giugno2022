@@ -36,7 +36,7 @@ void InserisciVertice(GraphViaggi* G, char *citta){
     for(int i = 0; i<G->numVertici; i++){
         if(strcmp(citta, G->adj[i]->citta) == 0){
         	printf("Meta già esistente!, %s", citta);
-            return;                             // GiÃ  esistente
+            return;// Già  esistente
         }
     }
     if(G->adj == NULL){
@@ -56,16 +56,12 @@ void InserisciVertice(GraphViaggi* G, char *citta){
 
 void addArco(GraphViaggi* grafo, int posizione, char citta[], float prezzoAereo, float prezzoTreno, int tempoAereo, int  tempoTreno){
 	EdgeViaggi* tmp = grafo->adj[posizione]->next;
-	while(tmp!=NULL) { /*Controlla che l'arco non sia giÃ  esistente*/
+	while(tmp!=NULL) { /*Controlla che l'arco non sia già  esistente*/
 		if(strcmp(citta, tmp->citta) == 0) {
-			if(tempoAereo!=0) {
 				tmp->prezzoAereo = prezzoAereo;
 				tmp->tempoAereo = tempoAereo;
-			}
-			if(tempoTreno!=0) {
 				tmp->prezzoTreno = prezzoTreno;
 				tmp->tempoTreno = tempoTreno;
-			}
 			return;
 		}
 

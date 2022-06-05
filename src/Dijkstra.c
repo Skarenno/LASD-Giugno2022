@@ -3,10 +3,8 @@
 #include "Viaggi.h"
 
 
-// A utility function to create a
-// new Min Heap Node
-HeapNode* NuovoHeapNode(int v, float dist, float prezzo)
-{
+// Creazione NodoHeap
+HeapNode* NuovoHeapNode(int v, float dist, float prezzo) {
     HeapNode* minHeapNode = (HeapNode*)malloc(sizeof(HeapNode));
     minHeapNode->v = v;
     minHeapNode->dist = dist;
@@ -14,7 +12,7 @@ HeapNode* NuovoHeapNode(int v, float dist, float prezzo)
     return minHeapNode;
 }
 
-// A utility function to create a Min Heap
+// Creazione MinHeap
 Heap* CreazioneHeap(int max_size){
 
     Heap* minHeap = (Heap*)malloc(sizeof(Heap));
@@ -25,11 +23,8 @@ Heap* CreazioneHeap(int max_size){
     return minHeap;
 }
 
-// A utility function to swap two
-// nodes of min heap.
-// Needed for min heapify
-void ScambiaNodi(HeapNode** a, HeapNode** b)
-{
+// Scambia i nodi nel MinHeap per l'heapify
+void ScambiaNodi(HeapNode** a, HeapNode** b) {
     HeapNode* t = *a;
     *a = *b;
     *b = t;
@@ -65,8 +60,7 @@ void Heapify(Heap* MinimumHeap, int idx){
     }
 }
 
-int isEmptyHeap(Heap* minHeap)
-{
+int isEmptyHeap(Heap* minHeap) {
     return minHeap->size == 0;
 }
 
@@ -96,7 +90,6 @@ void RiduciDistanza(Heap* minHeap, int v, float dist, float prezzo){
     minHeap->array[i]->dist = dist;
     minHeap->array[i]->prezzo = prezzo;
 
-
     while (i && minHeap->array[i]->dist < minHeap->array[(i - 1) / 2]->dist){
 
         minHeap->pos[minHeap->array[i]->v] = (i-1)/2;
@@ -114,7 +107,7 @@ bool isInMinHeap(Heap *minHeap, int v){
    return false;
 }
 
-// Debug per la Stampa
+// Stampa per Debug
 void StampaDijkstra(float dist[], float prezzo[], int n){
     printf("Vertice   Distanza da Source\n");
     for (int i = 0; i < n; ++i)
@@ -132,11 +125,10 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
     float dist[V];
     float prezzo[V];
 
-    // sptSet[i] will true if vertex i is included / in shortest
-    // path tree or shortest distance from src to i is finalized
+    // Struttura per tenere traccia dei nodi aggiunti durante l'esecuzione
     bool sptSet[V];
 
-    // Parent array to store shortest path tree
+    // Array per lo shortest path tree
     int parent[V];
 
     Heap* minHeap = CreazioneHeap(V);
@@ -192,8 +184,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 							prezzo[v] = prezzo[u] + (float)TempNode->tempoAereo; //WARNING:Distanze!
 							parent[v]  = u;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -207,8 +197,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoAereo;
 							parent[v]  = u;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -222,8 +210,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 							prezzo[v] = prezzo[u] + (float)TempNode->tempoTreno; //WARNING:Distanze!
 							parent[v]  = u;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -237,8 +223,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoTreno;
 							parent[v]  = u;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -252,9 +236,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
 
     //StampaDijkstra(dist,prezzo, V); //Per debug
 
-
-
-
     // Ritorno
     if (typology){
     	if(prezzo[arrivo] < INT_MAX){
@@ -266,7 +247,6 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
     	return prezzo[arrivo];
 
     }
-
 
     *distanceReturned = prezzo[arrivo];
     if(dist[arrivo] < INT_MAX){
@@ -308,7 +288,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
     // Inizialmente la  grandezza dell'Heap è V (VERTICI)
     minHeap->size = V;
 
-
     // Inizio loop principale
     while (!isEmptyHeap(minHeap))
     {
@@ -316,10 +295,8 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
         HeapNode* minHeapNode = TrovaMinimo(minHeap);
         int u = minHeapNode->v;
 
-
         // Temp per attraversare i Vertici adiacenti
         EdgeViaggi* TempNode = graph->adj[u];
-
 
         // Attraversiamo i vertici adiacenti
         while (TempNode != NULL){
@@ -333,10 +310,8 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 					if(TempNode->prezzoAereo != 0){
 						if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && TempNode->prezzoAereo + dist[u] < dist[v]){
 							dist[v] = dist[u] + (float)TempNode->prezzoAereo;
-							prezzo[v] = prezzo[u] + (float)TempNode->tempoAereo; //WARNING:Distanze!
+							prezzo[v] = prezzo[u] + (float)TempNode->tempoAereo; //WARNING: Distanze!
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -349,8 +324,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 							dist[v] = dist[u] + (float)TempNode->tempoAereo;
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoAereo;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -363,8 +336,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 							dist[v] = dist[u] + (float)TempNode->prezzoTreno;
 							prezzo[v] = prezzo[u] + (float)TempNode->tempoTreno; //WARNING:Distanze!
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -377,8 +348,6 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
 							dist[v] = dist[u] + (float)TempNode->tempoTreno;
 							prezzo[v] = prezzo[u] + (float)TempNode->prezzoTreno;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v],prezzo[v]);
 						}
 					}
@@ -410,12 +379,11 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     // Valori per lo storing delle distanze
     float dist[V];
 
-    // sptSet[i] will true if vertex i is included / in shortest
-       // path tree or shortest distance from src to i is finalized
-       bool sptSet[V];
+    // Struttura per tenere traccia dei nodi aggiunti durante l'esecuzione
+	bool sptSet[V];
 
-       // Parent array to store shortest path tree
-       int parent[V];
+	// Array per lo shortest path tree
+	int parent[V];
 
     Heap* minHeap = CreazioneHeap(V);
 
@@ -437,7 +405,6 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     // Inizialmente la  grandezza dell'Heap è V (VERTICI)
     minHeap->size = V;
 
-
     // Inizio loop principale
     while (!isEmptyHeap(minHeap))
     {
@@ -449,10 +416,8 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
         int uu = minDistance((int*)dist, sptSet, V);
         sptSet[uu] = true;
 
-
         // Temp per attraversare i Vertici adiacenti
         EdgeCitta* TempNode = graph->adj[u];
-
 
         // Attraversiamo i vertici adiacenti
         while (TempNode != NULL){
@@ -465,8 +430,6 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 							dist[v] = dist[u] + (float)TempNode->tempo;
 							parent[v]  = u;
 
-							// update distance
-							// value in min heap also
 							RiduciDistanza(minHeap, v, dist[v], 0);
 						}
 					}
@@ -484,13 +447,10 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
 
 }
 
-// Function to print shortest path from source to j
-// using parent array
+// j è l'indice del primo nodo a sua volta il nodo contiene l'indice del prossimo nodo
 void printPathA(GraphCitta* grafo, int parent[], int j) {
-    // Base Case : If j is source
     if (parent[j]==-1)
         return;
-
 
     printPathA(grafo, parent, parent[j]);
 
@@ -498,17 +458,12 @@ void printPathA(GraphCitta* grafo, int parent[], int j) {
     		printf(" -> ");
     	}
 
-
     printf("%s", grafo->adj[j]->albergo);
-
-
 
 }
 
-// Function to print shortest path from source to j
-// using parent array
+// j è l'indice del primo nodo a sua volta il nodo contiene l'indice del prossimo nodo
 void printPathV(GraphViaggi* grafo, int parent[], int j) {
-    // Base Case : If j is source
     if (parent[j]==-1)
         return;
 
@@ -521,14 +476,9 @@ void printPathV(GraphViaggi* grafo, int parent[], int j) {
 
     printf("%s", grafo->adj[j]->citta);
 
-
-
-
 }
 
-// A utility function to find the vertex with minimum distance
-// value, from the set of vertices not yet included in shortest
-// path tree
+// Funzione che trova la distanza minima tra i vertici non ancora inclusi nel path tree
 int minDistance(int dist[], bool sptSet[], int V) {
     // Initialize min value
     int min = INT_MAX, min_index;

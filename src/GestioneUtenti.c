@@ -171,7 +171,7 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
 	sleep(1);
     do{
         // ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO E' AVVENUTO CORRETTAMENTE.
-        printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
+        printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo): ");
         fflush(stdout);
         fflush(stdin);
         check = scanf("%d", &scelta);
