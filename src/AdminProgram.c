@@ -178,7 +178,7 @@ void adminDashboard(Admin* admin, GraphViaggi* grafo){
 							fflush(stdin);
 							fflush(stdout);
 							scanf("%s", nome);
-							if(!VerificaAlbergo(GrafoCitta, nome)){
+							if(VerificaAlbergo(GrafoCitta, nome) == -1){
 								printf("Albergo non esistente");
 								continue;
 							}

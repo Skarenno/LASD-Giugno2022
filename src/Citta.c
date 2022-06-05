@@ -146,9 +146,10 @@ void addArcoC(GraphCitta* grafo, int posizione, char albergo[], int tempo, int t
 	EdgeCitta* tmp = grafo->adj[posizione]->next;
 
 	while(tmp !=NULL) { /*Controlla che l'arco non sia giÃ  esistente*/
-		if(strcmp(albergo, tmp->albergo) == 0)
+		if(strcmp(albergo, tmp->albergo) == 0){
+			printf("Percorso già esistente e non modificabile!\n");
 			return;
-
+		}
 		tmp = tmp->next;
 	}
 
