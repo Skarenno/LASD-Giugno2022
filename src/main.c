@@ -64,23 +64,5 @@ int main(){
 	// LIBERA MEMORIA
 	freeGraphViaggi(GrafoViaggi);
 
-
-
-
-/**** TEMP ****/
-//	GraphViaggi* grafo = NULL;
-//	grafo = leggiFileViaggi(grafo);
-//	stampaGrafo(grafo);
-//	addArco(grafo, 2, "Napoli", 45.56, 23.67, 120, 80);
-//	scriviFileViaggi(grafo);
-//
-//	GraphCitta *grafo = NULL;
-//	char *path = pathFileC("Bari");
-//	printf("%s\n", path);
-//	grafo = leggiFileAlberghi(grafo, path);
-//	stampaGrafoC(grafo);
-//	//scriviFileAlberghi(grafo, path);
-//	free(path);
-//	grafo = FreeC(grafo);
-//	return 0;
+	return 0;
 }

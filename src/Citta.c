@@ -121,7 +121,7 @@ EdgeCitta* creaArcoC (char* albergo, int tempo, int tipo) {
 
 void InserisciVerticeC(GraphCitta* G, char *albergo, int tipo) {
     for(int i = 0; i< G->numVertici; i++){
-        if(strcmp(albergo, G->adj[i]->albergo) == 0){ //Giï¿½ esistente
+        if(strcmp(albergo, G->adj[i]->albergo) == 0){ //Già esistente
             return;
         }
     }
@@ -301,7 +301,7 @@ void stampaGrafoC(GraphCitta* grafo){
 /**************** FUNZIONI GENERICHE ***************/
 /***************************************************/
 
-// Ritorna il nome del Path del file della citta corrispondente a partire dal nome della cittï¿½
+// Ritorna il nome del Path del file della citta corrispondente a partire dal nome della città
 char *pathFileC(char nomeCitta[]) {
 	char *path = (char*)malloc((strlen("./src/FILES/Alberghi/")+STRING_MAX+4)*sizeof(char));
 	strcpy(path, "./src/FILES/Alberghi/");

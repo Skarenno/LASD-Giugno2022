@@ -158,7 +158,7 @@ float DijkstraViaggi(GraphViaggi* graph, int partenza, int arrivo, int tipoPeso,
     prezzo[partenza] = 0;
     RiduciDistanza(minHeap, partenza, dist[partenza], prezzo[partenza]);
 
-    // Inizialmente la  grandezza dell'Heap ï¿½ V (VERTICI)
+    // Inizialmente la  grandezza dell'Heap è V (VERTICI)
     minHeap->size = V;
 
 
@@ -305,7 +305,7 @@ float DijkstraViaggiNoPrint(GraphViaggi* graph, int partenza, int arrivo, int ti
     prezzo[partenza] = 0;
     RiduciDistanza(minHeap, partenza, dist[partenza], prezzo[partenza]);
 
-    // Inizialmente la  grandezza dell'Heap ï¿½ V (VERTICI)
+    // Inizialmente la  grandezza dell'Heap è V (VERTICI)
     minHeap->size = V;
 
 
@@ -434,7 +434,7 @@ float DijkstraAlberghi(GraphCitta* graph, int partenza, int arrivo){
     dist[partenza] = 0;
     RiduciDistanza(minHeap, partenza, dist[partenza], 0);
 
-    // Inizialmente la  grandezza dell'Heap ï¿½ V (VERTICI)
+    // Inizialmente la  grandezza dell'Heap è V (VERTICI)
     minHeap->size = V;
 
 

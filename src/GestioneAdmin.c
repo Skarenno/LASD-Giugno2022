@@ -104,7 +104,7 @@ void RiscriviFileAdmin(Admin* ListaAdmin) {
 /**************************************************************************/
 
 
-// Schermata Iniziale. Ritorna l'admin con cui si ï¿½ effettuato l'accesso
+// Schermata Iniziale. Ritorna l'admin con cui si è effettuato l'accesso
 Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 
 	//INIZIALIZZO VARIABILI LOCALI
@@ -127,7 +127,7 @@ Admin* SchermataInizialeAdmin(Admin* ListaAdmin) {
 	printf("***************\n **Benvenuto** \n***************\n\n");
 	sleep(1);
 	do {
-		// ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO ï¿½ AVVENUTO CORRETTAMENTE.
+		// ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO E' AVVENUTO CORRETTAMENTE.
 		printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
 		fflush(stdout);
 		fflush(stdin);
@@ -186,7 +186,7 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
 
     /** DUE CASI **/
 
-    // 1. L'utente non ï¿½ presente nel Database e si richiede se si vuole registrarsi
+    // 1. L'utente non è presente nel Database e si richiede se si vuole registrarsi
     if(admin==NULL) {
     	printf("\nAdmin non trovato... desidera registrarsi (y/n)? ");
     	fflush(stdout);
@@ -218,7 +218,7 @@ Admin* AccessoAdmin(Admin* ListaAdmin) {
     		}
     		break;
     	}
-    // 2. L'utente ï¿½ presente e ne verifico la password. Se non si riesce ad accedere si puï¿½ tornare alla schermata precedente
+    // 2. L'utente è presente e ne verifico la password. Se non si riesce ad accedere si può tornare alla schermata precedente
     } else {
     	// VERIFICO LA PASSWORD
     	do{
@@ -275,9 +275,9 @@ Admin* RegistraAdmin (Admin* ListaAdmin){
 
 		scanf("%s", username);
 
-		// Se il nome admin ï¿½ giï¿½ presente si richiede un nuovo inserimento.
+		// Se il nome admin è già presente si richiede un nuovo inserimento.
 		if(TrovaAdmin(username, ListaAdmin)!=NULL){
-			printf("Nome admin giï¿½ esistente. Riprovare.\n");
+			printf("Nome admin già esistente. Riprovare.\n");
 			continue;
 		}
 		break;

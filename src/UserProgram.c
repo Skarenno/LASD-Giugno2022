@@ -162,7 +162,7 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 
 	// LETTURA PARTENZA
 	do{
-		printf("Inserisci la cittï¿½ di partenza: ");
+		printf("Inserisci la città di partenza: ");
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", partenza);
@@ -170,12 +170,12 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		if(key_partenza != -1)
 			break;
 		else
-			printf("---Nome cittï¿½ non valido... riprovare.\n");
+			printf("---Nome città non valido... riprovare.\n");
 	}while(true);
 
 	// LETTURA ARRIVO
 	do{
-		printf("Inserisci la cittï¿½ di arrivo: ");
+		printf("Inserisci la città di arrivo: ");
 		fflush(stdout);
 		fflush(stdin);
 		scanf("%s", arrivo);
@@ -183,11 +183,11 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		if(key_arrivo != -1)
 			break;
 		else
-			printf("---Nome cittï¿½ non valido... riprovare.\n");
+			printf("---Nome città non valido... riprovare.\n");
 	}while(true);
 
 	do{
-		printf("*************\nSi ï¿½ selezionato il viaggio %s -> %s\n", partenza, arrivo);
+		printf("*************\nSi è selezionato il viaggio %s -> %s\n", partenza, arrivo);
 		printf("Inserisci il tipo di trasporto desiderato (0. Aereo - 1. Treno): ");
 		fflush(stdout);
 		fflush(stdin);
@@ -235,8 +235,8 @@ int EffettuaPrenotazione(Utente* ListaUtenti, Utente* user, GraphViaggi* GrafoVi
 		sleep(1);
 		return 0;
 	}
-	printf("La durata di questo viaggio ï¿½ di %.0f minuti\n", distance);
-	printf("Il prezzo di questo viaggio ï¿½ di %.2f€, vuoi prenotarlo? (1: Conferma. 0: Annulla e torna al menu principale.)\n", price);
+	printf("La durata di questo viaggio è di %.0f minuti\n", distance);
+	printf("Il prezzo di questo viaggio è di %.2f€, vuoi prenotarlo? (1: Conferma. 0: Annulla e torna al menu principale.)\n", price);
 	while(true) {
 		printf("Immetti selezione: ");
 		fflush(stdout);

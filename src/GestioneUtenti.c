@@ -145,7 +145,7 @@ unsigned short int SelezioneAccesso(){
 	}
 }
 
-// Schermata Iniziale. Ritorna l'utente di cui si ï¿½ effettuato l'accesso
+// Schermata Iniziale. Ritorna l'utente di cui si è effettuato l'accesso
 Utente* SchermataIniziale (Utente* ListaUtenti){
 
 	// INIZIALIZZO VARIABILI LOCALI
@@ -170,7 +170,7 @@ Utente* SchermataIniziale (Utente* ListaUtenti){
 
 	sleep(1);
     do{
-        // ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO ï¿½ AVVENUTO CORRETTAMENTE.
+        // ESCO DAL WHILE (E PASSO ALLA SCHERMATA SUCCESSIVA) SOLO QUANDO L'ACCESSO E' AVVENUTO CORRETTAMENTE.
         printf("\nImmettere azione da eseguire (1. Accesso - 2. Registrazione - 3. Chiudi Applicativo):");
         fflush(stdout);
         fflush(stdin);
@@ -230,7 +230,7 @@ Utente* AccessoUtente (Utente* ListaUtenti){
 
     /** DUE CASI **/
 
-    // 1. L'utente non ï¿½ presente nel Database e si richiede se si vuole registrarsi
+    // 1. L'utente non è presente nel Database e si richiede se si vuole registrarsi
     if(Utente == NULL){
     	printf("\nUtente non trovato... desidera registrarsi (y/n)? ");
     	fflush(stdout);
@@ -264,7 +264,7 @@ Utente* AccessoUtente (Utente* ListaUtenti){
 			break;
     	}
 
-    // 2. L'utente ï¿½ presente e ne verifico la password. Se non si riesce ad accedere si puï¿½ tornare alla schermata precedente
+    // 2. L'utente è presente e ne verifico la password. Se non si riesce ad accedere si può tornare alla schermata precedente
     }
     else{
     	// VERIFICO LA PASSWORD
@@ -340,9 +340,9 @@ Utente* RegistraUtente (Utente* ListaUtenti){
 
 		scanf("%s", username);
 
-		// Se il nome utente ï¿½ giï¿½ presente si richiede un nuovo inserimento.
+		// Se il nome utente è già presente si richiede un nuovo inserimento.
 		if(TrovaUtente(username, ListaUtenti) != NULL){
-			printf("Nome utente giï¿½ esistente. Riprovare.\n");
+			printf("Nome utente già esistente. Riprovare.\n");
 			continue;
 		}
 		break;
